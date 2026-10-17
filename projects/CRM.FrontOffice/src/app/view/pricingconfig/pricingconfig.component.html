@@ -1,0 +1,84 @@
+<title>Pricing Configuration</title>
+<div class="or-config-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <form name="pricingConfigForm" #pricingConfigForm="ngForm" novalidate>
+          <div class="company-info">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+              <div class="ci-top-left">
+                <ul>
+                  <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    Pricing Configurations</li>
+                </ul>
+              </div>
+              <div class="ci-top-right">
+              </div>
+            </div>
+          </div>
+          <div class="or-config ms-config">
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12 plr-5">
+                <div class="i-form ed-top">
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="d-prop-wrap">
+                        <div class="flex in-block">
+                          <div class="o-title">
+                            <h6 class="title">Configuration</h6>
+                          </div>
+                          <div class="o-edit" kendoTooltip position="bottom">
+                            <button type="button" kendoButton title="Edit Configuration" [disabled]="isEditable"
+                              (click)="enableSaveChanges()"><i class="icon-edit"></i></button>
+                            <button type="button" kendoButton title="Save Configuration"
+                              [disabled]="!isEditable || !pricingConfigForm.valid"
+                              (click)="submit(pricingConfigForm, 1)"><i class="icon-save"></i></button>
+                            <button type="button" kendoButton title="Disabled Configuration" [disabled]="!isEditable"
+                              (click)="disabledConfiguration()"><i class="icon-delete"></i></button>
+                          </div>
+                        </div>
+                        <div class="wrd row">
+                          <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                            <div class="form-data"
+                              [ngClass]="{ 'error': expirationDay.invalid && (expirationDay.hasError('pattern') || expirationDay.dirty || expirationDay.touched)}">
+                              <span class="u-title">Expiration Day</span>
+                              <input type="text" name="expirationDay" [(ngModel)]="pricingConfig.expirationDay"
+                                #expirationDay="ngModel" id="expirationDay" required placeholder="Enter Expiration Day"
+                                [disabled]="!isEditable" [ngClass]="{'active':isEditable}" (keypress)="utilityService.numberOnly($event);">
+                            </div>
+                          </div>
+                          <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                            <div class="form-data"
+                              [ngClass]="{ 'error': baseDiscountDifference.invalid && (baseDiscountDifference.hasError('pattern') || baseDiscountDifference.dirty || baseDiscountDifference.touched)}">
+                              <span class="u-title">Base Discount Difference</span>
+                              <input type="text" name="baseDiscountDifference"
+                                [(ngModel)]="pricingConfig.baseDiscountDifference" #baseDiscountDifference="ngModel"
+                                id="baseDiscountDifference" required placeholder="Enter Base Discount Difference" [disabled]="!isEditable"
+                                [ngClass]="{'active':isEditable}" (keypress)="utilityService.discountfloat($event);">
+                            </div>
+                          </div>
+                          <!-- <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                            <div class="form-data"
+                              [ngClass]="{ 'error': certificateUrl.invalid && (certificateUrl.hasError('pattern') || certificateUrl.dirty || certificateUrl.touched)}">
+                              <span class="u-title">Certificate URL</span>
+                              <input type="text" name="certificateUrl" [(ngModel)]="pricingConfig.certificateUrl" #certificateUrl="ngModel"
+                                id="certificateUrl" required placeholder="Enter URL" [disabled]="!isEditable"
+                                [pattern]="websitePattern" [ngClass]="{'active':isEditable}">
+                            </div>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

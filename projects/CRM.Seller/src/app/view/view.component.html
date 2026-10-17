@@ -1,0 +1,15 @@
+<!-- Top Bar Start -->
+<app-header></app-header>
+<!-- Top Bar End -->
+
+<!-- Sidebar Start -->
+<app-side-menu></app-side-menu>
+<!-- Sidebar End -->
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" template="<img src='commonAssets/images/gl.gif' style='width:80px;' />" [fullScreen]="true">
+      <!-- <p style="color: white"> Loading... </p> -->
+</ngx-spinner>
+
+<!-- Page main content -->
+<router-outlet></router-outlet>
+<!-- Page main content -->

@@ -1,0 +1,328 @@
+<!-- #region Analytics Modal -->
+<div class="modal c-modal dialog-lg addemp" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAnalytics">
+  <form>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="icon-analytics"></i>
+            Price Analytics
+          </h5>
+          <button type="button" class="close" (click)="closeAnalyticsDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <kendo-tabstrip>
+                <kendo-tabstrip-tab title="Master Chart" [selected]="true">
+                  <ng-template kendoTabContent>
+                    <kendo-chart>
+                      <kendo-chart-title text="Master Chart"></kendo-chart-title>
+                      <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+                      <kendo-chart-tooltip format="{0}%"></kendo-chart-tooltip>
+                      <kendo-chart-series>
+                        <kendo-chart-series-item *ngFor="let item of series" type="line" [data]="item.data"
+                          [name]="item.name">
+                        </kendo-chart-series-item>
+                      </kendo-chart-series>
+                    </kendo-chart>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab title="Day Wise pricing Discount" [selected]="false">
+                  <ng-template kendoTabContent>
+                    <kendo-chart [title]="{ text: 'Day Wise pricing Discount' }">
+                      <kendo-chart-series>
+                        <kendo-chart-series-item type="rangeColumn" [data]="daywiseData" fromField="min" toField="max"
+                          categoryField="day">
+                          <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                          </kendo-chart-series-item-labels-from>
+                          <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                          </kendo-chart-series-item-labels-to>
+                        </kendo-chart-series-item>
+                      </kendo-chart-series>
+                      <kendo-chart-category-axis>
+                        <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                        </kendo-chart-category-axis-item>
+                      </kendo-chart-category-axis>
+                      <kendo-chart-tooltip>
+                        <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                          Avg Min Disc. : {{ value.from }} % <br />
+                          Avg Max Disc. : {{ value.to }} %"
+                        </ng-template>
+                      </kendo-chart-tooltip>
+                    </kendo-chart>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab title="Weekley Rapnet Data Chart" [selected]="false">
+                  <ng-template kendoTabContent>
+                    <kendo-chart [title]="{ text: 'Weekley Rapnet Data Chart' }">
+                      <kendo-chart-series>
+                        <kendo-chart-series-item type="rangeColumn" [data]="weekwiseData" fromField="min" toField="max"
+                          categoryField="week">
+                          <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                          </kendo-chart-series-item-labels-from>
+                          <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                          </kendo-chart-series-item-labels-to>
+                        </kendo-chart-series-item>
+                      </kendo-chart-series>
+                      <kendo-chart-category-axis>
+                        <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                        </kendo-chart-category-axis-item>
+                      </kendo-chart-category-axis>
+                      <kendo-chart-tooltip>
+                        <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                          Avg Min Price : {{ value.from }} % <br />
+                          Avg Max Price : {{ value.to }} %"
+                        </ng-template>
+                      </kendo-chart-tooltip>
+                    </kendo-chart>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab title="Pcs Wise Chart" [selected]="false">
+                  <ng-template kendoTabContent>
+                    <!-- <h6 class="border-bottom font-weight-bold ng-star-inserted p-1 text-center">Rapaport Diamond Report</h6> -->
+                    <kendo-tabstrip>
+                      <kendo-tabstrip-tab title=".90 - .99 CT" [selected]="true">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '.90 - .99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="1.00 - 1.49 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '1.00 - 1.49 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="1.50 - 1.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '1.50 - 1.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="2.00 - 2.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '2.00 - 2.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="3.00 - 3.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '3.00 - 3.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="4.00 - 4.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '4.00 - 4.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="5.00 - 5.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '5.00 - 5.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="10.00 - 10.99 CT" [selected]="false">
+                        <ng-template kendoTabContent>
+                          <kendo-chart [title]="{ text: '10.00 - 10.99 CT' }">
+                            <kendo-chart-series>
+                              <kendo-chart-series-item type="rangeColumn" [data]="pcswiseData" fromField="min"
+                                toField="max" categoryField="pcs">
+                                <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                                </kendo-chart-series-item-labels-from>
+                                <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                                </kendo-chart-series-item-labels-to>
+                              </kendo-chart-series-item>
+                            </kendo-chart-series>
+                            <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                              </kendo-chart-category-axis-item>
+                            </kendo-chart-category-axis>
+                            <kendo-chart-tooltip>
+                              <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                                Avg Min Price : {{ value.from }} % <br />
+                                Avg Max Price : {{ value.to }} %"
+                              </ng-template>
+                            </kendo-chart-tooltip>
+                          </kendo-chart>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab title="Range Area Chart" [selected]="false">
+                  <ng-template kendoTabContent>
+                    <kendo-chart [title]="{ text: 'Range Area Chart' }">
+                      <kendo-chart-series>
+                        <kendo-chart-series-item type="rangeColumn" [data]="rangewiseData" fromField="min" toField="max"
+                          categoryField="range">
+                          <kendo-chart-series-item-labels-from [content]="labelContentFrom">
+                          </kendo-chart-series-item-labels-from>
+                          <kendo-chart-series-item-labels-to [content]="labelContentTo">
+                          </kendo-chart-series-item-labels-to>
+                        </kendo-chart-series-item>
+                      </kendo-chart-series>
+                      <kendo-chart-category-axis>
+                        <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                        </kendo-chart-category-axis-item>
+                      </kendo-chart-category-axis>
+                      <kendo-chart-tooltip>
+                        <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                          Avg Min Disc. : {{ value.from }} % <br />
+                          Avg Max Disc. : {{ value.to }} %"
+                        </ng-template>
+                      </kendo-chart-tooltip>
+                    </kendo-chart>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+              </kendo-tabstrip>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"><i class="icon-add"></i>New</button>
+          <button class="btn btn-primary"><i class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- #endregion -->

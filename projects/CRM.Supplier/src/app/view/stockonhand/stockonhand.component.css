@@ -1,0 +1,13 @@
+.sr-wrap.stockhand-panel {
+    position  : fixed;
+    right     : 0;
+    top       : 36px;
+    z-index   : 1;
+    background: #fff;
+    transform : translateX(240px);
+    width     : 250px;
+}
+
+.sr-wrap.stockhand-panel.active {
+    transform: translateX(0);
+}

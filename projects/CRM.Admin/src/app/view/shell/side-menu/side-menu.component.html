@@ -1,0 +1,44 @@
+<div class="left-sidebar p-0">
+  <div class="left-dash">
+    <div class="bottom-dash-l">
+      <span class="l-click"><i class="icon-leftall"></i></span>
+      <div class="profile-block">
+        <div class="i-box">
+          <img src="commonAssets/images/profile.png" alt="profile-photo">
+        </div>
+        <span class="sup-name">
+          {{fxCredentials.fullName}}
+        </span>
+        <span class="sub-name">{{fxCredentials.department}}</span>
+      </div>
+      <div class="menu">
+        <!-- [routerLinkActiveOptions]="{exact: true}" -->
+        <ul class="sidebar-menu">
+          <li *ngFor="let item of menuItems;let i= index">
+            <a *ngIf="item.subMenu.length==0 " [routerLink]="item.menuUrl"  (contextmenu)="onRightClick(item)" routerLinkActive="active">
+              <img [src]="item.menuImage" [alt]="item.menuName" class="sv-fill">
+              <span>{{item.menuName}}</span>
+            </a>
+            <a *ngIf="item.subMenu.length > 0" (click)="toggleClass(i)"  (contextmenu)="toggleClass(i)" class="menu-toggle"
+              [ngClass]="{'active-arrow': item.expand,'active': item.expand}">
+              <img [src]="item.menuImage" [alt]="item.menuName" class="sv-fill">
+              <span>{{item.menuName}}</span>
+              <span class="drop-arrow"><i class="icon-left-new"></i></span>
+            </a>
+            <div *ngIf="item.subMenu.length > 0" class="submenu-wrap"
+              [ngStyle]="{'display': item.expand?'block':'none'}">
+              <ul class="submenu">
+                <li *ngFor="let subItem of item.subMenu">
+                  <a [routerLink]="subItem.subMenuUrl"  (contextmenu)="onSubRightClick(subItem)" routerLinkActive="active">
+                    <img [src]="subItem.subMenuImage" [alt]="subItem.subMenuName" class="sv-fill">
+                    <span>{{subItem.subMenuName}}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

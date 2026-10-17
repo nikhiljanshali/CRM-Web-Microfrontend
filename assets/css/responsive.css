@@ -1,0 +1,320 @@
+@media (max-width: 1550px) {
+    .c-left {
+        flex : 0 0 60%;
+        width: 60%;
+    }
+
+    .c-right {
+        flex     : 0 0 40%;
+        max-width: 40%;
+    }
+
+    .f-side {
+        flex : 0 0 60%;
+        width: 60%;
+    }
+
+    .right-wrap {
+        padding: 49px 48px;
+    }
+
+    .banner-text h3 {
+        font-size: 42px;
+    }
+
+    .banner-text p {
+        font-size  : 15px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .logo img {
+        max-width : 100%;
+        max-height: 55px;
+    }
+
+    .right-wrap {
+        padding: 45px;
+    }
+
+    .ri-form-wrap h6 {
+        margin-bottom: 35px;
+        font-size    : 16px;
+    }
+
+    .right-wrap h6 {
+        font-size: 16px;
+        margin   : 51px 0 00px 8px;
+    }
+
+    .ri-form-wrap {
+        margin-top: 30px !important;
+    }
+
+    .ad-logo span {
+        font-size: 15px;
+    }
+
+    .ad-logo img {
+        max-width: 26px;
+    }
+
+    .e-left {
+        width: 100%;
+    }
+
+    .sr-wrap {
+        position  : fixed;
+        right     : 0;
+        top       : 36px;
+        z-index   : 1;
+        background: #fff;
+        transform : translateX(240px);
+        width     : 250px;
+        padding   : 0 10px 0 10px;
+    }
+
+    .sr-wrap.active {
+        transform: translateX(0);
+    }
+
+    .f-btn {
+        display: block;
+    }
+
+    .c-searh-btn {
+        display: block !important;
+    }
+
+    .ci-top-right {
+        padding-right: 15px;
+    }
+
+    /* 
+    .employee-wrap .ci-top-right,
+    .omaster-wrap .ci-top-right {
+        margin-right: 29px;
+    } */
+
+    .right-wrap h6 {
+        margin   : 15px 0 0px 0px;
+        font-size: 14px;
+    }
+
+    .re-social h6.title {
+        margin-bottom: 10px;
+    }
+
+    .e-details-n .info-block.we-3 li,
+    .info-block li {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .c-left {
+        flex : 0 0 50%;
+        width: 50%;
+    }
+
+    .c-right {
+        flex     : 0 0 50%;
+        max-width: 50%;
+    }
+
+    .f-side {
+        flex : 0 0 50%;
+        width: 50%;
+    }
+
+    .banner-text h3 {
+        font-size  : 18px;
+        text-shadow: 0px 1px 6px rgb(0 0 0);
+        line-height: initial;
+    }
+
+    .pattern-title::before {
+        left : 65%;
+        width: 18%;
+    }
+
+    .pattern-title::after {
+        right: 48%;
+        width: 18%;
+    }
+
+    .banner-text p {
+        line-height: initial;
+        font-size  : 14px;
+    }
+
+    .right-wrap {
+        padding: 35px;
+    }
+
+    .logo img {
+        max-height: 50px;
+    }
+
+    .ri-form-wrap {
+        margin-top: 40px !important;
+    }
+
+    .ri-form-wrap h6 {
+        font-size: 16px;
+    }
+
+    .register .form-data label {
+        font-size: 13px;
+    }
+
+    /* .ci-top {
+        display: inline-block;
+    } */
+
+    .department-wrap .grid,
+    .company-wrap .grid {
+        grid-template-columns: initial;
+    }
+
+    .company-info.col-xl-12.col-lg-12.col-sm-8.col-xs-12 {
+        flex: 0 0 100%;
+    }
+
+    .department-wrap .form-data {
+        margin-bottom: initial;
+    }
+
+    .fpass .r-form h6 {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 570px) {
+    .c-left {
+        display: none;
+    }
+
+    .c-right {
+        flex     : 0 0 100%;
+        max-width: 100%;
+    }
+
+    .left-wrap {
+        display: none;
+    }
+
+    .f-side {
+        position: static;
+        left    : 0;
+        top     : 0;
+    }
+
+    .img-box img {
+        max-width : 100%;
+        transition: all 0.3s;
+        height    : initial;
+    }
+
+    .ad-logo {
+        position : fixed;
+        max-width: 100% !important;
+        height   : 36px;
+    }
+
+    ul.nav-right {
+        position        : fixed;
+        width           : 43px;
+        right           : 0;
+        height          : 100%;
+        top             : 0;
+        background-color: #3d3d3d;
+        transform       : translateX(45px);
+        transition      : all 0.5s ease;
+    }
+
+    ul.nav-right li {
+        display: block;
+    }
+
+    ul.nav-right.active {
+        transform: translateX(0);
+    }
+
+    .top-submenu {
+        top  : 0;
+        right: 43px;
+    }
+
+    .company.col-xl-2.p-0,
+    .company-info.col-xl-12.col-lg-12.col-sm-8.col-xs-12 {
+        max-width   : 100%;
+        border-right: 0;
+    }
+
+    .ci-top-left {
+        margin: initial;
+    }
+
+    .ci-title span {
+        font-size  : 11px;
+        line-height: initial;
+    }
+
+    span.p-name {
+        display: none;
+    }
+
+    li.o-flex a i {
+        margin: initial;
+    }
+
+    .top-submenu:before {
+        content      : "";
+        position     : absolute;
+        top          : 13px;
+        right        : -14px;
+        border-left  : 7px solid #fff;
+        border-top   : 7px solid transparent;
+        border-bottom: 7px solid transparent;
+    }
+
+    .doc-up .col-xl-4.col-lg-4.col-sm-4.col-xs-12.form-data:first-child {
+        padding-right: 15px;
+    }
+
+    .doc-up .col-xl-4.col-lg-4.col-sm-4.col-xs-12.form-data:last-child {
+        padding-left: 15px;
+    }
+
+    .ri-form-wrap .col-xl-6.col-lg-6.col-sm-6.col-xs-12:nth-child(2n-1) {
+        padding-right: 15px !important;
+    }
+
+    .ri-form-wrap .col-xl-6.col-lg-6.col-sm-6.col-xs-12:nth-child(2n + 2) {
+        padding-left: 15px !important;
+    }
+
+    .bu-inf .col-xl-4.col-lg-4.col-sm-6.col-xs-12.form-data:nth-child(8) {
+        padding: 0 15px !important;
+    }
+
+    .company-wrap .company-info,
+    .department-wrap .company-info {
+        border-top: 1px solid #d3d3d3;
+    }
+
+    .user-tab i {
+        width      : 55px;
+        height     : 55px;
+        line-height: 55px;
+    }
+
+    .user-tab li:before {
+        width : 20px;
+        height: 2px;
+        top   : 38%;
+        left  : 86px;
+    }
+}

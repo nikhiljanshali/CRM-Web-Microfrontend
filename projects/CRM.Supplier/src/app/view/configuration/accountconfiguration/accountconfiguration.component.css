@@ -1,0 +1,35 @@
+.vow-input {
+    display              : grid;
+    grid-template-columns: 66px 12% 74px 12% 54px 12% auto 1fr;
+    grid-column-gap      : 10px;
+    grid-row-gap         : 5px;
+}
+
+.vow-input label {
+    padding    : 0;
+    line-height: 20px;
+}
+
+.vow-input .form-control,
+.vow-input button {
+    height: 25px;
+}
+
+.vow-input .form-data {
+    margin-bottom: 0;
+}
+
+.ac-grid {
+    display        : flex;
+    grid-column-gap: 15px;
+}
+
+.ac-grid h6 {
+    font-size    : 14px;
+    margin-bottom: 2px;
+}
+
+.ac-config-title .d-prop {
+    height    : 195px;
+    overflow-y: scroll;
+}

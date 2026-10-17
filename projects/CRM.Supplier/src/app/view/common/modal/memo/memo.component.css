@@ -1,0 +1,25 @@
+.memo-info .grid {
+    grid-template-columns: 82px 1fr 62px 1fr;
+}
+
+.memo-details h6 {
+    font-family  : "Poppins-Regular";
+    color        : #000;
+    font-size    : 14px;
+    padding-right: 3px;
+    margin       : 0;
+    white-space  : nowrap;
+    text-overflow: ellipsis;
+    overflow     : hidden;
+    width        : 204px;
+}
+
+.memo-details {
+    display              : grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.memo-details label {
+    font-size   : 14px !important;
+    margin-right: 5px;
+}

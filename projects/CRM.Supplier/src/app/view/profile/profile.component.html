@@ -1,0 +1,529 @@
+<title>User Profile</title>
+<div class="edetails-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item k-cursor-pointer" routerLink="/"><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openUpdateEmpDialog()"> <i class="icon-edit"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+            <div class="grid-wrap o-details e-details">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="i-form ed-top">
+                    <div class="row">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form">
+                          <h6 class="title">Personal Information</h6>
+                          <div class="p-flex">
+                            <div class="p-left c-profile">
+                              <div class="i-box">
+                                <img src="commonAssets/images/profile.png" alt="profile-photo">
+                                <span class="ed-profile c-badge">
+                                  <i class="icon-edit"></i>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="row p-right e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>Full Name :
+                                      </span>{{employeeData.fullName}}</h6>
+                                  </li>
+                                </div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3">
+                                  <li>
+                                    <h6 class="c-name"><span>Department :</span>{{employeeData.department}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Origin :</span>{{employeeData.origin}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Organization :</span>{{employeeData.organization.name}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Branch :</span>{{employeeData.branch.name}}</h6>
+                                  </li>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="en-form mt-2">
+                          <h6 class="title">Address</h6>
+                          <div class="row e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                              <div class="info-block">
+                                <li>
+                                  <h6 class="c-name"><span>Address line 1 :</span>{{employeeData.address.line1}}</h6>
+                                </li>
+                              </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                              <div class="info-block">
+                                <li>
+                                  <h6 class="c-name"><span>Address line 2 :</span>{{employeeData.address.line2}}</h6>
+                                </li>
+                              </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block">
+                                <li>
+                                  <h6 class="c-name"><span>Email :</span>{{employeeData.email}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Mobile No
+                                      :</span>{{ employeeData.mobile }}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>City :</span>{{employeeData.address.city}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>State :</span>{{employeeData.address.state}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Country :</span>{{employeeData.address.country}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Type :</span>{{employeeData.address.type}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Zipcode :</span>{{employeeData.address.zipCode}}</h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form">
+                          <h6 class="title">Others</h6>
+                          <div class="row e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                              <div class="info-block">
+                                <li>
+                                  <h6 class="c-name"><span>Native Address :</span>{{employeeData.nativeAddress}}</h6>
+                                </li>
+                              </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Enrollment No. :</span>{{employeeData.enrollmentNumber}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Joining Date
+                                      :</span>{{employeeData.joiningDate | date: 'dd/MM/yyyy'}}</h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Manager :</span><input type="checkbox" class="k-checkbox"
+                                      disabled [checked]="employeeData.isManager" /></h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Active :</span><input type="checkbox" class="k-checkbox"
+                                      disabled [checked]="employeeData.isActive" /></h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Available :</span><input type="checkbox" class="k-checkbox"
+                                      disabled [checked]="employeeData.isAvailable" /></h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="en-form mt-2">
+                          <h6 class="title">Social Media</h6>
+                          <div class="row e-details-n ml-0 mr-0">
+                            <div class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 p-1"
+                              *ngFor="let field of employeeData.socialMedias">
+                              <kendo-card class="w-100 bg-light">
+                                <kendo-card-body>
+                                  <div kendoCardSubtitle>
+                                    <span class="k-icon k-i-star"></span>
+                                    <span><b>{{field.provider.providerName}}</b></span>
+                                  </div>
+                                  <div kendoCardSubtitle>
+                                    <span class="k-icon k-i-user"></span>
+                                    <span class="s-title">{{(field.provider.mediaType == '3' || field.provider.mediaType
+                                      == 'Messaging') ? (field.mobileNumber ) :
+                                      field.profileName}}</span>
+                                  </div>
+                                </kendo-card-body>
+                              </kendo-card>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="or-config ms-config">
+              <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-4 col-md-4 col-xs-12 plr-10">
+                  <form name="marketingEmailForm" #marketingEmailForm="ngForm" novalidate class="d-prop-wrap">
+                    <div class="flex in-block">
+                      <div class="o-title">
+                        <h6 class="title">Marketing Email</h6>
+                      </div>
+                      <div class="o-edit">
+                        <kendo-buttongroup kendoTooltip position="bottom">
+                          <button type="button" kendoButton title="Edit Configuration" [disabled]="isMarketingEditable"
+                            (click)="enableMarketingSaveChanges()"><i class="icon-edit"></i></button>
+                          <button type="button" kendoButton title="Save Configuration"
+                            [disabled]="!isMarketingEditable || !marketingEmailForm.valid"
+                            (click)="submitMarketingEmail(marketingEmailForm)"><i class="icon-save"></i></button>
+                          <button type="button" kendoButton title="Disabled Configuration"
+                            [disabled]="!isMarketingEditable" (click)="disabledMarketingConfiguration()"><i
+                              class="icon-delete"></i></button>
+                        </kendo-buttongroup>
+                      </div>
+                    </div>
+                    <div class="wrd row">
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="form-data">
+                          <span class="u-title">Email</span>
+                          <input type="email" name="Email" [(ngModel)]="marketingEmail.emailId" #email="ngModel"
+                            id="email" required placeholder="Enter Email" [disabled]="!isMarketingEditable"
+                            [ngClass]="{'active':isMarketingEditable}">
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="form-data">
+                          <span class="u-title">Password</span>
+                          <input type="text" name="password" [(ngModel)]="marketingEmail.password" #password="ngModel"
+                            id="password" required placeholder="Enter Password" [disabled]="!isMarketingEditable"
+                            [ngClass]="{'active':isMarketingEditable}">
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="form-data">
+                          <span class="u-title">Host</span>
+                          <input type="text" name="host" [(ngModel)]="marketingEmail.host" #host="ngModel" id="host"
+                            required placeholder="Enter Host" [disabled]="!isMarketingEditable"
+                            [ngClass]="{'active':isMarketingEditable}">
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="form-data">
+                          <span class="u-title">Port</span>
+                          <input type="text" name="port" [(ngModel)]="marketingEmail.port" #port="ngModel" id="port"
+                            required placeholder="Enter Port" [disabled]="!isMarketingEditable" (keypress)="utilityService.numberOnly($event)"
+                            [ngClass]="{'active':isMarketingEditable}">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- Register Employee Modal Start -->
+<div class="modal c-modal addemp rorgan employee-modal" tabindex="-1" role="dialog" data-keyboard="false"
+  data-backdrop="static" [hidden]="!isRegEmployee">
+  <form name="form" #employeeForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-candidates"></i>Edit
+            Profile</h5>
+          <button type="button" class="close" (click)="closeRegEmpDialog(employeeForm)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ro-grid">
+                <h6 class="title"><i class="icon-mainuser"></i>Employee Information</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label for="">First Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': fname.invalid && (fname.dirty || fname.touched)}">
+                    <input type="text" name="fname" [(ngModel)]="employeeObj.name.firstName" #fname="ngModel" id=""
+                      required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Middle Name</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="mname" [(ngModel)]="employeeObj.name.middleName" #mname="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label for="">Last Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': lname.invalid && (lname.dirty || lname.touched)}">
+                    <input type="text" name="lname" [(ngModel)]="employeeObj.name.lastName" #lname="ngModel" id=""
+                      required>
+                  </div>
+                  <div class="form-data">
+                    <label>Origin<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': origin.invalid && (origin.dirty || origin.touched) }">
+                    <kendo-dropdownlist [data]="listOriginItems" [valuePrimitive]="true" name="origin"
+                      [(ngModel)]="employeeObj.origin" #origin="ngModel" required [disabled]="true">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Email<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="email" name="email" [(ngModel)]="employeeObj.email" [disabled]="true" #email="ngModel"
+                      id="" required email>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Mobile No<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': mobileNo.invalid && ((mobileNo.touched && mobileNo.hasError('pattern')) || (mobileNo.errors?.required && mobileNo.touched)) }">
+                    <kendo-maskedtextbox name="mobileNo" [(ngModel)]="employeeObj.mobile" #mobileNo="ngModel" id=""
+                      required [mask]="mobileMask" [disabled]="true">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label>Organization<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': org.invalid && (org.dirty || org.touched) }">
+                    <kendo-dropdownlist [data]="listOrganizationDNormItems" [textField]="'text'" [valueField]="'value'"
+                      name="org" [(ngModel)]="selectedOrganizationDNormItems" #org="ngModel" required
+                      (valueChange)="onOrganizationDNormChange($event)" [disabled]="true">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Branch<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': branch.invalid && (branch.dirty || branch.touched) }">
+                    <kendo-dropdownlist [data]="listBranchDNormItems" [textField]="'text'" [valueField]="'value'"
+                      [name]="'branch'" (valueChange)="onBranchDNormChange($event)"
+                      [(ngModel)]="selectedBranchDNormItems" #branch="ngModel" required>
+                    </kendo-dropdownlist>
+
+                  </div>
+                  <div class="form-data">
+                    <label for="">Department<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listDepartmentItems" [textField]="'text'" [valueField]="'value'"
+                      name="dept" (valueChange)="onDepartmentChange($event)" [(ngModel)]="selectedDeptItems"
+                      #dept="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+              </div>
+              <div class="i-form om-add">
+                <h6 class="title"><i class="icon-mapmarker"></i>Address</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label>Line1</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="employeeObj.address.line1">
+                    </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Line2</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line2" #line2="ngModel"
+                      [(ngModel)]="employeeObj.address.line2">
+                    </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Type</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listAddressTypeItems" [valuePrimitive]="true" name="addressType"
+                      #addressType="ngModel" [(ngModel)]="employeeObj.address.type">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Country</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true"
+                      [(ngModel)]="employeeObj.address.country">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>State</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="employeeObj.address.state">
+                    </kendo-dropdownlist>
+
+                  </div>
+                  <div class="form-data">
+                    <label>City</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="employeeObj.address.city">
+                    </kendo-dropdownlist>
+
+                  </div>
+                  <div class="form-data">
+                    <label>ZipCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="zipcode" #zipcode="ngModel"
+                      [(ngModel)]="employeeObj.address.zipCode">
+                  </div>
+                </div>
+              </div>
+              <div class="i-form ot-grid">
+                <h6 class="title"><i class="k-icon k-i-menu"></i>Others</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label>Native Address</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="nAddress" #nAddress="ngModel"
+                      [(ngModel)]="employeeObj.nativeAddress">
+                  </div>
+                  <div class="form-data">
+                    <label>Joining Date<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-datepicker calendarType="classic" name="jDate" #jDate="ngModel" format="dd/MM/yyyy"
+                      [(ngModel)]="employeeObj.joiningDate" required></kendo-datepicker>
+                  </div>
+                  <div class="form-data">
+                    <label>Enroll Number</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="eNumber" #eNumber="ngModel"
+                      [(ngModel)]="employeeObj.enrollmentNumber">
+                  </div>
+                  <div class="">
+                    <kendo-switch class="k-widget k-switch-off mr-1" #isManager="ngModel" name="isManager" id="m-chk"
+                      [(ngModel)]="employeeObj.isManager"></kendo-switch>
+                    <label class="k-checkbox-label" for="m-chk">Manager</label>
+                  </div>
+                  <div class="k-text-right"></div>
+                  <div class="">
+                    <kendo-switch class="k-widget k-switch-off mr-1" #isActive="ngModel" name="isActive" id="a-chk"
+                      [(ngModel)]="employeeObj.isActive"></kendo-switch>
+                    <label class="k-checkbox-label" for="a-chk">Active</label>
+                  </div>
+                  <div class="k-text-right"></div>
+                  <div class="">
+                    <kendo-switch class="k-widget k-switch-off mr-1" #isAvailable="ngModel" name="isAvailable"
+                      id="av-chk" [(ngModel)]="employeeObj.isAvailable"></kendo-switch>
+                    <label class="k-checkbox-label" for="av-chk">Available</label>
+                  </div>
+                </div>
+              </div>
+              <div class="i-form ro-grid">
+                <h6 class="title"><i class="icon-share"></i>Social Media</h6>
+                <div class="row no-gutters">
+                  <div class="col-md-5 form-data p-1">
+                    <label>Social Media</label>
+                    <kendo-dropdownlist [data]="listSocialMediaProviderItems" [valuePrimitive]="true"
+                      name="SocialMediaProvider" [(ngModel)]="selectedSocialMediaProviderItem"
+                      (valueChange)="onSocialMediaProviderChange($event)" #SocialMediaProvider="ngModel">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="col-md-5 form-data p-1" [hidden]="isMessagingFlag">
+                    <label>Profile Name</label>
+                    <input type="text" id="" name="smpName" #smpName="ngModel" [(ngModel)]="socialMediaObj.profileName">
+                  </div>
+                  <div class="col-md-5 form-data p-1" [hidden]="!isMessagingFlag">
+                    <label>Mobile Number</label>
+                    <kendo-maskedtextbox name="smpMobile" [(ngModel)]="socialMediaObj.mobileNumber" #smpMobile="ngModel"
+                      id="" [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="col-md-2 form-data p-1" style="align-self: end;" [hidden]="isSocialMediaUpdateFlag">
+                    <button (click)="onSocialMediaSubmit()" [disabled]="((isMessagingFlag == true ? (socialMediaObj.mobileNumber == undefined || socialMediaObj.mobileNumber == '' || smpMobile.invalid) : false) 
+                        || (isMessagingFlag == false ? (socialMediaObj.profileName == undefined || socialMediaObj.profileName == '') : false) 
+                        || (selectedSocialMediaProviderItem == undefined || selectedSocialMediaProviderItem == ''))"
+                      class="btn btn-primary">
+                      <i class="icon-add"></i>Add</button>
+                  </div>
+                  <div class="col-md-2 form-data p-1" style="align-self: end;" [hidden]="!isSocialMediaUpdateFlag">
+                    <button (click)="onSocialMediaUpdate()" [disabled]="((isMessagingFlag == true ? (socialMediaObj.mobileNumber == undefined || socialMediaObj.mobileNumber == '' || smpMobile.invalid) : false) 
+                      || (isMessagingFlag == false ? (socialMediaObj.profileName == undefined || socialMediaObj.profileName == '') : false) 
+                      || (selectedSocialMediaProviderItem == undefined || selectedSocialMediaProviderItem == ''))"
+                      class="btn btn-primary">
+                      <i class="icon-edit"></i>Update</button>
+                  </div>
+
+                </div>
+                <div class="o-border mt-3">
+                  <div class="ml-3 mr-3 s-media" *ngIf="employeeObj.socialMedias.length > 0">
+                    <div class="row o-scroll">
+                      <div class="col-md-3 p-1" *ngFor="let field of employeeObj.socialMedias">
+                        <kendo-card class="w-100 bg-light">
+                          <kendo-card-body>
+                            <div kendoCardSubtitle>
+                              <span class="k-icon k-i-star"></span>
+                              <span><b>{{field.provider.providerName}}</b></span>
+                              <kendo-buttongroup class="float-right">
+                                <button kendoButton (click)="onSocialMediaEdit(field)"><i
+                                    class="icon-edit"></i></button>
+                                <button kendoButton (click)="onSocialMediaDelete(field)"><i
+                                    class="icon-trash"></i></button>
+                              </kendo-buttongroup>
+                            </div>
+                            <div kendoCardSubtitle>
+                              <span class="k-icon k-i-user"></span>
+                              <span class="s-title">{{(field.provider.mediaType == '3' || field.provider.mediaType ==
+                              'Messaging') ? (field.mobileNumber ) : field.profileName}}</span>
+                            </div>
+                          </kendo-card-body>
+                        </kendo-card>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onEmpSubmit(employeeForm,true)" [disabled]="!employeeForm.valid" class="btn btn-primary"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeRegEmpDialog(employeeForm)"></div>
+  </form>
+</div>
+<!-- Register Employee Modal End -->
+
+<div kendoDialogContainer></div>

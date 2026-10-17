@@ -1,0 +1,58 @@
+.dialog-xl .modal-dialog {
+    max-width: 1350px;
+}
+
+.dialog-xl-l .modal-dialog {
+    max-width: 1110px;
+}
+
+.dialog-lg .modal-dialog {
+    max-width: 1050px;
+}
+
+.dialog-sm .modal-dialog {
+    max-width: 650px;
+}
+
+.dialog-xs .modal-dialog {
+    max-width: 450px;
+}
+
+.modal-header {
+    border: 0;
+}
+
+.k-window .k-window-content {
+    padding: 0 !important;
+}
+
+/** Dialog Css Start**/
+.modal .modal-header {
+    background-color: #4d4d4d;
+    padding         : 8px 12px;
+    border-radius   : 0;
+}
+
+.modal .modal-header h5 {
+    font-family: "Poppins-Medium";
+    font-size  : 16px;
+    display    : flex;
+    align-items: center;
+    color      : #fff;
+}
+
+.modal .modal-header h5 i,
+.modal-footer button i {
+    padding-right : 5px;
+    vertical-align: middle;
+}
+
+.modal .modal-header .close {
+    color      : #fff;
+    opacity    : 1 !important;
+    text-shadow: initial;
+    padding    : initial;
+    margin     : initial;
+}
+
+/** Dialog Css End**/

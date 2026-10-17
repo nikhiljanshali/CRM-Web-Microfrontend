@@ -1,0 +1,39 @@
+.memo-info .grid {
+    grid-template-columns: 82px 1fr 112px 1fr;
+}
+
+.memo-details h6 {
+    font-family  : "Poppins-Regular";
+    color        : #000;
+    font-size    : 14px;
+    padding-right: 3px;
+    margin       : 0;
+    white-space  : nowrap;
+    text-overflow: ellipsis;
+    overflow     : hidden;
+    width        : 204px;
+}
+
+.memo-details {
+    display              : grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.memo-details label {
+    font-size   : 14px !important;
+    margin-right: 5px;
+}
+
+.memo-otherdetails .grid {
+    grid-template-columns: 105px 1fr 118px 1fr 135px 1fr;
+}
+
+.memo-currency .grid {
+    grid-template-columns: 65px 1fr 98px 1fr 77px 1fr 108px 1fr;
+}
+
+.mod-wrap .grid-wrap .k-grid {
+    height    : 230px;
+    overflow  : hidden;
+    overflow-y: scroll;
+}

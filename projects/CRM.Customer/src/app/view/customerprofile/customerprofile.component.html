@@ -1,0 +1,714 @@
+<title>Customer Profile</title>
+<div class="col-12 mt-4 cprofile-wrap">
+    <div class="c-profile">
+        <div class="cp-left">
+            <div class="left-info">
+                <div class="profile-block">
+                    <div class="i-box">
+                        <img [src]="profileFileStore.fileThumbnail" alt="profile-photo">
+                        <!-- <span class="c-badge"><img src="../commonAssets/images/badge.png" alt="profile-badge"></span> -->
+                    </div>
+                    <div class="info-box">
+                        <h6 class="c-name"><span>Name :</span> {{customerObj.name.firstName}}</h6>
+                        <div class="c-origin">
+                            <h6 class="c-name"><span>Full Name :</span> {{customerObj.fullName}}</h6>
+                            <h6 class="c-name"><span>Origin :</span> {{customerObj.origin}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <ul>
+                        <li><span><i class="icon-icon_email"></i></span>{{customerObj.email}}</li>
+                        <li><span><i class="icon-phone"></i></span>{{customerObj.mobile1}}</li>
+                        <li><span><i class="icon-phone"></i></span>{{customerObj.mobile2 ? customerObj.mobile2 : '-'}}
+                        </li>
+                        <li><span><i class="icon-tel-phone"></i></span>{{customerObj.phoneNo ? customerObj.phoneNo :
+                            '-'}}</li>
+                        <li><span><i class="icon-print"></i></span>{{customerObj.faxNo ? customerObj.faxNo : '-'}}</li>
+                        <li><span><i class="icon-graph"></i></span>{{customerObj.isActive ? 'Active' : 'Not Active'}}
+                        </li>
+                        <li class="i-address"><i class="icon-mapmarker"></i>{{customerObj.address.line1 ?
+                            customerObj.address.line1 : '-'}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-box i-detail">
+                    <h6 class="i-name"><i class="icon-admin_main"></i>Seller Detail</h6>
+                    <div class="info-block">
+                        <li>
+                            <h6 class="c-name"><span>Name :</span>{{customerObj.seller.name}}</h6>
+                        </li>
+                        <li>
+                            <h6 class="c-name"><span>Email :</span>{{customerObj.seller.email}}</h6>
+                        </li>
+                        <li>
+                            <h6 class="c-name"><span>Contact No :</span>{{customerObj.seller.mobile}}</h6>
+                        </li>
+                    </div>
+                </div>
+                <!-- <div class="info-box i-detail">
+                    <h6 class="i-name"><i class="icon-candidates"></i>Organization Details</h6>
+                    <div class="info-block">
+                        <li>
+                            <h6 class="c-name"><span>Name :</span>{{customerObj.seller.name}}</h6>
+                        </li>
+                        <li>
+                            <h6 class="c-name"><span>Email :</span>{{customerObj.seller.email}}</h6>
+                        </li>
+                        <li>
+                            <h6 class="c-name"><span>Contact No :</span>{{customerObj.seller.mobile}}</h6>
+                        </li>
+                    </div>
+                </div> -->
+                <div class="info-box i-detail">
+                    <h6 class="i-name"><i class="icon-attachament"></i>Social Media</h6>
+                    <div class="info-block social" *ngIf="customerObj.socialMedias.length > 0">
+                        <li *ngFor="let z of customerObj.socialMedias">
+                            <a href="{{z.profileName}}" target="_blank"
+                                *ngIf="z.provider.providerName.toLowerCase() != 'whatsapp' && z.provider.providerName.toLowerCase() != 'snapchat'">
+                                <i class="icon-f-{{z.provider.providerName.toLowerCase()}}"></i>
+                            </a>
+                            <a href="tel:+{{z.mobileNumber}}" target="_blank"
+                                *ngIf="z.provider.providerName.toLowerCase() == 'whatsapp'">
+                                <i class="icon-{{z.provider.providerName.toLowerCase()}}"></i>
+                            </a>
+                            <a href="{{z.profileName}}" target="_blank"
+                                *ngIf="z.provider.providerName.toLowerCase() == 'snapchat'">
+                                <i class="icon-{{z.provider.providerName.toLowerCase()}}"></i>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="pl-2 info-block" *ngIf="customerObj.socialMedias.length == 0">
+                        <h6 class="c-name">No Data Found!</h6>
+                    </div>
+                </div>
+                <div class="info-box i-detail">
+                    <h6 class="i-name"><i class="icon-fileupload"></i>Uploaded Proof</h6>
+                    <div class="info-block uplded-doc row">
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                            <div class="doc-box">
+                                <a href="javascript:void(0);"
+                                    (click)="openDocumentDialog(FileStoreTypes.CustomerPhotoIdent)">
+                                    <img class="img-thumbnail" *ngIf="photoIdentityFileStore.fileThumbnail"
+                                        alt="Photo Identity" src="{{photoIdentityFileStore.fileThumbnail}}"
+                                        [width]="100">
+                                    <img class="img-thumbnail" *ngIf="!photoIdentityFileStore.fileThumbnail"
+                                        alt="Photo Identity" src="commonAssets/images/pdf_doc.png" [width]="100">
+                                </a>
+                                <!-- <img src="../commonAssets/images/pdf_doc.png" alt="uploded document"> -->
+                            </div>
+                            <span>Photo Identity</span>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                            <div class="doc-box">
+                                <a href="javascript:void(0);"
+                                    (click)="openDocumentDialog(FileStoreTypes.CustomerBussinessIdent)">
+                                    <img *ngIf="businessIndentityFileStore.fileThumbnail" class="img-thumbnail"
+                                        alt="Business Identity" src="{{businessIndentityFileStore.fileThumbnail}}"
+                                        [width]="100">
+                                    <img class="img-thumbnail" *ngIf="!businessIndentityFileStore.fileThumbnail"
+                                        alt="Business Identity" src="commonAssets/images/pdf_doc.png" [width]="100">
+                                </a>
+                                <!-- <img src="../commonAssets/images/img_doc.png" alt="uploded document"> -->
+                            </div>
+                            <span>Bussiness Identity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cp-right">
+            <div class="tab-wrap">
+                <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+                    <kendo-tabstrip-tab title="Watchlist" [selected]="true">
+                        <ng-template kendoTabContent>
+                            <div class="tab-data wa-list">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-12 form-data"
+                                        *ngFor="let item of listWatchListInventory">
+                                        <div class="wibox-wrap">
+                                            <div class="wi-box">
+                                                <img [src]="getShapeImagePath(item.shape)" alt="wishlist_product">
+                                                <div class="del-product" (click)="removeWishlist(item.stoneId)">
+                                                    <span class="trash">
+                                                        <span></span>
+                                                        <i></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="wi-info">
+                                                <h6 class="wi-title">{{item.stoneId}}</h6>
+                                                <ul>
+                                                    <li>{{item.shape}}</li>
+                                                    <li>{{item.weight}}</li>
+                                                    <li>{{item.color}}</li>
+                                                    <li>{{item.clarity}}</li>
+                                                </ul>
+                                                <ul>
+                                                    <li>{{item.cut}}</li>
+                                                    <li>{{item.polish}}</li>
+                                                    <li>{{item.symmetry}}</li>
+                                                    <li>{{item.fluorescence}}</li>
+                                                    <li>{{item.lab}}</li>
+                                                </ul>
+                                                <!-- <h6 class="discount"><span>$9702</span>(-50%)</h6> -->
+                                                <h6 class="wi-price">${{item.price.rap}} ({{item.price.discount}})</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab title="Preferred Stone">
+                        <ng-template kendoTabContent>
+                            <h6 class="pre-title">{{preferredStoneData.length}} Requests</h6>
+                            <div class="pre-stone">
+                                <kendo-grid [data]="preferredStoneData">
+                                    <kendo-grid-checkbox-column [width]="150" field="name" title="Basic Info">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="g-data">
+                                                <div class="g-right">
+                                                    <h6>{{dataItem.query.shape.join(',')}} {{dataItem.query.carat}} ct
+                                                    </h6>
+                                                    <span>Location at {{dataItem.query.location.join(',')}}</span>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-checkbox-column>
+                                    <kendo-grid-column [width]="180" field="name" title="Extra Info" class="extra-info">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="g-data">
+                                                <div class="g-right">
+                                                    <h6>{{dataItem.query.color.join('-')}},
+                                                        {{dataItem.query.clarity.join('-')}},
+                                                        {{dataItem.query.cut.join('-')}},
+                                                        {{dataItem.query.polish.join('-')}},
+                                                        {{dataItem.query.symm.join('-')}}</h6>
+                                                    <span>Amount : ${{dataItem.query.amount}}</span>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column [width]="100" field="expiryDate" title="Expires Date">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            {{dataItem.expiryDate | date: 'dd/MMM/yyyy'}}
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <!-- <kendo-grid-column [width]="100" field="Approved Date" title="Approved Date">
+                              </kendo-grid-column>
+                              <kendo-grid-column [width]="150" field="Status" title="Status" class="pre-status">
+                              </kendo-grid-column> -->
+                                    <kendo-grid-column [width]="50" field="Search" title="" class="pre-status">
+                                        <ng-template kendoGridCellTemplate>
+                                            <div class="g-data justify-content-end">
+                                                <div class="g-right">
+                                                    <div class="b-right">
+                                                        <ul>
+                                                            <li><a href="javascript:void(0)"><i
+                                                                        class="icon-search"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab title="Save Search">
+                        <ng-template kendoTabContent>
+                            <div class="s-search">
+                                <div class="ss-top">
+                                    <div class="s-left">
+                                        <span>{{saveSearchData.length}} Saved search</span>
+                                    </div>
+                                </div>
+                                <div class="ss-body-wrap" *ngFor="let item of saveSearchData;let i = index;">
+                                    <div class="row">
+                                        <div class="ss-body">
+                                            <div class="b-left check-box">
+                                                <label for="ss-check"><span>{{item.name}}</span>{{item.createdAt | date:
+                                                    'dd/MMM/yyyy'}}
+                                                    | {{item.createdAt | date: 'hh:mm a'}}</label>
+                                            </div>
+                                            <div class="b-right">
+                                                <ul>
+                                                    <li><a href="javascript:void(0)" (click)="removeSaveSearch(i)"><i
+                                                                class="icon-delete"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 ss-tag">
+                                            <ul>
+                                                <li
+                                                    *ngIf="item.query.shape !== undefined && item.query.shape.length > 0">
+                                                    <span>Shape</span>-
+                                                    {{item.query.shape?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.carat !== undefined && item.query.carat.length > 0">
+                                                    <span>Size</span>-
+                                                    {{item.query.carat}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.clarity !== undefined && item.query.clarity.length > 0">
+                                                    <span>Clarity </span>-
+                                                    {{item.query.clarity?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.color !== undefined && item.query.color.length > 0">
+                                                    <span>Color</span>-
+                                                    {{item.query.color?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.flour !== undefined && item.query.flour.length > 0">
+                                                    <span>Fluorescence</span>-
+                                                    {{item.query.flour?.join(' | ')}}
+                                                </li>
+                                                <li *ngIf="item.query.cut !== undefined && item.query.cut.length > 0">
+                                                    <span>Cut</span>-
+                                                    {{item.query.cut?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.polish !== undefined && item.query.polish.length > 0">
+                                                    <span>Polish</span>-
+                                                    {{item.query.polish?.join(' | ')}}
+                                                </li>
+                                                <li *ngIf="item.query.symm !== undefined && item.query.symm.length > 0">
+                                                    <span>Symm </span>-
+                                                    {{item.query.symm?.join(' | ')}}
+                                                </li>
+                                                <li *ngIf="item.query.amount !== undefined && item.query.amount != 0">
+                                                    <span>Price</span>-
+                                                    {{item.query.amount}}
+                                                </li>
+                                                <li *ngIf="item.query.lab !== undefined && item.query.lab.length > 0">
+                                                    <span>Lab</span>-
+                                                    {{item.query.lab?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.brown !== undefined && item.query.brown.length > 0">
+                                                    <span>Brown</span>-
+                                                    {{item.query.brown?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.milky !== undefined && item.query.milky.length > 0">
+                                                    <span>Milky</span>-
+                                                    {{item.query.milky?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.green !== undefined && item.query.green.length > 0">
+                                                    <span>Green</span>-
+                                                    {{item.query.green?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.location !== undefined && item.query.location.length > 0">
+                                                    <span>Location</span>-
+                                                    {{item.query.location?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.sideBlack !== undefined && item.query.sideBlack.length > 0">
+                                                    <span>Side Black</span>-
+                                                    {{item.query.sideBlack?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.centerBlack !== undefined && item.query.centerBlack.length > 0">
+                                                    <span>Center
+                                                        Black</span>-
+                                                    {{item.query.centerBlack?.join(' | ')}}
+                                                </li>
+                                                <li *ngIf="item.query.hNA !== undefined && item.query.hNA.length > 0">
+                                                    <span>HNA</span>-
+                                                    {{item.query.hNA?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.eyeClean !== undefined && item.query.eyeClean.length > 0">
+                                                    <span>Eye Clean</span>-
+                                                    {{item.query.eyeClean?.join(' | ')}}
+                                                </li>
+                                                <li *ngIf="item.query.kToS !== undefined && item.query.kToS.length > 0">
+                                                    <span>Key To Symbol</span>-
+                                                    {{item.query.kToS?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.bowtie !== undefined && item.query.bowtie.length > 0">
+                                                    <span>Bowtie</span>-
+                                                    {{item.query.bowtie?.join(' | ')}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromRatio !== undefined || item.query.toRatio !== undefined">
+                                                    <span>Ratio</span>-
+                                                    {{item.query.fromRatio}} - {{item.query.toRatio}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromDepth !== undefined || item.query.toDepth !== undefined">
+                                                    <span>Depth</span>-
+                                                    {{item.query.fromDepth}} - {{item.query.toDepth}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromTable !== undefined || item.query.toTable !== undefined">
+                                                    <span>Table</span>-
+                                                    {{item.query.fromTable}} - {{item.query.toTable}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromLength !== undefined || item.query.toLength !== undefined">
+                                                    <span>Length</span>-
+                                                    {{item.query.fromLength}} - {{item.query.toLength}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromWidth !== undefined || item.query.toWidth !== undefined">
+                                                    <span>Width</span>-
+                                                    {{item.query.fromWidth}} - {{item.query.toWidth}}
+                                                </li>
+                                                <li
+                                                    *ngIf="item.query.fromHeight !== undefined || item.query.toHeight !== undefined">
+                                                    <span>Height</span>-
+                                                    {{item.query.fromHeight}} - {{item.query.toHeight}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab title="Export Setting">
+                        <ng-template kendoTabContent>
+                            <div class="ex-setting o-details e-details">
+                                <div class="flex">
+                                    <div class="o-title">
+                                        <h6 class="title border-0 mb-0">
+                                            FTP Setting
+                                        </h6>
+                                    </div>
+                                    <div class="o-edit">
+                                        <kendo-buttongroup kendoTooltip position="bottom">
+                                            <button kendoButton title="Update Setting"
+                                                (click)="updateExportSettings()"><i class="icon-save"></i></button>
+                                        </kendo-buttongroup>
+                                    </div>
+                                </div>
+                                <div class="m-min">
+                                    <div class="i-form">
+                                        <div class="grid">
+                                            <div class="form-data">
+                                                <label for="">API</label>
+                                            </div>
+                                            <div class="form-data">
+                                                <input type="text" name="api" #api="ngModel"
+                                                    [(ngModel)]="exportInfoObj.api">
+                                                <span class="s-error">API required</span>
+                                            </div>
+                                            <div class="form-data">
+                                                <label for="">URL</label>
+                                            </div>
+                                            <div class="form-data">
+                                                <input type="text" name="url" #url="ngModel"
+                                                    [(ngModel)]="exportInfoObj.url">
+                                                <span class="s-error">URL required</span>
+                                            </div>
+                                            <div class="form-data">
+                                                <label for="">FTP</label>
+                                            </div>
+                                            <div class="form-data">
+                                                <input type="text" name="ftp" #ftp="ngModel"
+                                                    [(ngModel)]="exportInfoObj.ftp" class="w-50">
+                                                <span class="s-error">FTP required</span>
+                                                <label class="cu-mar" for="">FTP Time</label>
+                                                <kendo-timepicker name="ftpTime" [(value)]="exportInfoObj.ftpTime!">
+                                                </kendo-timepicker>
+                                                <span class="s-error">FTP time required</span>
+                                            </div>
+                                            <div class="form-data">
+                                                <label for="">Email</label>
+                                            </div>
+                                            <div class="form-data">
+                                                <input type="mail" name="ftp" #ftp="ngModel"
+                                                    [(ngModel)]="exportInfoObj.email" class="w-50">
+                                                <span class="s-error">Email required</span>
+                                                <label class="cu-mar" for="">Email Time</label>
+                                                <kendo-timepicker name="emailTime" [(value)]="exportInfoObj.emailTime!">
+                                                </kendo-timepicker>
+                                                <span class="s-error">Email Time required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="flex">
+                                            <div class="o-title">
+                                                <h6 class="title border-0 mb-0">
+                                                    Column Template
+                                                </h6>
+                                            </div>
+                                            <div class="o-edit">
+                                                <kendo-buttongroup kendoTooltip position="bottom">
+                                                    <button kendoButton title="Add Column Template"
+                                                        (click)="openAddColumnDialog()"><i
+                                                            class="icon-add"></i></button>
+                                                </kendo-buttongroup>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ex-se-data">
+                                        <div class="ss-body-wrap"
+                                            *ngFor="let item of customerPreference.exportInfo.configs;let i = index">
+                                            <div class="row">
+                                                <div class="ss-body">
+                                                    <div class="b-left check-box">
+                                                        <label for=""><span>{{item.name}}</span></label>
+                                                    </div>
+                                                    <div class="b-right">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0)"
+                                                                    (click)="openEditColumnDialog(i, item)"><i
+                                                                        class="icon-edit"></i></a>
+                                                            </li>
+                                                            <li class="pl-1">
+                                                                <a href="javascript:void(0)"
+                                                                    (click)="removeExportConfig(i)"><i
+                                                                        class="icon-delete"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 ss-tag">
+                                                    <ul>
+                                                        <li *ngFor="let field of item.fields">
+                                                            <span>{{field.title}}</span>- {{field.custTitle}}
+                                                            ({{field.index}})
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-tabstrip-tab>
+                </kendo-tabstrip>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Edit Column Modal Start -->
+<div class="modal c-modal editcell" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isEditColumn">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-editcell"></i>{{columnModalTitle}}
+                    Column
+                </h5>
+                <button type="button" class="close" (click)="closeEditColumnDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 nfc-grid">
+                        <div class="form-data">
+                            <label>Name<span class="require">*</span></label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text" name="exportName" #exportName="ngModel"
+                                [(ngModel)]="exportConfigObj.name">
+                        </div>
+                        <div class="form-data">
+                            <label>Format<span class="require">*</span></label>
+                        </div>
+                        <div class="form-data">
+                            <kendo-dropdownlist [data]="listExportFormat" [valuePrimitive]="true" name="format"
+                                [(ngModel)]="exportConfigObj.format" #format="ngModel">
+                            </kendo-dropdownlist>
+                        </div>
+                        <div class="form-data">
+                            <label>Conditions</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text" name="conditions" #conditions="ngModel"
+                                [(ngModel)]="exportConfigObj.conditions">
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 p-r-7">
+                        <div class="i-form">
+                            <h6 class="title b-fill">All Columns</h6>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 ex-search">
+                                <input type="text" placeholder="Search field name" #searchData="ngModel"
+                                    name="searchData" [(ngModel)]="searchColumn" (keyup)="searchColumns()">
+                                <span class="i-search"><i class="icon-search"></i></span>
+                                <button type="button" class="btn btn-primary"
+                                    (click)="searchColumn='';searchColumns()"><i class="icon-clear"></i>Clear
+                                    All</button>
+                            </div>
+                            <div class="ex-wrap ex-left-data">
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <h6 class="title">BASIC</h6>
+                                    <ul>
+                                        <li *ngFor="let item of listBasicExportColumns">
+                                            <button type="button" class="btn btn-primary ex-btn"
+                                                (click)="addExportColumn(item)">{{item.title}}</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <h6 class="title">MEASUREMENT</h6>
+                                    <ul>
+                                        <li *ngFor="let item of listMeasurementExportColumns">
+                                            <button type="button" class="btn btn-primary ex-btn"
+                                                (click)="addExportColumn(item)">{{item.title}}</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <h6 class="title">INCLUSION</h6>
+                                    <ul>
+                                        <li *ngFor="let item of listIncusionExportColumns">
+                                            <button type="button" class="btn btn-primary ex-btn"
+                                                (click)="addExportColumn(item)">{{item.title}}</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <h6 class="title">LOCATION & AVAIABILITY</h6>
+                                    <ul>
+                                        <li *ngFor="let item of listOthersExportColumns">
+                                            <button type="button" class="btn btn-primary ex-btn"
+                                                (click)="addExportColumn(item)">{{item.title}}</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <h6 class="title">CUSTOMIZE TITLE</h6>
+                                    <ul>
+                                        <li>
+                                            <button type="button" class="btn btn-primary ex-btn"
+                                                (click)="openEditExportColumnDialog()">
+                                                <i class="icon-add"></i> Add Customize Title
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 p-l-7">
+                        <div class="i-form">
+                            <h6 class="title b-fill">Selected Columns</h6>
+                            <div class="ex-wrap ex-right-data">
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                    <div class="table-data">
+                                        <div>
+                                            <div class="th-header">
+                                                <div>Title</div>
+                                                <div class="t-title">Customize Title</div>
+                                                <div>Value</div>
+                                                <div></div>
+                                            </div>
+                                            <div dragula="GridMasterConfiguration"
+                                                [(dragulaModel)]="exportConfigObj.fields" class="export-column-table">
+                                                <div class="tr-data"
+                                                    *ngFor="let item of exportConfigObj.fields;let i = index">
+                                                    <div>{{item.title}}</div>
+                                                    <div class="text-right">
+                                                        <input type="text" name="custName" [(ngModel)]="item.custTitle">
+                                                    </div>
+                                                    <div *ngIf="item.title == 'Custom'">
+                                                        <input type="text" name="value" [(ngModel)]="item.value">
+                                                    </div>
+                                                    <div *ngIf="item.title != 'Custom'"></div>
+                                                    <div><i class="icon-delete" (click)="removeExportField(i)"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="addUpdateExportConfig()"><i
+                        class="icon-save"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Column Modal End -->
+
+<!-- Edit Column Modal Start -->
+<div class="modal c-modal edittable" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isEditExportColumn">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-editcell"></i>Add Customize Title
+                </h5>
+                <button type="button" class="close" (click)="closeEditExportColumnDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="i-form">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                            <label for="">Customize Title</label>
+                            <input type="text" name="custTtitle" #custTtitle="ngModel"
+                                [(ngModel)]="exportColumnObj.custTitle">
+                            <span class="s-error">customize title required</span>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                            <label for="">Value</label>
+                            <input type="text" name="custValue" #custValue="ngModel"
+                                [(ngModel)]="exportColumnObj.value">
+                            <span class="s-error">value required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="addExportColumn(exportColumnObj)"><i
+                        class="icon-add"></i>Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Column Modal End -->
+
+<ng-container *ngIf="isDiamondDetails">
+    <!-- <app-diamonddetails (toggle)="isDiamondDetails=$event"></app-diamonddetails> -->
+</ng-container>
+
+<!-- #region Document Modal Start-->
+<div class="modal c-modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isShowDocument">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="main-title">
+                <h5>Document</h5>
+                <button type="button" class="close" (click)="closeDocumentDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="attach-img">
+                        <img [src]="sanitizeURL(imgSrcDisplay)" alt="document image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div (document:keydown.esc)="closeDocumentDialog()"></div>
+</div>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

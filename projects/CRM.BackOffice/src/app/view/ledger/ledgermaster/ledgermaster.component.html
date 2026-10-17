@@ -1,0 +1,530 @@
+<title>Ledger</title>
+<div class="party-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Ledger</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openAddLedgerDialog()" title="Add Ledger"><i
+                        class="icon-add"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openUpdateLedgerDialog()" title="Edit Ledger">
+                      <i class="icon-edit"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openLedgerRedirect('details')"
+                      title="View Details"> <i class="icon-viewdetilas"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openDeleteDialog()" title="Delete Ledger"><i
+                        class="icon-trash"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap">
+              <!-- Skeleton start -->
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100">
+                  <th *ngFor="let field of fields">{{field.propertyName}}</th>
+                  <tr *ngFor="let field of skeletonArray">
+                    <td *ngFor="let field of fields">
+                      <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                      </kendo-skeleton>
+                    </td>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- Skeleton end -->
+
+              <kendo-grid #orgGrid *ngIf="gridView" [data]="gridView" [reorderable]="true" [resizable]="true"
+                [groupable]="true" [sortable]="true" [selectable]="selectableSettings"
+                (selectionChange)="selectedRowChange($event)" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='broker.brokrage'">
+                          {{(dataItem.broker.brokrage)?dataItem.broker.brokrage:"NA"}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='broker.through'">
+                          {{(dataItem.broker.through)?dataItem.broker.through:"NA"}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='mobileNo'">
+                          <span>{{dataItem.mobileNo | numberfilter:'mobile'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='phoneNo'">
+                          <span>{{dataItem.phoneNo | numberfilter:'phone'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='faxNo'">
+                          <span>{{dataItem.faxNo | numberfilter:'fax'}}</span>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+          </div>
+
+          <!-- Search start -->
+          <div class="e-right">
+            <div class="sr-wrap" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form" #ledgerSearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Name</label>
+                        <input type="text" id="" name="filtername" [(ngModel)]="ledgerCriteria.name"
+                          #filtername="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Code</label>
+                        <input type="text" id="" name="filtercode" [(ngModel)]="ledgerCriteria.code"
+                          #filtercode="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Ledger Group</label>
+                        <kendo-dropdownlist [data]="listLedgerGroupItems" name="ledgerGroup" textField="name"
+                          valueField="id" [valuePrimitive]="true" [(ngModel)]="ledgerGroupIdForSearch"
+                          #ledgerGroup="ngModel">
+                        </kendo-dropdownlist>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Contact Person</label>
+                        <input type="text" id="l-name" name="filterContactPerson"
+                          [(ngModel)]="ledgerCriteria.contactPerson" #filtercontactperson="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Email</label>
+                        <input type="mail" id="" name="filterEmail" [(ngModel)]="ledgerCriteria.email"
+                          #filterEmail="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Mobile No</label>
+                        <input type="text" id="l-name" name="filtermobileno" [(ngModel)]="ledgerCriteria.mobileNo"
+                          #filtermobileno="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Phone No</label>
+                        <input type="text" id="l-name" name="filterphoneno" [(ngModel)]="ledgerCriteria.phoneNo"
+                          #filterphoneno="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action"
+                          (click)="ledgerSearchForm.form.valid && onFilterSubmit(ledgerSearchForm)">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button (click)="clearFilter(ledgerSearchForm)" class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Search End -->
+        </div>
+        <div class="f-btn" [ngClass]="{'active': filterFlag}">
+          <ul>
+            <li><button class="open-filter" (click)="filterPartToggle()"><i class="icon-filter"></i></button></li>
+            <li><button (click)="ledgerSearchForm.form.valid && onFilterSubmit(ledgerSearchForm)"><i
+                  class="icon-search"></i></button></li>
+            <li><button (click)="clearFilter(ledgerSearchForm)"><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Ledger Modal Start -->
+<div class="modal c-modal addemp rorgan dialog-sm" tabindex="-1" role="dialog" data-keyboard="false"
+  data-backdrop="static" *ngIf="isRegLedger">
+  <form name="form" #ledgerForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-party"></i>Add Ledger</h5>
+          <button type="button" class="close" (click)="closeRegLedgerDialog(ledgerForm)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ad-party">
+                <h6 class="title"><i class="icon-party"></i>Ledger Information</h6>
+                <div class="grid">
+
+                  <div class="form-data">
+                    <label for="">Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                    <input type="text" name="name" [(ngModel)]="ledgerObj.name" #name="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Ledger Group <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': ledgerGroup.invalid && (ledgerGroup.dirty || ledgerGroup.touched)}">
+                    <kendo-dropdownlist [data]="listLedgerGroupItems" name="ledgerGroup" textField="name"
+                      valueField="id" [valuePrimitive]="true" [(ngModel)]="ledgerGroupId" #ledgerGroup="ngModel"
+                      required (selectionChange)="openSection($event)">
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Code</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="code" [(ngModel)]="ledgerObj.code" #code="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Contact Person<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': contactPerson.invalid && (contactPerson.dirty || contactPerson.touched)}">
+                    <input type="text" name="contactPerson" [(ngModel)]="ledgerObj.contactPerson"
+                      #contactPerson="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Email<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="email" name="email" [(ngModel)]="ledgerObj.email" #email="ngModel" id="" required
+                      email>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Mobile No<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': mobileNo.invalid && ((mobileNo.touched && mobileNo.hasError('pattern')) || (mobileNo.errors?.required && mobileNo.touched)) }">
+                    <kendo-maskedtextbox name="mobileNo" [(ngModel)]="ledgerObj.mobileNo" #mobileNo="ngModel" id=""
+                      [mask]="mobileMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Phone No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="phoneNo" #phoneNo="ngModel" [(ngModel)]="ledgerObj.phoneNo" id=""
+                      [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Fax No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="faxNo" #faxNo="ngModel" [(ngModel)]="ledgerObj.faxNo" id=""
+                      [mask]="faxMask">
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Income Tax No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="incometaxno" #incometaxno="ngModel"
+                      [(ngModel)]="ledgerObj.incomeTaxNo">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Tax No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="taxno" #taxno="ngModel" [(ngModel)]="ledgerObj.taxNo">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Line Of Business<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': lineOfBusiness.invalid && (lineOfBusiness.dirty || lineOfBusiness.touched)}">
+                    <kendo-dropdownlist [data]="listBusinessTypeItems" name="lineOfBusiness" [valuePrimitive]="true"
+                      [(ngModel)]="ledgerObj.lineOfBusiness" #lineOfBusiness="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Limit (Days)</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="cdays" #cdays="ngModel" [(ngModel)]="ledgerObj.limit.days"
+                      (keypress)="utilityService.numberOnly($event)">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Limit (Amt.)</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="camt" #camt="ngModel" [(ngModel)]="ledgerObj.limit.amount"
+                      (keypress)="utilityService.floatOnly($event)">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Credit </label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="lcredit" #lcredit="ngModel" [(ngModel)]="ledgerObj.credit"
+                      (keypress)="utilityService.floatOnly($event)">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Debit </label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="ldebit" #ldebit="ngModel" [(ngModel)]="ledgerObj.debit"
+                      (keypress)="utilityService.floatOnly($event)">
+                  </div>
+
+                  <div class="k-text-right"></div>
+                  <div class="c-l-fs">
+                    <input type="checkbox" class="k-checkbox" name="isActive" [(ngModel)]="ledgerObj.isActive">
+                    <label class="k-checkbox-label" for="">Active</label>
+                  </div>
+
+                </div>
+              </div>
+              <!-- START : BROKER SECTION -->
+              <div class="i-form broker-add" *ngIf="showBrokerSection">
+                <h6 class="title"><i class="icon-party"></i>Broker Details</h6>
+                <div class="grid grid-animated">
+
+                  <div class="form-data">
+                    <label for="">Brokrage % <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': brokrage.invalid && (brokrage.dirty || brokrage.touched)}">
+                    <input type="text" name="brokrage" [(ngModel)]="ledgerObj.broker.brokrage" #brokrage="ngModel" id=""
+                      (keypress)="utilityService.floatOnly($event)" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Ref.Company</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="refCompanyName" [(ngModel)]="ledgerObj.broker.refCompanyName"
+                      #refCompanyName="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Ref.Person</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="refPersonName" [(ngModel)]="ledgerObj.broker.refPersonName"
+                      #refPersonName="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Ref.Email</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="refemail" [(ngModel)]="ledgerObj.broker.refemail" #refemail="ngModel"
+                      id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Ref.Mobile No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="refmobileNo" [(ngModel)]="ledgerObj.broker.refmobileNo"
+                      #refmobileNo="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Ref.Address</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="refAddress" [(ngModel)]="ledgerObj.broker.refAddress" #refAddress="ngModel"
+                      id="">
+                  </div>
+
+                </div>
+              </div>
+              <!-- END : BROKER SECTION -->
+
+              <!-- START : BANK SECTION -->
+              <div class="i-form broker-add" *ngIf="this.ledgerObj.group.isBankLedger">
+                <h6 class="title"><i class="icon-party"></i>Bank Details</h6>
+                <div class="grid grid-animated">
+
+                  <div class="form-data">
+                    <label for="">BankName <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': bankName.invalid && (bankName.dirty || bankName.touched)}">
+                    <input type="text" name="bankName" [(ngModel)]="ledgerObj.bank.bankName" #bankName="ngModel" id=""
+                      required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Branch <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': branch.invalid && (branch.dirty || branch.touched)}">
+                    <input type="text" name="branch" [(ngModel)]="ledgerObj.bank.branch" #branch="ngModel" id=""
+                      required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Account No <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': accountNo.invalid && (accountNo.dirty || accountNo.touched)}">
+                    <input type="text" name="accountNo" [(ngModel)]="ledgerObj.bank.accountNo" #accountNo="ngModel"
+                      id="" (keypress)="utilityService.numberOnly($event)" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Account Name <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': accountName.invalid && (accountName.dirty || accountName.touched)}">
+                    <input type="text" name="accountName" [(ngModel)]="ledgerObj.bank.accountName"
+                      #accountName="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">IFSC Code <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': ifsc.invalid && (ifsc.dirty || ifsc.touched)}">
+                    <input type="text" name="ifsc" [(ngModel)]="ledgerObj.bank.ifsc" #ifsc="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Swift </label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="swift" [(ngModel)]="ledgerObj.bank.swift" #swift="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">AD Code </label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="adCode" [(ngModel)]="ledgerObj.bank.adCode" #adCode="ngModel" id="">
+                  </div>
+
+                </div>
+              </div>
+              <!-- END : BANK SECTION -->
+
+              <!-- START : ADDRESS SECTION -->
+              <div class="i-form om-add">
+                <h6 class="title"><i class="icon-mapmarker"></i>Address</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label>Line1</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="ledgerObj.address.line1">
+                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Line2</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line2" #line2="ngModel"
+                      [(ngModel)]="ledgerObj.address.line2">
+                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Type</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listAddressTypeItems" [valuePrimitive]="true" name="addressType"
+                      #addressType="ngModel" [(ngModel)]="ledgerObj.address.type">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Country</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true"
+                      [(ngModel)]="ledgerObj.address.country">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>State</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="ledgerObj.address.state">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>City</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="ledgerObj.address.city">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>ZipCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="zipcode" #zipcode="ngModel" [(ngModel)]="ledgerObj.address.zipCode">
+                  </div>
+                </div>
+              </div>
+              <!-- END : ADDRESS SECTION -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onLedgerSubmit(ledgerForm,false)" [disabled]="!ledgerForm.valid" class="btn btn-primary"><i
+              class="icon-add"></i>New</button>
+          <button (click)="onLedgerSubmit(ledgerForm,true)" [disabled]="!ledgerForm.valid" class="btn btn-primary"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeRegLedgerDialog(ledgerForm)"></div>
+  </form>
+</div>
+<!-- Add Ledger Modal End -->
+
+<div kendoDialogContainer></div>

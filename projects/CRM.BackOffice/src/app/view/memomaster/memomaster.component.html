@@ -1,0 +1,167 @@
+<title>Memo</title>
+<div class="memomaster-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Memo</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openMemoDialog()" title="Memo"><i class="icon-add"></i></button>
+                    <button kendoButton (click)="dblClick()" [disabled]="!isViewOnly" title="Memo"><i
+                        class="icon-view"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap">
+              <!-- Skeleton start -->
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100">
+                  <th *ngFor="let field of fields">{{field.propertyName}}</th>
+                  <tr *ngFor="let field of skeletonArray">
+                    <td *ngFor="let field of fields">
+                      <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                      </kendo-skeleton>
+                    </td>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- Skeleton end -->
+
+              <kendo-grid #memoGrid *ngIf="gridView" [data]="gridView" [reorderable]="true" [resizable]="true"
+                [groupable]="true" [sortable]="true" [selectable]="selectableSettings" (dblclick)="dblClick()"
+                (selectionChange)="selectedRowChange($event)" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title=='Total stones'">
+                          <span>{{dataItem.inventoryItems.length}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title=='Issued'">
+                          <span>{{dataItem.inventoryItems | memofilter:'issue'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title=='Received'">
+                          <span>{{dataItem.inventoryItems | memofilter:'receive'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'expiredDays'">
+                          <!-- <div [ngClass]="{ 'table-blink-bg': dateDiffCountValue(dataItem.expiredDate) == -1}"
+                                                        class="position-relative"> -->
+                          {{dataItem.expiredDays }}
+                          <!-- </div> -->
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'createdDate'">
+                          {{dataItem.createdDate | date: 'dd-MM-yyyy'}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'expiredDate'">
+                          <div
+                            [ngClass]="{ 'table-bg-red': dateDiffCountValue(dataItem.expiredDate) >= 0 , 'table-blink-bg': dateDiffCountValue(dataItem.expiredDate) == -1}"
+                            class="position-relative">
+                            {{dataItem.expiredDate | date:
+                                                        'dd-MM-yyyy'}}</div>
+                        </ng-template>
+
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='memoNo'">
+                          <a style="color: blue" href="javascript:void(0)"
+                            (click)="memoGet(dataItem.memoNo)">{{dataItem.memoNo}}
+                          </a>
+                        </ng-template>
+
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+          </div>
+
+          <!-- Search start -->
+          <div class="e-right">
+            <div class="sr-wrap" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form" #memoSearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Party</label>
+                        <kendo-combobox class="w-100" [data]="listPartyItems" [allowCustom]="allowCustom"
+                          [kendoDropDownFilter]="filterSettings" textField="text" valueField="value" name="Party"
+                          [(ngModel)]="memoSearchCriteria.party" [valuePrimitive]="true"
+                          [popupSettings]="{width: 'auto'}">
+                        </kendo-combobox>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">StoneId</label>
+                        <input type="text" id="l-name" name="filterStoneId" [(ngModel)]="memoSearchCriteria.stoneId"
+                          #filterStoneId="ngModel">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data check-box">
+                        <input type="checkbox" name="isRecievedFlag" class="k-checkbox"
+                          [(ngModel)]="memoSearchCriteria.isRecieved" #isRecievedFlag="ngModel" />
+                        <label for="a-employee">Only Received Memo</label>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action"
+                          (click)="memoSearchForm.form.valid && onFilterSubmit(memoSearchForm)">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button (click)="clearFilter(memoSearchForm)" class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Search End -->
+        </div>
+        <div class="f-btn" [ngClass]="{'active': filterFlag}">
+          <ul>
+            <li><button class="open-filter" (click)="filterPartToggle()"><i class="icon-filter"></i></button></li>
+            <li><button (click)="memoSearchForm.form.valid && onFilterSubmit(memoSearchForm)"><i
+                  class="icon-search"></i></button></li>
+            <li><button (click)="clearFilter(memoSearchForm)"><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #region Memo Model-->
+<ng-container *ngIf="isMemo">
+  <app-memo (toggle)="closeMemoDialog($event)" [isVisiable]="isVisiable" [isViewOnly]="isViewOnly"
+    [selectedMemo]="memoObj">
+  </app-memo>
+</ng-container>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

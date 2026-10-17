@@ -1,0 +1,577 @@
+<title>Organization Details</title>
+<div class="edetails-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Organization Details</li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap o-details e-details">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="i-form ed-top">
+                    <h6 class="title">Organization Information</h6>
+                    <div class="row" *ngIf="organizationData">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form">
+                          <div class="p-flex">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3">
+                                  <li>
+                                    <h6 class="c-name"><span>Name :
+                                      </span>{{organizationData?.name}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Org.Type
+                                        :</span>{{organizationData?.organizationType}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Business Type
+                                        :</span>{{organizationData?.businessType}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Registration No
+                                        :</span>{{organizationData?.registrationNo}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>IncomeTax No :
+                                      </span>{{organizationData?.incomeTaxNo}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Membership
+                                        :</span>{{organizationData?.membership}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Website
+                                        :</span>{{organizationData?.website}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Person
+                                        :</span>{{organizationData?.person}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Country
+                                        :</span>{{organizationData?.address?.country}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Email
+                                        :</span>{{organizationData?.email}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Mobile No
+                                        :</span>{{organizationData.mobileNo |
+                                      numberfilter:'mobile'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Phone
+                                        :</span>{{organizationData.phoneNo |
+                                      numberfilter:'phone'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Fax No
+                                        :</span>{{organizationData.faxNo |
+                                      numberfilter:'fax'}}</h6>
+                                  </li>
+                                </div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>Address Note :</span>
+                                      {{organizationData?.address?.line1}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form b-des">
+                          <h6 class="b-title">Tax Information</h6>
+                          <div class="e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Tax No :
+                                    </span>{{organizationData?.taxNo}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="en-form mt-2 b-des">
+                          <h6 class="b-title">Credit Limit Details</h6>
+                          <div class="e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Amount :
+                                    </span>{{organizationData?.creditLimit?.amount}}
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Days :
+                                    </span>{{organizationData?.creditLimit?.days}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="i-form ed-top">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="flex">
+                          <div class="o-title">
+                            <h6 class="title">Branch Information</h6>
+                          </div>
+                          <div class="o-edit">
+                            <kendo-buttongroup kendoTooltip position="bottom">
+                              <button kendoButton title="Add Branch" (click)="openAddBranchDialog()"><i
+                                  class="icon-add"></i></button>
+                            </kendo-buttongroup>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="organizationData && organizationData.branches && organizationData.branches.length > 0"
+                          class="br-wrap">
+                          <div *ngFor="let branch of organizationData.branches" class="en-form mb-2">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3 b-des">
+                                  <div class="flex in-block">
+                                    <div class="o-title">
+                                      <h6 class="b-title">{{branch.name}}</h6>
+                                    </div>
+                                    <div class="o-edit">
+                                      <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton (click)="updateBranch(branch)"><i
+                                            class="icon-edit"></i></button>
+                                        <button kendoButton (click)="deleteBranch(branch)"><i
+                                            class="icon-trash"></i></button>
+                                      </kendo-buttongroup>
+                                    </div>
+                                  </div>
+                                  <div class="li-wrap">
+                                    <li>
+                                      <h6 class="c-name"><span>RegistrationNo
+                                          :</span>{{branch.registrationNo}}
+                                      </h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>IncomeTax No
+                                          :</span>{{branch.incomeTaxNo}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Tax No
+                                          :</span>{{branch.taxNo}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Person Name
+                                          :</span>{{branch.person}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Email
+                                          :</span>{{branch.email}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Mobile No
+                                          :</span>{{branch.mobileNo |
+                                        numberfilter:'mobile'}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Phone No
+                                          :</span>{{branch.phoneNo |
+                                        numberfilter:'phone'}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Fax No
+                                          :</span>{{branch.faxNo|
+                                        numberfilter:'fax'}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>RFIDDevice Url
+                                          :</span>{{branch.deviceRFIDUrl}}
+                                      </h6>
+                                    </li>
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Address :</span>
+                                        {{branch.address.line1}}
+                                      </h6>
+                                    </li>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="br-wrap"
+                          *ngIf="organizationData == undefined || organizationData.branches == undefined || organizationData.branches.length == 0">
+                          <div class="data-notfound">
+                            <h6 class="title">Data Not Found</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12 pl-0">
+                  <div class="i-form ed-top">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="flex">
+                          <div class="o-title">
+                            <h6 class="title">Department Information</h6>
+                          </div>
+                          <div class="o-edit">
+                            <kendo-buttongroup kendoTooltip position="bottom">
+                              <button kendoButton title="Add Department" (click)="openAddDepartmentDialog()"><i
+                                  class="icon-add"></i></button>
+                            </kendo-buttongroup>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="organizationData && organizationData.departments && organizationData.departments.length > 0"
+                          class="br-wrap">
+                          <div *ngFor="let department of organizationData.departments" class="en-form mb-2">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3 b-des">
+                                  <div class="flex in-block">
+                                    <div class="o-title">
+                                      <h6 class="b-title">{{department.name}}</h6>
+                                    </div>
+                                    <div class="o-edit">
+                                      <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton (click)="setPermission(department)"><i
+                                            class="icon-setting"></i></button>
+                                        <button kendoButton (click)="updateDepartment(department)"><i
+                                            class="icon-edit"></i></button>
+                                        <button kendoButton (click)="deleteDepartment(department)"><i
+                                            class="icon-trash"></i></button>
+                                      </kendo-buttongroup>
+                                    </div>
+                                  </div>
+                                  <div class="li-wrap">
+                                    <li>
+                                      <h6 class="c-name"><span>Origin
+                                          :</span>{{department.origin}}
+                                      </h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Branch Name
+                                          :</span>{{department.branchName}}
+                                      </h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Phone No
+                                          :</span>{{department.phoneExtNo |
+                                        numberfilter:'phone'}}
+                                      </h6>
+                                    </li>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="br-wrap"
+                          *ngIf="organizationData == undefined || organizationData.departments == undefined || organizationData.departments.length == 0">
+                          <div class="data-notfound">
+                            <h6 class="title">Data Not Found</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Branch Modal Start -->
+<div class="modal addemp c-modal rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddBranch">
+  <form name="form" #branchForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-branch"></i>Add Branch</h5>
+          <button type="button" class="close" (click)="closeAddBranchDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ad-branch">
+                <h6 class="title"><i class="icon-creditlimit"></i>Branch Information</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label for="">Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                    <input type="text" name="name" [(ngModel)]="branchObj.name" #name="ngModel" id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Reg.No</label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': registrationNo.invalid && (registrationNo.dirty || registrationNo.touched)}">
+                    <input type="text" name="registrationNo" [(ngModel)]="branchObj.registrationNo"
+                      #registrationNo="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label for="">IncomeTaxno</label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': incomeTaxNo.invalid && (incomeTaxNo.dirty || incomeTaxNo.touched)}">
+                    <input type="text" name="incomeTaxNo" [(ngModel)]="branchObj.incomeTaxNo" #incomeTaxNo="ngModel"
+                      id="">
+                  </div>
+                  <div class="form-data">
+                    <label>Tax No.</label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': taxNo.invalid && (taxNo.dirty || taxNo.touched)}">
+                    <input type="text" name="taxNo" [(ngModel)]="branchObj.taxNo" #taxNo="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label for="">Person Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': person.invalid && (person.dirty || person.touched)}">
+                    <input type="text" name="person" [(ngModel)]="branchObj.person" #person="ngModel" id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Email<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="text" name="email" [(ngModel)]="branchObj.email" #email="ngModel" id="" required email>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Mobile No<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': mobileNo.invalid &&  (mobileNo.errors?.required && mobileNo.touched)}">
+                    <kendo-maskedtextbox name="mobileNo" [(ngModel)]="branchObj.mobileNo" #mobileNo="ngModel" id=""
+                      [mask]="mobileMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Phone No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="phoneNo" [(ngModel)]="branchObj.phoneNo" #phoneNo="ngModel" id=""
+                      [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label for="">RFIDDeviceUrl<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': deviceUrl.invalid && (deviceUrl.dirty || deviceUrl.touched)}">
+                    <input type="text" name="deviceUrl" [(ngModel)]="branchObj.deviceRFIDUrl" #deviceUrl="ngModel" id=""
+                      placeholder="192.168.21.11"
+                      pattern="((^|\.)((25[0-5]_*)|(2[0-4]\d_*)|(1\d\d_*)|([1-9]?\d_*))){4}_*$" required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Fax No</label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': faxNo.invalid && (faxNo.touched && faxNo.hasError('pattern')) }">
+                    <kendo-maskedtextbox name="faxNo" [(ngModel)]="branchObj.faxNo" #faxNo="ngModel" id=""
+                      [mask]="faxMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+              </div>
+              <div class="i-form om-add">
+                <h6 class="title"><i class="icon-mapmarker"></i>Address</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label>Line1</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="branchObj.address.line1">
+                                                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Line2</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line2" #line2="ngModel"
+                      [(ngModel)]="branchObj.address.line2">
+                                                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Type</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listAddressTypeItems" [valuePrimitive]="true" name="addressType"
+                      #addressType="ngModel" [(ngModel)]="branchObj.address.type">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Country</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true"
+                      [(ngModel)]="branchObj.address.country">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>State</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="branchObj.address.state">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>City</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="branchObj.address.city">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>ZipCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="zipcode" #zipcode="ngModel" [(ngModel)]="branchObj.address.zipCode">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onBranchSubmit(branchForm,false)" [disabled]="!branchForm.valid" class="btn btn-primary"><i
+              class="icon-add"></i>New</button>
+          <button (click)="onBranchSubmit(branchForm,true)" [disabled]="!branchForm.valid" class="btn btn-primary"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeAddBranchDialog()"></div>
+  </form>
+</div>
+<!-- Add Branch Modal End -->
+
+<!-- Add Department Modal Start -->
+<div class="modal c-modal addemp adddep rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddDepartment">
+  <form name="form" #departmentForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-admin_department"></i>Add Department</h5>
+          <button type="button" class="close" (click)="closeAddDepartmentDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ad-branch">
+                <div class="grid">
+                  <div class="form-data">
+                    <label for="">Name <span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                    <input type="text" name="name" [(ngModel)]="departmentObj.name" #name="ngModel" id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label>Origin<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': origin.invalid && (origin.dirty || origin.touched) }">
+                    <!-- -->
+                    <kendo-dropdownlist [data]="listOriginItems" [valuePrimitive]="true" name="origin"
+                      [(ngModel)]="departmentObj.origin" #origin="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Branch Name</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist name="branchName" [textField]="'name'" [valueField]="'name'"
+                      [(ngModel)]="departmentObj.branchName" #branchName="ngModel" [data]="organizationData?.branches"
+                      [valuePrimitive]="true">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label for="">PhoneExt No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="phoneExtNo" [(ngModel)]="departmentObj.phoneExtNo" #phoneExtNo="ngModel"
+                      [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onDepartmentSubmit(departmentForm,false)" [disabled]="!departmentForm.valid"
+            class="btn btn-primary"><i class="icon-add"></i>New</button>
+          <button (click)="onDepartmentSubmit(departmentForm,true)" [disabled]="!departmentForm.valid"
+            class="btn btn-primary"><i class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeAddDepartmentDialog()"></div>
+  </form>
+</div>
+<!-- Add Department Modal End -->
+
+<ng-container *ngIf="isPermission">
+  <app-userpermission [title]="modalTitle" [deptPermi]="deptPermi" [pageComeFromPermission]="pageComeFromPermission"
+    (toggle)="isPermission=$event"></app-userpermission>
+</ng-container>
+
+<div kendoDialogContainer></div>

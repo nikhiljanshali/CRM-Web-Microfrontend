@@ -1,0 +1,642 @@
+<title>Customer</title>
+<div class="omaster-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <!-- #region Header -->
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Customer
+                    </li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton title="Add New Customer" (click)="openAddCustomerDialog()"><i
+                        class="icon-add"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openCustomerDetails()" title="View Details"><i
+                        class="icon-viewdetilas"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openUpdateCustomerDialog()"
+                      title="Edit Customer"><i class="icon-edit"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="deleteCustomer()" title="Remove Customer"><i
+                        class="icon-delete"></i></button>
+                    <button kendoButton (click)="openGridConfigDialog()" title="Grid Configuration"><i
+                        class="icon-gridconfig"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+            <!-- #endregion -->
+            <div class="grid-wrap">
+              <!-- #region Skeleton -->
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100 table-responsive skeleton-tbl">
+                  <ng-container *ngFor="let field of fields">
+                    <th *ngIf="field.isSelected">
+                      {{field.title}}
+                    </th>
+                  </ng-container>
+                  <tr *ngFor="let field of skeletonArray">
+                    <ng-container *ngFor="let fieldItem of fields">
+                      <td *ngIf="fieldItem.isSelected">
+                        <kendo-skeleton shape="text" animation="wave" [width]="94" [height]="40">
+                        </kendo-skeleton>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- #endregion -->
+
+              <!-- #region Grid Data -->
+              <kendo-grid #vCustomerGrid *ngIf="gridView" [data]="gridView" [reorderable]="true" [resizable]="true"
+                [groupable]="true" [sortable]="true" (selectionChange)="selectedRowChange($event)"
+                [selectable]="selectableSettings" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'birthDate'">
+                          {{dataItem.birthDate | date: 'dd/MM/yyyy'}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'primaryMobile'">
+                          <span>{{dataItem.mobile1 | numberfilter:'mobile'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='phoneNo'">
+                          <span>{{dataItem.phoneNo | numberfilter:'phone'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='faxNo'">
+                          <span>{{dataItem.faxNo | numberfilter:'fax'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem
+                          *ngIf="field.propertyName == 'businessMobileNo'">
+                          <span>{{dataItem.businessMobileNo | numberfilter:'mobile'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName == 'businessPhoneNo'">
+                          <span>{{dataItem.businessPhoneNo | numberfilter:'phone'}}</span>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+              <!-- #endregion -->
+            </div>
+          </div>
+          <!-- #region Filters -->
+          <div class="e-right">
+            <div class="sr-wrap" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form" #verificationFilterSearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Company Name</label>
+                        <input type="text" id="" name="companyname" [(ngModel)]="customerSearchCriteria.companyName"
+                          #companyname="ngModel">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data country-code country-filter">
+                        <label for="l-name">Mobile No</label>
+                        <input type="text" id="" name="mobile" [(ngModel)]="customerSearchCriteria.mobileNo"
+                          #mobile="ngModel" (keypress)="utilityService.numberOnly($event)">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Email Address</label>
+                        <input type="text" id="" name="email" [(ngModel)]="customerSearchCriteria.email"
+                          #email="ngModel">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Country</label>
+                        <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                          [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                          [valuePrimitive]="true" [(ngModel)]="customerSearchCriteria.country">
+                        </kendo-dropdownlist>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Seller</label>
+                        <kendo-dropdownlist [data]="listSellerItems" [textField]="'text'" [valueField]="'value'"
+                          name="seller" #seller="ngModel" [valuePrimitive]="true" required
+                          [(ngModel)]="customerSearchCriteria.sellerId">
+                        </kendo-dropdownlist>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action"
+                          (click)="verificationFilterSearchForm.form.valid && onFilterSubmit(verificationFilterSearchForm)">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button (click)="clearFilter(verificationFilterSearchForm)" class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- #endregion -->
+        </div>
+        <div class="f-btn" [ngClass]="{'active': filterFlag}">
+          <ul>
+            <li><button class="open-filter" (click)="filterPartToggle()"><i class="icon-filter"></i></button></li>
+            <li><button
+                (click)="verificationFilterSearchForm.form.valid && onFilterSubmit(verificationFilterSearchForm)"><i
+                  class="icon-search"></i></button></li>
+            <li><button (click)="clearFilter(verificationFilterSearchForm)"><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #region Add/Edit Customer Modal -->
+<div class="modal c-modal addemp la-mas" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddDialogopen">
+  <form name="custVeriForm" #AddcustVeriForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-customer"></i>Customer</h5>
+          <button type="button" class="close" (click)="closeAddCustomerDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <!-- Add Personal Information-->
+              <div class="i-form l-master">
+                <h6 class="title"><i class="icon-info"></i>Personal Information</h6>
+                <div class="customerverify-grid">
+                  <div class="form-img pr-0" [ngClass]="{'error': profileImageErrorFlag}">
+                    <div *ngIf="!isImgselectedProfile && showUploadProfile" class="c-upload">
+                      <label for="file-input" class="w-100">
+                        <span><i class="icon-upload"></i></span>
+                        <span>Select files</span>
+                      </label>
+                      <input #profileFileupload type="file"
+                        (change)="uploadFiles(AddcustVeriForm,$event, FileStoreTypes.CustomerProfile)"
+                        accept="image/jpeg,image/png" id="file-input" type="file" name="profileImage" />
+                      <input type="hidden" name="fileHidden">
+                    </div>
+                    <img class="img-thumbnail" *ngIf="isImgselectedProfile && showUploadProfile"
+                      alt="Uploaded Profile File" src="{{imagePreviewprofile}}">
+                    <div class="form-img position-relative" *ngIf="iseditcustomers && !showUploadProfile">
+                      <i class="icon-delete" (click)="showUploadProfile=true"></i>
+                      <img alt="profile" src="{{profileFileStore.fileThumbnail}}">
+                    </div>
+                    <div class="msg-box" [ngStyle]="{'border-bottom-color': '#028e02' }" *ngIf="profileImageModel">
+                      <div class="success">File successfully attached
+                      </div>
+                      <span class="im-bottom"></span>
+                      <button type="button" (click)="clearPreviewFile(FileStoreTypes.CustomerProfile)" class="btn"><i
+                          class="icon-delete"></i></button>
+                    </div>
+                    <span *ngIf="profileImageErrorFlag" class="s-error">Profile image is
+                      required</span>
+                  </div>
+                  <div class="form-data">
+                    <label for="">First Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': fname.invalid && (fname.dirty || fname.touched)}">
+                    <input type="text" name="fname" [(ngModel)]="customerdetailsobj.name.firstName" #fname="ngModel"
+                      id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Middle Name<span></span></label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="mname" [(ngModel)]="customerdetailsobj.name.middleName" #mname="ngModel"
+                      id="">
+                  </div>
+                  <div class="form-data">
+                    <label for="">Last Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': lname.invalid && (lname.dirty || lname.touched)}">
+                    <input type="text" name="lname" [(ngModel)]="customerdetailsobj.name.lastName" #lname="ngModel"
+                      id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Origin<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': origin.invalid && (origin.dirty || origin.touched)}">
+                    <kendo-dropdownlist [data]="listCustomerOriginItems" [valuePrimitive]="true" name="filterOrigin"
+                      [(ngModel)]="customerdetailsobj.origin" #origin="ngModel">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Birth Date<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': Birthdate.invalid && (Birthdate.dirty || Birthdate.touched)}">
+                    <kendo-datepicker calendarType="classic" name="Birthdate" #Birthdate="ngModel" format="dd/MM/yyyy"
+                      [(ngModel)]="customerdetailsobj.birthDate" required>
+                    </kendo-datepicker>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Mobile No 1<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': mobileNo1.invalid && ((mobileNo1.touched && mobileNo1.hasError('pattern')) || (mobileNo1.errors?.required && mobileNo1.touched)) }">
+                    <kendo-maskedtextbox type="tel" name="mobileNo1" [(ngModel)]="customerdetailsobj.mobile1"
+                      #mobileNo1="ngModel" id="" required [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Mobile No 2<span></span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': mobileNo2.invalid && ((mobileNo2.touched && mobileNo2.hasError('pattern')) || (mobileNo2.errors?.required && mobileNo2.touched)) }" -->
+                  <div class="form-data">
+                    <kendo-maskedtextbox type="tel" name="mobileNo2" [(ngModel)]="customerdetailsobj.mobile2"
+                      #mobileNo2="ngModel" id="" [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Email<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="email" name="email" [(ngModel)]="customerdetailsobj.email" #email="ngModel" id=""
+                      required email>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Telephone</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': phoneNo.invalid && ((phoneNo.touched && phoneNo.hasError('phoneNo')) || (phoneNo.errors?.required && phoneNo.touched))}"> -->
+                  <div class="form-data">
+                    <kendo-maskedtextbox type="text" id="" name="phoneNo" #phoneNo="ngModel"
+                      [(ngModel)]="customerdetailsobj.phoneNo" [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add Business Information-->
+              <div class="i-form a-add">
+                <h6 class="title"><i class="icon-businessinfo"></i>Business Information</h6>
+                <div class="customerverify-grid-02">
+                  <div class="form-data">
+                    <label for="">Company Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': companyname.invalid && (companyname.dirty || companyname.touched)}">
+                    <input type="text" name="companyname" [(ngModel)]="customerdetailsobj.companyName"
+                      #companyname="ngModel" id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label>Designation<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': designation.invalid && (designation.dirty || designation.touched)}">
+                    <input type="text" name="Designation" [(ngModel)]="customerdetailsobj.designation"
+                      #designation="ngModel" id="" required>
+                  </div>
+                  <div class="form-data">
+                    <label>Business Type<span class="require"></span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': businessType.invalid && (businessType.dirty || businessType.touched)}"> -->
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listBusinessTypeItems" name="businessType" #businessType="ngModel"
+                      [(ngModel)]="customerdetailsobj.businessType">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Business Email<span class="require"></span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': businessEmail.invalid && ((businessEmail.touched && businessEmail.hasError('email')) || (businessEmail.errors?.required && businessEmail.touched))}"> -->
+                  <div class="form-data">
+
+                    <input type="text" name="businessEmail" [(ngModel)]="customerdetailsobj.businessEmail"
+                      #businessEmail="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label>Business MobileNo<span class="require"></span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': businessMobileNo.invalid && (businessMobileNo.dirty || businessMobileNo.touched)}"> -->
+                  <div class="form-data">
+                    <kendo-maskedtextbox type="tel" name="businessMobileNo"
+                      [(ngModel)]="customerdetailsobj.businessMobileNo" #businessMobileNo="ngModel" id=""
+                      [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+
+                  </div>
+                  <div class="form-data">
+                    <label>Business PhoneNo<span class="require"></span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': businessPhoneNo.invalid && (businessPhoneNo.dirty || businessPhoneNo.touched)}"> -->
+                  <div class="form-data">
+                    <kendo-maskedtextbox type="text" id="" name="businessPhoneNo" #businessPhoneNo="ngModel"
+                      [(ngModel)]="customerdetailsobj.businessPhoneNo" [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="form-data">
+                    <label>Country<span class="require">*</span></label>
+                  </div>
+
+                  <div class="form-data" [ngClass]="{ 'error': country.invalid && (country.dirty || country.touched)}">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true" required
+                      [(ngModel)]="customerdetailsobj.address.country">
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label>State</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': state.invalid && (state.dirty || state.touched)}"> -->
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="customerdetailsobj.address.state">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>City</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': city.invalid && (city.dirty || city.touched)}" -->
+                  <div class="form-data">
+
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="customerdetailsobj.address.city">
+                    </kendo-dropdownlist>
+                  </div>
+                  <!-- [ngClass]="{ 'error': line1.invalid && (line1.dirty || line1.touched)}" -->
+                  <div class="form-data">
+                    <label>Address</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea class="textarea-wrap" cols="4" rows="3" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="customerdetailsobj.address.line1">
+                                                                                              </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Postal Code</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': zipcode.invalid && (zipcode.dirty || zipcode.touched)}" -->
+                  <div class="form-data">
+                    <input type="text" name="zipcode" [(ngModel)]="customerdetailsobj.address.zipCode"
+                      #zipcode="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label>Fax</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': faxNo.invalid && (faxNo.dirty || faxNo.touched)}"> -->
+                  <div class="form-data">
+                    <kendo-maskedtextbox type="text" id="" name="faxNo" #faxNo="ngModel"
+                      [(ngModel)]="customerdetailsobj.faxNo" [mask]="faxMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <!-- [ngClass]="{ 'error': reference.invalid && (reference.dirty || reference.touched)}" -->
+                  <div class="form-data">
+                    <label>Reference Name</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="reference" [(ngModel)]="customerdetailsobj.referenceName"
+                      #reference="ngModel" id="">
+                  </div>
+                  <div class="form-data">
+                    <label>CreditLimit Amount</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': CreditlimitAmount.invalid && (CreditlimitAmount.dirty || CreditlimitAmount.touched)}" -->
+                  <div class="form-data">
+                    <input type="text" name="CreditlimitAmount" [(ngModel)]="customerdetailsobj.creditLimit.amount"
+                      #CreditlimitAmount="ngModel" id="" (keypress)="utilityService.floatOnly($event)">
+                  </div>
+                  <div class="form-data">
+                    <label>CreditLimit Days</label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': creditdays.invalid && (creditdays.dirty || creditdays.touched)}" -->
+                  <div class="form-data">
+                    <input type="text" name="CreditlimitDays" [(ngModel)]="customerdetailsobj.creditLimit.days"
+                      #creditdays="ngModel" id="" (keypress)="utilityService.numberOnly($event)">
+                  </div>
+                  <div class="form-data">
+                    <label>Seller<span class="require">*</span></label>
+                  </div>
+                  <!-- [ngClass]="{ 'error': seller.invalid && (seller.dirty || seller.touched) }" -->
+                  <div class="form-data">
+                    <div class="form-data">
+                      <kendo-dropdownlist [data]="listSellerItems" name="seller" #seller="ngModel"
+                        [(ngModel)]="selectedSellerItems" (valueChange)="onSellerChange($event)" required
+                        [kendoDropDownFilter]="filterSettings" textField="text" valueField="value" name="seller">
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                  <div class="form-data">
+                    <label>IncomeTax No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="incomeTxt" #incomeTxt="ngModel"
+                      [(ngModel)]="customerdetailsobj.incomeTaxNo">
+                  </div>
+                </div>
+              </div>
+              <!-- Add Identity Proofs-->
+              <div class="i-form">
+                <h6 class="title"><i class="icon-proof"></i>Identity Proof Images</h6>
+                <div class="proof-media-grid d-flex justify-content-around">
+                  <div class="form-data text-center img-animated" [ngClass]="{'error' : photoIdentityErrorFlag}">
+                    <label class="d-block">Photo Identity Proof<span class="require">*</span></label>
+                    <div *ngIf="!isImgselectedPhotoIdent && showUploadIdent" class="c-upload">
+                      <label for="file-input">
+                        <span><i class="icon-upload"></i></span>
+                        <span>Select files</span>
+                      </label>
+                      <input #photoIdentityFileupload type="file"
+                        (change)="uploadFiles(AddcustVeriForm,$event,FileStoreTypes.CustomerPhotoIdent)"
+                        accept="image/jpeg,image/png,application/pdf" id="file-input" type="file"
+                        name="photoIdentity" />
+                      <input type="hidden" name="fileHidden">
+                    </div>
+                    <img *ngIf="isImgselectedPhotoIdent && showUploadIdent" alt="Uploaded Photo Identity File"
+                      src="{{imagePreviewphoto}}">
+                    <a *ngIf="iseditcustomers && !showUploadIdent" href="javascript:void(0);">
+                      <span class="proof-remove">
+                        <i class="icon-view" (click)="openDocumentDialog(FileStoreTypes.CustomerPhotoIdent)"></i>
+                        <i class="icon-delete" (click)="showUploadIdent=true"></i>
+                      </span>
+                      <img class="img-thumbnail" *ngIf="photoIdentityFileStore.fileThumbnail" alt="Photo Identity"
+                        src="{{photoIdentityFileStore.fileThumbnail}}" [width]="150">
+                      <img class="img-thumbnail" *ngIf="!photoIdentityFileStore.fileThumbnail" alt="Photo Identity"
+                        src="commonAssets/images/pdf_doc.png" [width]="150">
+                    </a>
+                    <div class="msg-box" [ngStyle]="{'border-bottom-color': '#028e02'  }" *ngIf="photoIdentityModel">
+                      <div class="success">File successfully attached
+                      </div>
+                      <button type="button" (click)="clearPreviewFile(FileStoreTypes.CustomerPhotoIdent)" class="btn"><i
+                          class="icon-delete"></i></button>
+                    </div>
+                    <span *ngIf="photoIdentityErrorFlag" class="s-error">photoIdentity image is
+                      required</span>
+                  </div>
+                  <div class="form-data text-center img-animated" [ngClass]="{'error' : businessIdentityErrorFlag}">
+                    <label class="d-block">Business Proof<span class="require">*</span></label>
+                    <div *ngIf="!isImgselectedBusiness && showUploadBusiness" class="c-upload">
+                      <label for="file-input">
+                        <span><i class="icon-upload"></i></span>
+                        <span>Select files</span>
+                      </label>
+                      <input #businessIndentityFileupload type="file"
+                        (change)="uploadFiles(AddcustVeriForm,$event,FileStoreTypes.CustomerBussinessIdent)"
+                        accept="image/jpeg,image/png,application/pdf" id="file-input" type="file"
+                        name="businessIdentity" />
+                      <input type="hidden" name="fileHidden">
+                    </div>
+                    <img *ngIf="isImgselectedBusiness && showUploadBusiness" alt="Uploaded Business Identity File"
+                      src="{{imagePreviewbusiness}}">
+                    <a *ngIf="iseditcustomers && !showUploadBusiness" href="javascript:void(0);">
+                      <span class="proof-remove">
+                        <i class="icon-view" (click)="openDocumentDialog(FileStoreTypes.CustomerBussinessIdent)"></i>
+                        <i class="icon-delete" (click)="showUploadBusiness=true"></i>
+                      </span>
+                      <img *ngIf="businessIndentityFileStore.fileThumbnail" class="img-thumbnail"
+                        alt="Business Identity" src="{{businessIndentityFileStore.fileThumbnail}}" [width]="150">
+                      <img class="img-thumbnail" *ngIf="!businessIndentityFileStore.fileThumbnail"
+                        alt="Business Identity" src="commonAssets/images/pdf_doc.png" [width]="150">
+                    </a>
+                    <div class="msg-box" [ngStyle]="{'border-bottom-color': '#028e02'  }" *ngIf="businessIdentityModel">
+                      <div class="success">File successfully attached
+                      </div>
+                      <button type="button" (click)="clearPreviewFile(FileStoreTypes.CustomerBussinessIdent)"
+                        class="btn"><i class="icon-delete"></i></button>
+                    </div>
+                    <span *ngIf="businessIdentityErrorFlag" class="s-error">businessIdentity image is
+                      required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="i-form ro-grid">
+                <h6 class="title mb-2"><i class="icon-share"></i>Social Media</h6>
+                <div class="row no-gutters">
+                  <div class="col-md-5 form-data p-1">
+                    <label>Social Media</label>
+                    <kendo-dropdownlist [data]="listSocialMediaProviderItems" [valuePrimitive]="true"
+                      name="SocialMediaProvider" [(ngModel)]="selectedSocialMediaProviderItem"
+                      (valueChange)="onSocialMediaProviderChange($event)" #SocialMediaProvider="ngModel">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="col-md-5 form-data p-1" [hidden]="isMessagingFlag">
+                    <label>Profile Name</label>
+                    <input type="text" id="" name="smpName" #smpName="ngModel" [(ngModel)]="socialMediaObj.profileName">
+                  </div>
+                  <div class="col-md-5 form-data p-1" [hidden]="!isMessagingFlag">
+                    <label>Mobile Number</label>
+                    <kendo-maskedtextbox name="smpMobile" [(ngModel)]="socialMediaObj.mobileNumber" #smpMobile="ngModel"
+                      id="" [mask]="mobileMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                  <div class="col-md-2 form-data p-1" style="align-self: end;" [hidden]="isSocialMediaUpdateFlag">
+                    <button (click)="onSocialMediaSubmit()" [disabled]="((isMessagingFlag == true ? (socialMediaObj.mobileNumber == undefined || socialMediaObj.mobileNumber == '' || smpMobile.invalid) : false) 
+                      || (isMessagingFlag == false ? (socialMediaObj.profileName == undefined || socialMediaObj.profileName == '') : false) 
+                      || (selectedSocialMediaProviderItem == undefined || selectedSocialMediaProviderItem == ''))"
+                      class="btn btn-primary">
+                      <i class="icon-add"></i>Add</button>
+                  </div>
+                  <div class="col-md-2 form-data p-1" style="align-self: end;" [hidden]="!isSocialMediaUpdateFlag">
+                    <button (click)="onSocialMediaUpdate()" [disabled]="((isMessagingFlag == true ? (socialMediaObj.mobileNumber == undefined || socialMediaObj.mobileNumber == '' || smpMobile.invalid) : false) 
+                      || (isMessagingFlag == false ? (socialMediaObj.profileName == undefined || socialMediaObj.profileName == '') : false) 
+                      || (selectedSocialMediaProviderItem == undefined || selectedSocialMediaProviderItem == ''))"
+                      class="btn btn-primary">
+                      <i class="icon-edit"></i>Update</button>
+                  </div>
+
+                </div>
+                <div class="o-border mt-3">
+                  <div class="ml-3 mr-3 s-media" *ngIf="customerdetailsobj.socialMedias.length > 0">
+                    <div class="row o-scroll">
+                      <div class="col-md-3 p-1" *ngFor="let field of customerdetailsobj.socialMedias">
+                        <kendo-card class="w-100 bg-light">
+                          <kendo-card-body>
+                            <div kendoCardSubtitle>
+                              <span class="k-icon k-i-star"></span>
+                              <span><b>{{field.provider.providerName}}</b></span>
+                              <kendo-buttongroup class="float-right">
+                                <button kendoButton (click)="onSocialMediaEdit(field)"><i
+                                    class="icon-edit"></i></button>
+                                <button kendoButton (click)="onSocialMediaDelete(field)"><i
+                                    class="icon-trash"></i></button>
+                              </kendo-buttongroup>
+                            </div>
+                            <div kendoCardSubtitle>
+                              <span class="k-icon k-i-user"></span>
+                              <span class="s-title">{{(field.provider.mediaType == '3' || field.provider.mediaType ==
+                                'Messaging') ? (field.mobileNumber | numberfilter:'mobile') : field.profileName}}</span>
+                            </div>
+                          </kendo-card-body>
+                        </kendo-card>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onVerificationCustomerSubmit(AddcustVeriForm,false)"><i
+              class="icon-add"></i>New</button>
+          <button type="button" class="btn btn-primary" (click)="onVerificationCustomerSubmit(AddcustVeriForm,true)"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeAddCustomerDialog()"></div>
+  </form>
+</div>
+<!-- #endregion -->
+
+<!-- #region Document Modal-->
+<div class="modal c-modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isShowDocument">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="main-title">
+        <h5>Document</h5>
+        <button type="button" class="close" (click)="closeDocumentDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="attach-img">
+            <img [src]="sanitizeURL(imgSrcDisplay)" alt="document image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div (document:keydown.esc)="closeDocumentDialog()"></div>
+</div>
+
+<!-- #endregion -->
+
+<!-- #region Grid Config -->
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'CustomerVerification'" [gridName]="'CustomerVerificationGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,284 @@
+<title>SystemUser Details</title>
+<div class="edetails-wrap">
+      <div id="wrapper">
+            <div class="row container-fluid">
+                  <div class="middle-content p-0 d-shadow">
+                        <div class="middle-wrap row wb">
+                              <div class="e-left w-100">
+                                    <div class="company-info">
+                                          <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                                <div class="ci-top-left bread-size">
+                                                      <ul>
+                                                            <li class="breadcrumb-item k-cursor-pointer" routerLink="/">
+                                                                  <i class="icon-home"></i>Home
+                                                            </li>
+                                                            <li class="breadcrumb-item k-cursor-pointer"
+                                                                  routerLink="/systemuser">SystemUsers</li>
+                                                            <li class="breadcrumb-item active" aria-current="page">
+                                                                  SystemUser Details</li>
+                                                      </ul>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="grid-wrap o-details e-details">
+                                          <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                      <div class="i-form ed-top">
+                                                            <div class="row">
+                                                                  <div
+                                                                        class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                                        <div class="en-form">
+                                                                              <h6 class="title">Personal Information
+                                                                              </h6>
+                                                                              <div class="p-flex">
+                                                                                    <div
+                                                                                          class="row p-right e-details-n">
+                                                                                          <div
+                                                                                                class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                                                <div
+                                                                                                      class="info-block we-3">
+                                                                                                      <li>
+                                                                                                            <h6
+                                                                                                                  class="c-name">
+                                                                                                                  <span>Full
+                                                                                                                        Name
+                                                                                                                        :
+                                                                                                                  </span>{{systemUserObj.fullName}}
+                                                                                                            </h6>
+                                                                                                      </li>
+                                                                                                      <li>
+                                                                                                            <h6
+                                                                                                                  class="c-name">
+                                                                                                                  <span>Email
+                                                                                                                        :</span>{{systemUserObj.email}}
+                                                                                                            </h6>
+                                                                                                      </li>
+
+                                                                                                </div>
+                                                                                          </div>
+                                                                                          <div
+                                                                                                class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                                                <div
+                                                                                                      class="info-block we-3">
+                                                                                                      <li>
+                                                                                                            <h6
+                                                                                                                  class="c-name">
+                                                                                                                  <span>Origin
+                                                                                                                        :</span>{{systemUserObj.origin}}
+                                                                                                            </h6>
+                                                                                                      </li>
+
+                                                                                                      <li>
+                                                                                                            <h6
+                                                                                                                  class="c-name">
+                                                                                                                  <span>Mobile
+                                                                                                                        No
+                                                                                                                        :</span>{{systemUserObj.mobile
+                                                                                                                  |
+                                                                                                                  numberfilter:'mobile'}}
+                                                                                                            </h6>
+                                                                                                      </li>
+                                                                                                </div>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="en-form mt-2">
+                                                                              <h6 class="title">Address</h6>
+                                                                              <div class="row e-details-n">
+                                                                                    <div
+                                                                                          class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                                          <div class="info-block">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Address
+                                                                                                                  line 1
+                                                                                                                  :</span>{{systemUserObj.address.line1}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                          class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                                          <div class="info-block">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Address
+                                                                                                                  line 2
+                                                                                                                  :</span>{{systemUserObj.address.line2}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                          class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                                          <div class="info-block">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>City
+                                                                                                                  :</span>{{systemUserObj.address.city}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>State
+                                                                                                                  :</span>{{systemUserObj.address.state}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Country
+                                                                                                                  :</span>{{systemUserObj.address.country}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Type
+                                                                                                                  :</span>{{systemUserObj.address.type}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Zipcode
+                                                                                                                  :</span>{{systemUserObj.address.zipCode}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div
+                                                                        class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                                        <div class="en-form">
+                                                                              <h6 class="title">Others</h6>
+                                                                              <div class="row e-details-n">
+                                                                                    <div
+                                                                                          class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                                          <div class="info-block">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Native
+                                                                                                                  Address
+                                                                                                                  :</span>{{systemUserObj.nativeAddress}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                          class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                                          <div class="info-block we-3">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Enrollment
+                                                                                                                  No.
+                                                                                                                  :</span>{{systemUserObj.enrollmentNumber}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Joining
+                                                                                                                  Date
+                                                                                                                  :</span>{{systemUserObj.joiningDate
+                                                                                                            | date:
+                                                                                                            'dd/MM/yyyy'}}
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                          <div class="info-block we-3">
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Manager
+                                                                                                                  :</span><input
+                                                                                                                  type="checkbox"
+                                                                                                                  class="k-checkbox"
+                                                                                                                  disabled
+                                                                                                                  [checked]="systemUserObj.isManager" />
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Active
+                                                                                                                  :</span><input
+                                                                                                                  type="checkbox"
+                                                                                                                  class="k-checkbox"
+                                                                                                                  disabled
+                                                                                                                  [checked]="systemUserObj.isActive" />
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                      <h6
+                                                                                                            class="c-name">
+                                                                                                            <span>Available
+                                                                                                                  :</span><input
+                                                                                                                  type="checkbox"
+                                                                                                                  class="k-checkbox"
+                                                                                                                  disabled
+                                                                                                                  [checked]="systemUserObj.isAvailable" />
+                                                                                                      </h6>
+                                                                                                </li>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="en-form mt-2">
+                                                                              <h6 class="title">Social Media</h6>
+                                                                              <div class="row e-details-n ml-0 mr-0">
+                                                                                    <div class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 p-1"
+                                                                                          *ngFor="let field of systemUserObj.socialMedias">
+                                                                                          <kendo-card
+                                                                                                class="w-100 bg-light">
+                                                                                                <kendo-card-body>
+                                                                                                      <div
+                                                                                                            kendoCardSubtitle>
+                                                                                                            <span
+                                                                                                                  class="k-icon k-i-star"></span>
+                                                                                                            <span><b>{{field.provider.providerName}}</b></span>
+                                                                                                      </div>
+                                                                                                      <div
+                                                                                                            kendoCardSubtitle>
+                                                                                                            <span
+                                                                                                                  class="k-icon k-i-user"></span>
+                                                                                                            <span
+                                                                                                                  class="s-title">{{(field.provider.mediaType
+                                                                                                                  == '3'
+                                                                                                                  ||
+                                                                                                                  field.provider.mediaType
+                                                                                                                  ==
+                                                                                                                  'Messaging')
+                                                                                                                  ?
+                                                                                                                  (field.mobileNumber
+                                                                                                                  |
+                                                                                                                  numberfilter:'mobile')
+                                                                                                                  :
+                                                                                                                  field.profileName}}</span>
+                                                                                                      </div>
+                                                                                                </kendo-card-body>
+                                                                                          </kendo-card>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>

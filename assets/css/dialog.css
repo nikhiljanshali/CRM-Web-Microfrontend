@@ -1,0 +1,23 @@
+.k-dialog-titlebar {
+    background-color: #303030;
+}
+
+.dialog-lg .modal-dialog {
+    max-width: 1350px;
+}
+
+.dialog-lg-l .modal-dialog {
+    max-width: 1250px;
+}
+
+.dialog-xs .modal-dialog {
+    max-width: 350px;
+}
+
+.dialog-sm .modal-dialog {
+    max-width: 900px;
+}
+
+.dialog-ex-xs .modal-dialog {
+    max-width: 500px;
+}

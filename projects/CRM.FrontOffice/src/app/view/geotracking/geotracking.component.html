@@ -1,0 +1,154 @@
+<title>GEO Tracking</title>
+<div class="omaster-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="middle-wrap row wb">
+                    <div class="e-left">
+                        <div class="company-info">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                <div class="ci-top-left">
+                                    <ul>
+                                        <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                                        <li class="breadcrumb-item active" aria-current="page">GEO Tracking
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="ci-top-right">
+                                    <kendo-buttongroup>
+                                        <button kendoTooltip position="bottom" kendoButton title="Login History"
+                                            (click)="openLoginHistoryDialog()"><i class="icon-history"></i></button>
+                                    </kendo-buttongroup>
+                                </div>
+                            </div>
+                        </div>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.980907071437!2d72.86213231538414!3d19.064577057284417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x6860a246c861f09d!2zMTnCsDAzJzUyLjUiTiA3MsKwNTEnNTEuNiJF!5e0!3m2!1sen!2sin!4v1642422409572!5m2!1sen!2sin"
+                            style="border:0;width: 100%;height: calc(100vh - 83px);" allowfullscreen=""
+                            loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Search start -->
+                    <div class="e-right">
+                        <div class="sr-wrap">
+                            <div class="sr">
+                                <h6>Search By Filter</h6>
+                                <form>
+                                    <div class="i-form">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">Company Name</label>
+                                                <kendo-multiselect name="status" class="customselect"
+                                                    [popupSettings]="{width: 'auto'}">
+                                                    <ng-template kendoComboBoxHeaderTemplate>
+                                                        <div class="dropdown-header single k-widget k-header">
+                                                            <span class="temp-single">Select Name</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </kendo-multiselect>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">Country Name</label>
+                                                <kendo-multiselect name="status" class="customselect"
+                                                    [popupSettings]="{width: 'auto'}">
+                                                    <ng-template kendoComboBoxHeaderTemplate>
+                                                        <div class="dropdown-header single k-widget k-header">
+                                                            <span class="temp-single">Select Name</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </kendo-multiselect>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">State Name</label>
+                                                <kendo-multiselect name="status" class="customselect"
+                                                    [popupSettings]="{width: 'auto'}">
+                                                    <ng-template kendoComboBoxHeaderTemplate>
+                                                        <div class="dropdown-header single k-widget k-header">
+                                                            <span class="temp-single">Select Name</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </kendo-multiselect>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">From Date</label>
+                                                <kendo-datepicker format="dd/MM/yyyy">
+                                                </kendo-datepicker>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for=""> To Date</label>
+                                                <kendo-datepicker format="dd/MM/yyyy">
+                                                </kendo-datepicker>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">Latitude</label>
+                                                <input type="text" id="" name="filtername">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">Longitude</label>
+                                                <input type="mail" id="" name="filterEmail">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                                                <button class="btn btn-action">
+                                                    <i class="icon-search"></i>Search
+                                                </button>
+                                                <button class="btn btn-action">
+                                                    <i class="icon-clear"></i>Clear
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search End -->
+                </div>
+                <div class="f-btn">
+                    <ul>
+                        <li><button class="open-filter"><i class="icon-filter"></i></button></li>
+                        <li><button><i class="icon-search"></i></button></li>
+                        <li><button><i class="icon-clear"></i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #region Login History Modal-->
+<div class="modal c-modal dialog-lg-l" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isLoginHistory">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="icon-history"></i>Login History</h5>
+                <button type="button" class="close" (click)="closeLoginHistoryDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <kendo-grid [resizable]="true" [sortable]="true" [groupable]="true" [pageable]="true"
+                    style="height: calc(100vh - 250px);">
+                    <kendo-grid-column field="companyname" title="Company Name" [width]="50">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="privateip" title="Private IP" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="publicip" title="Public IP" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="logintime" title="Login Time" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="logouttime" title="Logout Time" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="latitude" title="Latitude" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="longitude" title="Longitude" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="country" title="Country" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="state" title="State" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="city" title="City" [width]="50">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="browser" title="Browser" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="browserver" title="Browser Ver" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="os" title="Os" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="osver" title="Os Ver" [width]="50"></kendo-grid-column>
+                    <kendo-grid-column field="useragent" title="User Agent" [width]="50"></kendo-grid-column>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+    <div (document:keydown.esc)="closeLoginHistoryDialog()"></div>
+</div>

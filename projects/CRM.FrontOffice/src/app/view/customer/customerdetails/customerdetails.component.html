@@ -1,0 +1,1269 @@
+<title>Customer Profile</title>
+<div class="cprofile-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="wb">
+          <div class="">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 breadcrumb">
+              <ul>
+                <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                <li class="breadcrumb-item active" aria-current="page">Customer Profile</li>
+              </ul>
+            </div>
+            <div class="c-profile-wrap">
+              <div class="c-profile">
+                <div class="cp-left">
+                  <div class="left-info">
+                    <div class="profile-block">
+                      <div class="i-box">
+                        <img [src]="profileFileStore.fileThumbnail" alt="profile-photo">
+                        <!-- <span class="c-badge"><img src="../commonAssets/images/badge.png" alt="profile-badge"></span> -->
+                      </div>
+                      <div class="info-box">
+                        <h6 class="c-name"><span>Name :</span> {{customerObj.name.firstName}}</h6>
+                        <div class="c-origin">
+                          <h6 class="c-name"><span>Full Name :</span> {{customerObj.fullName}}</h6>
+                          <h6 class="c-name"><span>Origin :</span> {{customerObj.origin}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="info-block">
+                      <ul>
+                        <li><span><i class="icon-icon_email"></i></span>{{customerObj.email}}</li>
+                        <li><span><i class="icon-phone"></i></span>{{customerObj.mobile1}}</li>
+                        <li><span><i class="icon-phone"></i></span>{{customerObj.mobile2 ? customerObj.mobile2 : '-'}}
+                        </li>
+                        <li><span><i class="icon-tel-phone"></i></span>{{customerObj.phoneNo ? customerObj.phoneNo :
+                          '-'}}</li>
+                        <li><span><i class="icon-print"></i></span>{{customerObj.faxNo ? customerObj.faxNo : '-'}}</li>
+                        <!-- <li><span><i class="icon-employeerating"></i></span>{{customerObj.companyName}}</li> -->
+                        <!-- <li><span><i class="icon-attachament"></i></span>{{customerObj.companyName}}</li> -->
+                        <li><span><i class="icon-graph"></i></span>{{customerObj.isActive ? 'Active' : 'Not Active'}}
+                        </li>
+                        <li class="i-address"><i class="icon-mapmarker"></i>{{customerObj.address.line1 ?
+                          customerObj.address.line1 : '-'}}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="info-box i-detail">
+                      <h6 class="i-name"><i class="icon-admin_main"></i>Seller Detail</h6>
+                      <div class="info-block">
+                        <li>
+                          <h6 class="c-name"><span>Name :</span>{{customerObj.seller.name}}</h6>
+                        </li>
+                        <li>
+                          <h6 class="c-name"><span>Email :</span>{{customerObj.seller.email}}</h6>
+                        </li>
+                        <li>
+                          <h6 class="c-name"><span>Contact No :</span>{{customerObj.seller.mobile}}</h6>
+                        </li>
+                      </div>
+                    </div>
+                    <div class="info-box i-detail">
+                      <h6 class="i-name"><i class="icon-attachament"></i>Social Media</h6>
+                      <div class="info-block social" *ngIf="customerObj.socialMedias.length > 0">
+                        <li *ngFor="let z of customerObj.socialMedias">
+                          <a href="{{z.profileName}}" target="_blank"
+                            *ngIf="z.provider.providerName.toLowerCase() != 'whatsapp' && z.provider.providerName.toLowerCase() != 'snapchat'">
+                            <i class="icon-f-{{z.provider.providerName.toLowerCase()}}"></i>
+                          </a>
+                          <a href="tel:+{{z.mobileNumber}}" target="_blank"
+                            *ngIf="z.provider.providerName.toLowerCase() == 'whatsapp'">
+                            <i class="icon-{{z.provider.providerName.toLowerCase()}}"></i>
+                          </a>
+                          <a href="{{z.profileName}}" target="_blank"
+                            *ngIf="z.provider.providerName.toLowerCase() == 'snapchat'">
+                            <i class="icon-{{z.provider.providerName.toLowerCase()}}"></i>
+                          </a>
+                        </li>
+                      </div>
+                      <div class="pl-2 info-block" *ngIf="customerObj.socialMedias.length == 0">
+                        <h6 class="c-name">No Data Found!</h6>
+                      </div>
+                    </div>
+                    <div class="info-box i-detail">
+                      <h6 class="i-name"><i class="icon-fileupload"></i>Uploaded Proof</h6>
+                      <div class="info-block uplded-doc row">
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                          <div class="doc-box">
+                            <a href="javascript:void(0);"
+                              (click)="openDocumentDialog(FileStoreTypes.CustomerPhotoIdent)">
+                              <img class="img-thumbnail" *ngIf="photoIdentityFileStore.fileThumbnail"
+                                alt="Photo Identity" src="{{photoIdentityFileStore.fileThumbnail}}" [width]="100">
+                              <img class="img-thumbnail" *ngIf="!photoIdentityFileStore.fileThumbnail"
+                                alt="Photo Identity" src="commonAssets/images/pdf_doc.png" [width]="100">
+                            </a>
+                            <!-- <img src="../commonAssets/images/pdf_doc.png" alt="uploded document"> -->
+                          </div>
+                          <span>Photo Identity</span>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                          <div class="doc-box">
+                            <a href="javascript:void(0);"
+                              (click)="openDocumentDialog(FileStoreTypes.CustomerBussinessIdent)">
+                              <img *ngIf="businessIndentityFileStore.fileThumbnail" class="img-thumbnail"
+                                alt="Business Identity" src="{{businessIndentityFileStore.fileThumbnail}}"
+                                [width]="100">
+                              <img class="img-thumbnail" *ngIf="!businessIndentityFileStore.fileThumbnail"
+                                alt="Business Identity" src="commonAssets/images/pdf_doc.png" [width]="100">
+                            </a>
+                            <!-- <img src="../commonAssets/images/img_doc.png" alt="uploded document"> -->
+                          </div>
+                          <span>Bussiness Identity</span>
+                        </div>
+                        <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                          <div class="doc-box">
+                            <img src="../commonAssets/images/pdf_doc.png" alt="uploded document">
+                          </div>
+                          <span>Diamondmfg...pdf</span>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                          <div class="doc-box">
+                            <img src="../commonAssets/images/img_doc.png" alt="uploded document">
+                          </div>
+                          <span>LabGIA-Result..png</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cp-right">
+                  <div class="tab-wrap">
+                    <ul>
+                      <li class="reload">
+                        <a href="javascript:void(0)" routerLink="/customer"><i class="icon-back"></i></a>
+                      </li>
+                      <!-- <li class="reload"><a href="javascript:void(0)"><i class="icon-history"></i></a></li> -->
+                    </ul>
+                    <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+                      <kendo-tabstrip-tab title="Customer Criteria" *ngIf="customerObj.origin == 'Customer'"
+                        [selected]="true">
+                        <ng-template kendoTabContent>
+                          <div class="tab-data wa-list">
+                            <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="flex">
+                                  <div class="o-title">
+                                    <h6 class="title border-0 mb-0">
+                                      <input type="checkbox" class="k-checkbox"
+                                        (click)="selectAllCriteria($event)" />&nbsp;
+                                      Customer Criterias
+                                    </h6>
+                                  </div>
+                                  <div class="o-edit">
+                                    <kendo-buttongroup kendoTooltip position="bottom">
+                                      <button kendoButton (click)="ExportToExcel()"
+                                        [disabled]="selectedCustomerCriteria.length == 0" title="Download Excel"><i
+                                          class="icon-excelnew"></i></button>
+                                      <button kendoButton (click)="openAddCustomerCriteria()" title="Add Branch"><i
+                                          class="icon-add"></i></button>
+                                    </kendo-buttongroup>
+                                  </div>
+                                </div>
+                                <div class="pricing-criteria">
+                                  <div class="en-form mb-2">
+                                    <div class="row e-details-n" *ngIf="customerCriteriaData.length > 0">
+                                      <div class="col-xl-3 col-lg-3 col-sm-4 col-xs-12 mb-3"
+                                        [ngClass]="{ 'pr-0': !lastDivNumber.includes(i)}"
+                                        *ngFor="let criteria of customerCriteriaData;let i = index">
+                                        <div class="info-block border b-des bg-white">
+                                          <div class="flex in-block">
+                                            <div class="o-title">
+                                              <h6 class="b-title"><input type="checkbox" class="k-checkbox"
+                                                  [checked]="criteria.isCheck" name="isCheck" id="isCheck"
+                                                  #isCheck="ngModel" [(ngModel)]="criteria.isCheck"
+                                                  (click)="selectCriteria(criteria.id, $event)" />&nbsp;
+                                                {{criteria.minWeight}} - {{criteria.maxWeight}}
+                                              </h6>
+                                            </div>
+                                            <div class="o-edit">
+                                              <kendo-buttongroup kendoTooltip position="bottom">
+                                                <button kendoButton title="Copy Criteria"
+                                                  (click)="editCustomerCriteria(criteria, true)"><i
+                                                    class="icon-copy"></i></button>
+                                                <button kendoButton title="Edit Criteria"
+                                                  (click)="editCustomerCriteria(criteria);"><i
+                                                    class="icon-edit"></i></button>
+                                                <button kendoButton title="Delete Criteria"
+                                                  (click)="openDeleteDialog(criteria.id)"><i
+                                                    class="icon-trash"></i></button>
+                                              </kendo-buttongroup>
+                                            </div>
+                                          </div>
+                                          <div class="li-wrap">
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Shape : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.shape; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Lab : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.lab; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Color : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.color; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Clarity : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.clarity; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Cut : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.cut; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Polish : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.polish; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Symmentry : </span>
+                                                <i class="p-0" *ngFor="let item of criteria.symmetry; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Fluor : </span>
+                                                <i class="p-0"
+                                                  *ngFor="let item of criteria.fluorescence; let isLast=last">
+                                                  {{item}}{{isLast ? '' : ','}}
+                                                </i>
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Discount : </span>
+                                                {{(criteria.minDiscount || criteria.maxDiscount) ? (criteria.minDiscount
+                                                + ' - ' + criteria.maxDiscount) : ''}}
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Depth : </span>
+                                                {{(criteria.minDepth || criteria.maxDepth) ? (criteria.minDepth + ' - '
+                                                + criteria.maxDepth) : ''}}
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>Table : </span>
+                                                {{(criteria.minTable || criteria.maxTable) ? (criteria.minTable + ' - '
+                                                + criteria.maxTable) : ''}}
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>CrownAngle : </span>
+                                                {{(criteria.minCrownAngle || criteria.maxCrownAngle) ?
+                                                (criteria.minCrownAngle + ' - ' + criteria.maxCrownAngle) : ''}}
+                                              </h6>
+                                            </li>
+                                            <li class="w-100 mb-1">
+                                              <h6 class="c-name"><span>PavillionAngle : </span>
+                                                {{(criteria.minPavillionAngle || criteria.maxPavillionAngle) ?
+                                                (criteria.minPavillionAngle + ' - ' + criteria.maxPavillionAngle) : ''}}
+                                              </h6>
+                                            </li>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="Watchlist"
+                        [selected]="customerObj.origin == 'Customer' ? false : true">
+                        <ng-template kendoTabContent>
+                          <div class="tab-data wa-list">
+                            <div class="row">
+                              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-12 form-data"
+                                *ngFor="let item of listWatchListInventory">
+                                <div class="wibox-wrap">
+                                  <div class="wi-box">
+                                    <img [src]="getShapeImagePath(item.shape)" alt="wishlist_product">
+                                    <div class="del-product" (click)="removeWishlist(item.stoneId)">
+                                      <span class="trash">
+                                        <span></span>
+                                        <i></i>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="wi-info">
+                                    <h6 class="wi-title">{{item.stoneId}}</h6>
+                                    <ul>
+                                      <li>{{item.shape}}</li>
+                                      <li>{{item.weight}}</li>
+                                      <li>{{item.color}}</li>
+                                      <li>{{item.clarity}}</li>
+                                    </ul>
+                                    <ul>
+                                      <li>{{item.cut}}</li>
+                                      <li>{{item.polish}}</li>
+                                      <li>{{item.symmetry}}</li>
+                                      <li>{{item.fluorescence}}</li>
+                                      <li>{{item.lab}}</li>
+                                    </ul>
+                                    <!-- <h6 class="discount"><span>$9702</span>(-50%)</h6> -->
+                                    <h6 class="wi-price">${{item.price.rap}} ({{item.price.discount}})</h6>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="Preferred Stone">
+                        <ng-template kendoTabContent>
+                          <h6 class="pre-title">{{preferredStoneData.length}} Requests</h6>
+                          <div class="pre-stone">
+                            <kendo-grid [data]="preferredStoneData">
+                              <kendo-grid-checkbox-column [width]="150" field="name" title="Basic Info">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                  <div class="g-data">
+                                    <div class="g-right">
+                                      <h6>{{dataItem.query.shape.join(',')}}</h6>
+                                      <span>{{dataItem.query.location.join(',')}}</span>
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </kendo-grid-checkbox-column>
+                              <kendo-grid-column [width]="180" field="name" title="Extra Info" class="extra-info">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                  <div class="g-data">
+                                    <div class="g-right">
+                                      <h6>{{dataItem.query.color.join('-')}}, {{dataItem.query.clarity.join('-')}},
+                                        {{dataItem.query.cut.join('-')}}, {{dataItem.query.polish.join('-')}},
+                                        {{dataItem.query.symm.join('-')}}</h6>
+                                      <span>Amount : ${{dataItem.query.amount}}</span>
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </kendo-grid-column>
+                              <kendo-grid-column [width]="100" field="expiryDate" title="Expires Date">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                  {{dataItem.expiryDate | date: 'dd/MMM/yyyy'}}
+                                </ng-template>
+                              </kendo-grid-column>
+                              <!-- <kendo-grid-column [width]="100" field="Approved Date" title="Approved Date">
+                              </kendo-grid-column>
+                              <kendo-grid-column [width]="150" field="Status" title="Status" class="pre-status">
+                              </kendo-grid-column> -->
+                              <kendo-grid-column [width]="50" field="Search" title="" class="pre-status">
+                                <ng-template kendoGridCellTemplate>
+                                  <div class="g-data justify-content-end">
+                                    <div class="g-right">
+                                      <div class="b-right">
+                                        <ul>
+                                          <li><a href="javascript:void(0)"><i class="icon-search"></i></a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </kendo-grid-column>
+                            </kendo-grid>
+                          </div>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="Save Search">
+                        <ng-template kendoTabContent>
+                          <div class="s-search">
+                            <div class="ss-top">
+                              <div class="s-left">
+                                <span>{{saveSearchData.length}} Saved search</span>
+                              </div>
+                            </div>
+                            <div class="ss-body-wrap" *ngFor="let item of saveSearchData;let i = index;">
+                              <div class="row">
+                                <div class="ss-body">
+                                  <div class="b-left check-box">
+                                    <label for="ss-check"><span>{{item.name}}</span>{{item.createdAt | date:
+                                      'dd/MMM/yyyy'}}
+                                      | {{item.createdAt | date: 'hh:mm a'}}</label>
+                                  </div>
+                                  <div class="b-right">
+                                    <ul>
+                                      <li><a href="javascript:void(0)" (click)="removeSaveSearch(i)"><i
+                                            class="icon-delete"></i></a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 ss-tag">
+                                  <ul>
+                                    <li *ngIf="item.query.shape?.length > 0"><span>Shape</span>-
+                                      {{item.query.shape?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.carat?.length > 0"><span>Size</span>-
+                                      {{item.query.carat}}
+                                    </li>
+                                    <li *ngIf="item.query.clarity?.length > 0"><span>Clarity </span>-
+                                      {{item.query.clarity?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.color?.length > 0"><span>Color</span>-
+                                      {{item.query.color?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.flour?.length > 0"><span>Fluorescence</span>-
+                                      {{item.query.flour?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.cut?.length > 0"><span>Cut</span>-
+                                      {{item.query.cut?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.polish?.length > 0"><span>Polish</span>-
+                                      {{item.query.polish?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.symm?.length > 0"><span>Symm </span>-
+                                      {{item.query.symm?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.amount?.length > 0"><span>Price</span>-
+                                      {{item.query.amount}}
+                                    </li>
+                                    <li *ngIf="item.query.lab?.length > 0"><span>Lab</span>-
+                                      {{item.query.lab?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.brown?.length > 0"><span>Brown</span>-
+                                      {{item.query.brown?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.milky?.length > 0"><span>Milky</span>-
+                                      {{item.query.milky?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.green?.length > 0"><span>Green</span>-
+                                      {{item.query.green?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.location?.length > 0"><span>Location</span>-
+                                      {{item.query.location?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.sideBlack?.length > 0"><span>Side Black</span>-
+                                      {{item.query.sideBlack?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.centerBlack?.length > 0"><span>Center Black</span>-
+                                      {{item.query.centerBlack?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.hNA?.length > 0"><span>HNA</span>-
+                                      {{item.query.hNA?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.eyeClean?.length > 0"><span>Eye Clean</span>-
+                                      {{item.query.eyeClean?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.kToS?.length > 0"><span>Key To Symbol</span>-
+                                      {{item.query.kToS?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.bowtie?.length > 0"><span>Bowtie</span>-
+                                      {{item.query.bowtie?.join(' | ')}}
+                                    </li>
+                                    <li *ngIf="item.query.fromRatio?.length > 0 || item.query.toRatio?.length > 0">
+                                      <span>Ratio</span>-
+                                      {{item.query.fromRatio}} - {{item.query.toRatio}}
+                                    </li>
+                                    <li *ngIf="item.query.fromDepth?.length > 0 || item.query.toDepth?.length > 0">
+                                      <span>Depth</span>-
+                                      {{item.query.fromDepth}} - {{item.query.toDepth}}
+                                    </li>
+                                    <li *ngIf="item.query.fromTable?.length > 0 || item.query.toTable?.length > 0">
+                                      <span>Table</span>-
+                                      {{item.query.fromTable}} - {{item.query.toTable}}
+                                    </li>
+                                    <li *ngIf="item.query.fromLength?.length > 0 || item.query.toLength?.length > 0">
+                                      <span>Length</span>-
+                                      {{item.query.fromLength}} - {{item.query.toLength}}
+                                    </li>
+                                    <li *ngIf="item.query.fromWidth?.length > 0 || item.query.toWidth?.length > 0">
+                                      <span>Width</span>-
+                                      {{item.query.fromWidth}} - {{item.query.toWidth}}
+                                    </li>
+                                    <li *ngIf="item.query.fromHeight?.length > 0 || item.query.toHeight?.length > 0">
+                                      <span>Height</span>-
+                                      {{item.query.fromHeight}} - {{item.query.toHeight}}
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                      <kendo-tabstrip-tab title="Export Setting">
+                        <ng-template kendoTabContent>
+                          <div class="ex-setting o-details e-details">
+                            <div class="flex">
+                              <div class="o-title">
+                                <h6 class="title border-0 mb-0">
+                                  FTP Setting
+                                </h6>
+                              </div>
+                              <div class="o-edit">
+                                <kendo-buttongroup kendoTooltip position="bottom">
+                                  <button kendoButton title="Update Setting" (click)="updateExportSettings()"><i
+                                      class="icon-save"></i></button>
+                                </kendo-buttongroup>
+                              </div>
+                            </div>
+                            <div class="m-min">
+                              <div class="i-form">
+                                <div class="grid">
+                                  <div class="form-data">
+                                    <label for="">UserName</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input type="text" name="username" #username="ngModel"
+                                      [(ngModel)]="exportInfoObj.userName">
+                                  </div>
+                                  <div class="form-data">
+                                    <label for="">Password</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input [type]="show ? 'text' : 'password'" name="pass" #pass="ngModel"
+                                      [(ngModel)]="exportInfoObj.password">
+                                    <i class="icon-view pass-view" (click)="show=!show"></i>
+                                  </div>
+                                  <div class="form-data">
+                                    <label for="">API</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input type="text" name="api" #api="ngModel" [(ngModel)]="exportInfoObj.api">
+                                    <span class="s-error">API required</span>
+                                  </div>
+                                  <div class="form-data">
+                                    <label for="">URL</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input type="text" name="url" #url="ngModel" [(ngModel)]="exportInfoObj.url">
+                                    <span class="s-error">URL required</span>
+                                  </div>
+                                  <div class="form-data">
+                                    <label for="">FTP</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input type="text" name="ftp" #ftp="ngModel" [(ngModel)]="exportInfoObj.ftp"
+                                      class="w-50">
+                                    <span class="s-error">FTP required</span>
+                                    <label class="cu-mar" for="">FTP Time</label>
+                                    <kendo-timepicker name="ftpTime" [(value)]="exportInfoObj.ftpTime!">
+                                    </kendo-timepicker>
+                                    <span class="s-error">FTP time required</span>
+                                  </div>
+                                  <div class="form-data">
+                                    <label for="">Email</label>
+                                  </div>
+                                  <div class="form-data">
+                                    <input type="mail" name="ftp" #ftp="ngModel" [(ngModel)]="exportInfoObj.email"
+                                      class="w-50">
+                                    <span class="s-error">Email required</span>
+                                    <label class="cu-mar" for="">Email Time</label>
+                                    <kendo-timepicker name="emailTime" [(value)]="exportInfoObj.emailTime!">
+                                    </kendo-timepicker>
+                                    <span class="s-error">Email Time required</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-12">
+                                <div class="flex">
+                                  <div class="o-title">
+                                    <h6 class="title border-0 mb-0">
+                                      Column Template
+                                    </h6>
+                                  </div>
+                                  <div class="o-edit">
+                                    <kendo-buttongroup kendoTooltip position="bottom">
+                                      <button kendoButton title="Add Column Template" (click)="openAddColumnDialog()"><i
+                                          class="icon-add"></i></button>
+                                    </kendo-buttongroup>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="ex-se-data">
+                                <div class="ss-body-wrap"
+                                  *ngFor="let item of customerPreference.exportInfo.configs;let i = index">
+                                  <div class="row">
+                                    <div class="ss-body">
+                                      <div class="b-left check-box">
+                                        <label for=""><span>{{item.name}}</span></label>
+                                      </div>
+                                      <div class="b-right">
+                                        <ul>
+                                          <li>
+                                            <a href="javascript:void(0)" (click)="openEditColumnDialog(i, item)"><i
+                                                class="icon-edit"></i></a>
+                                          </li>
+                                          <li class="pl-1">
+                                            <a href="javascript:void(0)" (click)="removeExportConfig(i)"><i
+                                                class="icon-delete"></i></a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 ss-tag">
+                                      <ul>
+                                        <li *ngFor="let field of item.fields">
+                                          <span>{{field.title}}</span>- {{field.custTitle}} ({{field.index}})
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Column Modal Start -->
+<div class="modal c-modal editcell" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isEditColumn">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-editcell"></i>{{columnModalTitle}} Column
+        </h5>
+        <button type="button" class="close" (click)="closeEditColumnDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 nfc-grid">
+            <div class="form-data">
+              <label>Name<span class="require">*</span></label>
+            </div>
+            <div class="form-data">
+              <input type="text" name="exportName" #exportName="ngModel" [(ngModel)]="exportConfigObj.name">
+            </div>
+            <div class="form-data">
+              <label>Format<span class="require">*</span></label>
+            </div>
+            <div class="form-data">
+              <kendo-dropdownlist [data]="listExportFormat" [valuePrimitive]="true" name="format"
+                [(ngModel)]="exportConfigObj.format" #format="ngModel">
+              </kendo-dropdownlist>
+            </div>
+            <div class="form-data">
+              <label>Conditions</label>
+            </div>
+            <div class="form-data">
+              <input type="text" name="conditions" #conditions="ngModel" [(ngModel)]="exportConfigObj.conditions">
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 p-r-7">
+            <div class="i-form">
+              <h6 class="title b-fill">All Columns</h6>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 ex-search">
+                <input type="text" placeholder="Search field name" #searchData="ngModel" name="searchData"
+                  [(ngModel)]="searchColumn" (keyup)="searchColumns()">
+                <span class="i-search"><i class="icon-search"></i></span>
+                <button type="button" class="btn btn-primary" (click)="searchColumn='';searchColumns()"><i
+                    class="icon-clear"></i>Clear
+                  All</button>
+              </div>
+              <div class="ex-wrap ex-left-data">
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <h6 class="title">BASIC</h6>
+                  <ul>
+                    <li *ngFor="let item of listBasicExportColumns">
+                      <button type="button" class="btn btn-primary ex-btn"
+                        (click)="addExportColumn(item)">{{item.title}}</button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <h6 class="title">MEASUREMENT</h6>
+                  <ul>
+                    <li *ngFor="let item of listMeasurementExportColumns">
+                      <button type="button" class="btn btn-primary ex-btn"
+                        (click)="addExportColumn(item)">{{item.title}}</button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <h6 class="title">INCLUSION</h6>
+                  <ul>
+                    <li *ngFor="let item of listIncusionExportColumns">
+                      <button type="button" class="btn btn-primary ex-btn"
+                        (click)="addExportColumn(item)">{{item.title}}</button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <h6 class="title">LOCATION & AVAIABILITY</h6>
+                  <ul>
+                    <li *ngFor="let item of listOthersExportColumns">
+                      <button type="button" class="btn btn-primary ex-btn"
+                        (click)="addExportColumn(item)">{{item.title}}</button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <h6 class="title">CUSTOMIZE TITLE</h6>
+                  <ul>
+                    <li>
+                      <button type="button" class="btn btn-primary ex-btn" (click)="openEditExportColumnDialog()">
+                        <i class="icon-add"></i> Add Customize Title
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 p-l-7">
+            <div class="i-form">
+              <h6 class="title b-fill">Selected Columns</h6>
+              <div class="ex-wrap ex-right-data">
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <div class="table-data">
+                    <div>
+                      <div class="th-header">
+                        <div>Title</div>
+                        <div class="t-title">Customize Title</div>
+                        <div>Value</div>
+                        <div></div>
+                      </div>
+                      <div dragula="GridMasterConfiguration" [(dragulaModel)]="exportConfigObj.fields"
+                        class="export-column-table">
+                        <div class="tr-data" *ngFor="let item of exportConfigObj.fields;let i = index">
+                          <div>{{item.title}}</div>
+                          <div class="text-right">
+                            <input type="text" name="custName" [(ngModel)]="item.custTitle">
+                          </div>
+                          <div *ngIf="item.title == 'Custom'">
+                            <input type="text" name="value" [(ngModel)]="item.value">
+                          </div>
+                          <div *ngIf="item.title != 'Custom'"></div>
+                          <div><i class="icon-delete" (click)="removeExportField(i)"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="addUpdateExportConfig()"><i class="icon-save"></i>Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Column Modal End -->
+
+<!-- Edit Column Modal Start -->
+<div class="modal c-modal edittable" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isEditExportColumn">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-editcell"></i>Add Customize Title</h5>
+        <button type="button" class="close" (click)="closeEditExportColumnDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="i-form">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+              <label for="">Customize Title</label>
+              <input type="text" name="custTtitle" #custTtitle="ngModel" [(ngModel)]="exportColumnObj.custTitle">
+              <span class="s-error">customize title required</span>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+              <label for="">Value</label>
+              <input type="text" name="custValue" #custValue="ngModel" [(ngModel)]="exportColumnObj.value">
+              <span class="s-error">value required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="addExportColumn(exportColumnObj)"><i
+            class="icon-add"></i>Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Column Modal End -->
+
+<ng-container *ngIf="isDiamondDetails">
+  <!-- <app-diamonddetails (toggle)="isDiamondDetails=$event"></app-diamonddetails> -->
+</ng-container>
+
+<!-- #region Document Modal Start-->
+<div class="modal c-modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isShowDocument">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="main-title">
+        <h5>Document</h5>
+        <button type="button" class="close" (click)="closeDocumentDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="attach-img">
+            <img [src]="sanitizeURL(imgSrcDisplay)" alt="document image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div (document:keydown.esc)="closeDocumentDialog()"></div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Customer Criteria Modal -->
+<div class="modal criteria c-modal rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddCustomerCriteria">
+  <form name="criteriaForm" #criteriaForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-pricingcriteria"></i>{{insertFlag ? 'Add'
+            : 'Edit'}} Customer Criteria
+          </h5>
+          <button type="button" class="close" (click)="closeAddCustomerCriteria()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body pb-3">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="pricing-criteria-grid">
+                <div class="form-data">
+                  <label for="">Shape</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': shape.invalid && (shape.dirty || shape.touched)}">
+                  <kendo-multiselect name="shape" class="customselect" [data]="allTheShapes"
+                    [(ngModel)]="customerCriteriaObj.shape" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #shape="ngModel" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allTheShapes, customerCriteriaObj.shape)"
+                    (open)="filterShapeChk = onOpenDropdown(allTheShapes,filterShapeChk, customerCriteriaObj.shape)"
+                    (filterChange)="filterShape = handleFilter($event);allTheShapes = filterDropdownSearch(ShapesList, $event, customerCriteriaObj.shape)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterShape" id="filterShape" [(ngModel)]="filterShape"
+                          placeholder="Search Shape">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterShapeChk" id="filterShapeChk"
+                          title="Select all" [(ngModel)]="filterShapeChk"
+                          (change)="customerCriteriaObj.shape = checkAllListItems(allTheShapes, filterShapeChk, customerCriteriaObj.shape)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.shape, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.shape)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Lab</label>
+                </div>
+                <div class="form-data mul-select" [ngClass]="{ 'error': lab.invalid && (lab.dirty || lab.touched) }">
+                  <kendo-multiselect name="lab" class="customselect" [data]="allTheLab" #lab="ngModel"
+                    [(ngModel)]="customerCriteriaObj.lab" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allTheLab, customerCriteriaObj.lab)"
+                    (open)="filterLabChk = onOpenDropdown(allTheLab,filterLabChk, customerCriteriaObj.lab)"
+                    (filterChange)="filterLab = handleFilter($event);allTheLab = filterDropdownSearch(LabList, $event, customerCriteriaObj.lab)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterLab" id="filterLab" [(ngModel)]="filterLab"
+                          placeholder="Search Lab">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterLabChk" id="filterLabChk"
+                          title="Select all" [(ngModel)]="filterLabChk"
+                          (change)="customerCriteriaObj.lab = checkAllListItems(allTheLab,filterLabChk, customerCriteriaObj.lab)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.lab, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.lab)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Weight<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errWeight.length > 0 || minWeight.invalid || maxWeight.invalid) && 
+                  (minWeight.touched && maxWeight.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minWeight" placeholder="Min" required #minWeight="ngModel"
+                      id="minWeight"
+                      (blur)="errWeight = checkMinMaxValidation(customerCriteriaObj.minWeight, customerCriteriaObj.maxWeight)"
+                      [(ngModel)]="customerCriteriaObj.minWeight" (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" required name="maxWeight" #maxWeight="ngModel" id="maxWeight"
+                      [(ngModel)]="customerCriteriaObj.maxWeight" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errWeight = checkMinMaxValidation(customerCriteriaObj.minWeight, customerCriteriaObj.maxWeight)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errWeight.length > 0 ? '(' + errWeight + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Color</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': color.invalid && (color.dirty || color.touched) }">
+                  <kendo-multiselect name="color" class="customselect" [data]="allColors" #color="ngModel"
+                    [(ngModel)]="customerCriteriaObj.color" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allColors, customerCriteriaObj.color)"
+                    (open)="filterColorChk = onOpenDropdown(allColors,filterColorChk, customerCriteriaObj.color)"
+                    (filterChange)="filterColor = handleFilter($event);allColors = filterDropdownSearch(ColorList, $event, customerCriteriaObj.color)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterColor" id="filterColor" [(ngModel)]="filterColor"
+                          placeholder="Search Color">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterColorChk" id="filterColorChk"
+                          title="Select all" [(ngModel)]="filterColorChk"
+                          (change)="customerCriteriaObj.color = checkAllListItems(allColors,filterColorChk, customerCriteriaObj.color)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.color, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.color)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Clarity</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': clarity.invalid && (clarity.dirty || clarity.touched) }">
+                  <kendo-multiselect name="clarity" class="customselect" [data]="allClarities"
+                    [(ngModel)]="customerCriteriaObj.clarity" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #clarity="ngModel" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allClarities, customerCriteriaObj.clarity)"
+                    (open)="filterClarityChk = onOpenDropdown(allClarities,filterClarityChk, customerCriteriaObj.clarity)"
+                    (filterChange)="filterClarity = handleFilter($event);allClarities = filterDropdownSearch(ClarityList, $event, customerCriteriaObj.clarity)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterClarity" id="filterClarity" [(ngModel)]="filterClarity"
+                          placeholder="Search Clarity">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterClarityChk" id="filterClarityChk"
+                          title="Select all" [(ngModel)]="filterClarityChk"
+                          (change)="customerCriteriaObj.clarity = checkAllListItems(allClarities,filterClarityChk, customerCriteriaObj.clarity)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.clarity, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.clarity)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Cut</label>
+                </div>
+                <div class="form-data mul-select" [ngClass]="{ 'error': cut.invalid && (cut.dirty || cut.touched) }">
+                  <kendo-multiselect name="cut" class="customselect" [data]="allTheCut" #cut="ngModel"
+                    [(ngModel)]="customerCriteriaObj.cut" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allTheCut, customerCriteriaObj.cut)"
+                    (open)="filterCutChk = onOpenDropdown(allTheCut,filterCutChk, customerCriteriaObj.cut)"
+                    (filterChange)="filterCut = handleFilter($event);allTheCut = filterDropdownSearch(CPSList, $event, customerCriteriaObj.cut)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterCut" id="filterCut" [(ngModel)]="filterCut"
+                          placeholder="Search Cut">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterCutChk" id="filterCutChk"
+                          title="Select all" [(ngModel)]="filterCutChk"
+                          (change)="customerCriteriaObj.cut = checkAllListItems(allTheCut,filterCutChk, customerCriteriaObj.cut)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.cut, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.cut)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Polish</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': polish.invalid && (polish.dirty || polish.touched) }">
+                  <kendo-multiselect name="polish" class="customselect" [data]="allThePolish"
+                    [(ngModel)]="customerCriteriaObj.polish" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #polish="ngModel" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allThePolish, customerCriteriaObj.polish)"
+                    (open)="filterPolishChk = onOpenDropdown(allThePolish,filterPolishChk, customerCriteriaObj.polish)"
+                    (filterChange)="filterPolish = handleFilter($event);allThePolish = filterDropdownSearch(CPSList, $event, customerCriteriaObj.polish)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterPolish" id="filterPolish" [(ngModel)]="filterPolish"
+                          placeholder="Search Polish">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterPolishChk" id="filterPolishChk"
+                          title="Select all" [(ngModel)]="filterPolishChk"
+                          (change)="customerCriteriaObj.polish = checkAllListItems(allThePolish,filterPolishChk, customerCriteriaObj.polish)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.polish, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.polish)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Symm</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': symmetry.invalid && (symmetry.dirty || symmetry.touched) }">
+                  <kendo-multiselect name="symmetry" class="customselect" [data]="allTheSymm"
+                    [(ngModel)]="customerCriteriaObj.symmetry" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #symmetry="ngModel" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allTheSymm, customerCriteriaObj.symmetry)"
+                    (open)="filterSymmChk = onOpenDropdown(allTheSymm,filterSymmChk, customerCriteriaObj.symmetry)"
+                    (filterChange)="filterSymm = handleFilter($event);allTheSymm = filterDropdownSearch(CPSList, $event, customerCriteriaObj.symmetry)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterSymm" id="filterSymm" [(ngModel)]="filterSymm"
+                          placeholder="Search Symm">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterSymmChk" id="filterSymmChk"
+                          title="Select all" [(ngModel)]="filterSymmChk"
+                          (change)="customerCriteriaObj.symmetry = checkAllListItems(allTheSymm,filterSymmChk, customerCriteriaObj.symmetry)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.symmetry, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.symmetry)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Fluor</label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': fluorescence.invalid && (fluorescence.dirty || fluorescence.touched) }">
+                  <kendo-multiselect name="fluorescence" class="customselect" [data]="allTheFluorescences"
+                    [(ngModel)]="customerCriteriaObj.fluorescence" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #fluorescence="ngModel" [filterable]="true"
+                    (valueChange)="onMultiSelectChange(allTheFluorescences, customerCriteriaObj.fluorescence)"
+                    (open)="filterFlourChk = onOpenDropdown(allTheFluorescences,filterFlourChk, customerCriteriaObj.fluorescence)"
+                    (filterChange)="filterFlour = handleFilter($event);allTheFluorescences = filterDropdownSearch(FluorList, $event, customerCriteriaObj.fluorescence)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterFlour" id="filterFlour" [(ngModel)]="filterFlour"
+                          placeholder="Search Fluor">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterFlourChk" id="filterFlourChk"
+                          title="Select all" [(ngModel)]="filterFlourChk"
+                          (change)="customerCriteriaObj.fluorescence = checkAllListItems(allTheFluorescences,filterFlourChk, customerCriteriaObj.fluorescence)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="getCommaSapratedString(customerCriteriaObj.fluorescence, true)">
+                        {{getCommaSapratedString(customerCriteriaObj.fluorescence)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Discount</label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': errDiscount.length > 0 }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minDiscount" placeholder="Min" #minDiscount="ngModel"
+                      (blur)="errDiscount = checkMinMaxValidation(customerCriteriaObj.minDiscount, customerCriteriaObj.maxDiscount)"
+                      [(ngModel)]="customerCriteriaObj.minDiscount"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" name="maxDiscount" #maxDiscount="ngModel"
+                      [(ngModel)]="customerCriteriaObj.maxDiscount" (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errDiscount = checkMinMaxValidation(customerCriteriaObj.minDiscount, customerCriteriaObj.maxDiscount)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errDiscount.length > 0 ? '(' + errDiscount + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Depth</label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errDepth.length > 0 || minDepth.invalid || maxDepth.invalid) && 
+                  (minDepth.touched && maxDepth.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minDepth" placeholder="Min" #minDepth="ngModel"
+                      (blur)="errDepth = checkMinMaxValidation(customerCriteriaObj.minDepth, customerCriteriaObj.maxDepth)"
+                      [(ngModel)]="customerCriteriaObj.minDepth" (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" name="maxDepth" #maxDepth="ngModel"
+                      [(ngModel)]="customerCriteriaObj.maxDepth" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errDepth = checkMinMaxValidation(customerCriteriaObj.minDepth, customerCriteriaObj.maxDepth)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errDepth.length > 0 ? '(' + errDepth + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Table</label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errTable.length > 0 || minTable.invalid || maxTable.invalid) && 
+                  (minTable.touched && maxTable.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minTable" placeholder="Min" #minTable="ngModel"
+                      (blur)="errTable = checkMinMaxValidation(customerCriteriaObj.minTable, customerCriteriaObj.maxTable)"
+                      [(ngModel)]="customerCriteriaObj.minTable" (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" name="maxTable" #maxTable="ngModel"
+                      [(ngModel)]="customerCriteriaObj.maxTable" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errTable = checkMinMaxValidation(customerCriteriaObj.minTable, customerCriteriaObj.maxTable)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errTable.length > 0 ? '(' + errTable + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Crown Angle</label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errCrownAngle.length > 0 || minCrownAngle.invalid || maxCrownAngle.invalid) && 
+                  (minCrownAngle.touched && maxCrownAngle.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minCrownAngle" placeholder="Min" #minCrownAngle="ngModel"
+                      (blur)="errCrownAngle = checkMinMaxValidation(customerCriteriaObj.minCrownAngle, customerCriteriaObj.maxCrownAngle)"
+                      [(ngModel)]="customerCriteriaObj.minCrownAngle" (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" name="maxCrownAngle" #maxCrownAngle="ngModel"
+                      [(ngModel)]="customerCriteriaObj.maxCrownAngle" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errCrownAngle = checkMinMaxValidation(customerCriteriaObj.minCrownAngle, customerCriteriaObj.maxCrownAngle)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errCrownAngle.length > 0 ? '(' + errCrownAngle + ')' :
+                    ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Pav Angle</label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errPavillionAngle.length > 0 || minPavillionAngle.invalid || maxPavillionAngle.invalid) && 
+                  (minPavillionAngle.touched && maxPavillionAngle.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minPavillionAngle" placeholder="Min"
+                      #minPavillionAngle="ngModel"
+                      (blur)="errPavillionAngle = checkMinMaxValidation(customerCriteriaObj.minPavillionAngle, customerCriteriaObj.maxPavillionAngle)"
+                      [(ngModel)]="customerCriteriaObj.minPavillionAngle"
+                      (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" name="maxPavillionAngle" #maxPavillionAngle="ngModel"
+                      [(ngModel)]="customerCriteriaObj.maxPavillionAngle" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errPavillionAngle = checkMinMaxValidation(customerCriteriaObj.minPavillionAngle, customerCriteriaObj.maxPavillionAngle)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errPavillionAngle.length > 0 ? '(' + errPavillionAngle + ')' :
+                    ''}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onCriteriaSubmit(criteriaForm, false)" [disabled]="!criteriaForm.valid"
+            class="btn btn-primary"><i class="icon-add"></i>New</button>
+          <button class="btn btn-primary" (click)="onCriteriaSubmit(criteriaForm, true)"
+            [disabled]="!criteriaForm.valid">
+            <i class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+    <div (document:keydown.esc)="closeAddCustomerCriteria()"></div>
+  </form>
+</div>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

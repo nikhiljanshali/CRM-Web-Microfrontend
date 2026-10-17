@@ -1,0 +1,357 @@
+<title>Party</title>
+<div class="party-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Party</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openAddPartyDialog()" title="Add Party"><i
+                        class="icon-add"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openUpdatePartyDialog()" title="Edit Party">
+                      <i class="icon-edit"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openPartyRedirect('details')"
+                      title="View Details"> <i class="icon-viewdetilas"></i></button>
+                    <button [disabled]="insertFlag" kendoButton (click)="openDeleteDialog()" title="Delete Party"><i
+                        class="icon-delete"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap">
+              <!-- Skeleton start -->
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100">
+                  <th *ngFor="let field of fields">{{field.propertyName}}</th>
+                  <tr *ngFor="let field of skeletonArray">
+                    <td *ngFor="let field of fields">
+                      <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                      </kendo-skeleton>
+                    </td>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- Skeleton end -->
+
+              <kendo-grid #orgGrid *ngIf="gridView" [data]="gridView" [reorderable]="true" [resizable]="true"
+                [groupable]="true" [sortable]="true" [selectable]="selectableSettings"
+                (selectionChange)="selectedRowChange($event)" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='mobileNo'">
+                          <span>{{dataItem.mobileNo | numberfilter:'mobile'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='phoneNo'">
+                          <span>{{dataItem.phoneNo | numberfilter:'phone'}}</span>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='faxNo'">
+                          <span>{{dataItem.faxNo | numberfilter:'fax'}}</span>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+          </div>
+
+          <!-- Search start -->
+          <div class="e-right">
+            <div class="sr-wrap" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form" #partySearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Name</label>
+                        <input type="text" id="" name="filtername" [(ngModel)]="partyCriteria.name"
+                          #filtername="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Code</label>
+                        <input type="text" id="" name="filtercode" [(ngModel)]="partyCriteria.code"
+                          #filtercode="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Contact Person</label>
+                        <input type="text" id="l-name" name="filterContactPerson"
+                          [(ngModel)]="partyCriteria.contactPerson" #filtercontactperson="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Email</label>
+                        <input type="mail" id="" name="filterEmail" [(ngModel)]="partyCriteria.email"
+                          #filterEmail="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Mobile No</label>
+                        <input type="text" id="l-name" name="filtermobileno" [(ngModel)]="partyCriteria.mobileNo"
+                          #filtermobileno="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="l-name">Phone No</label>
+                        <input type="text" id="l-name" name="filterphoneno" [(ngModel)]="partyCriteria.phoneNo"
+                          #filterphoneno="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action"
+                          (click)="partySearchForm.form.valid && onFilterSubmit(partySearchForm)">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button (click)="clearFilter(partySearchForm)" class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Search End -->
+        </div>
+        <div class="f-btn" [ngClass]="{'active': filterFlag}">
+          <ul>
+            <li><button class="open-filter" (click)="filterPartToggle()"><i class="icon-filter"></i></button></li>
+            <li><button (click)="partySearchForm.form.valid && onFilterSubmit(partySearchForm)"><i
+                  class="icon-search"></i></button></li>
+            <li><button (click)="clearFilter(partySearchForm)"><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Party Modal Start -->
+<div class="modal c-modal addemp rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isRegParty">
+  <form name="form" #partyForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-party"></i>Add Party</h5>
+          <button type="button" class="close" (click)="closeRegPartyDialog(partyForm)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ad-party">
+                <h6 class="title"><i class="icon-party"></i>Party Information</h6>
+                <div class="grid">
+
+                  <div class="form-data">
+                    <label for="">Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                    <input type="text" name="name" [(ngModel)]="partyObj.name" #name="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Type<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': partyType.invalid && (partyType.dirty || partyType.touched)}">
+                    <kendo-dropdownlist [data]="listPartyTypeItems" name="partyType" [valuePrimitive]="true"
+                      [(ngModel)]="partyObj.partyType" #partyType="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Code<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': code.invalid && (code.dirty || code.touched)}">
+                    <input type="text" name="code" [(ngModel)]="partyObj.code" #code="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Contact Person<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': contactPerson.invalid && (contactPerson.dirty || contactPerson.touched)}">
+                    <input type="text" name="contactPerson" [(ngModel)]="partyObj.contactPerson"
+                      #contactPerson="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Email<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="email" name="email" [(ngModel)]="partyObj.email" #email="ngModel" id="" required email>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Mobile No<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': mobileNo.invalid && ((mobileNo.touched && mobileNo.hasError('pattern')) || (mobileNo.errors?.required && mobileNo.touched)) }">
+                    <kendo-maskedtextbox name="mobileNo" [(ngModel)]="partyObj.mobileNo" #mobileNo="ngModel" id=""
+                      [mask]="mobileMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Phone No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="phoneNo" #phoneNo="ngModel" [(ngModel)]="partyObj.phoneNo" id=""
+                      [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Fax No</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-maskedtextbox name="faxNo" #faxNo="ngModel" [(ngModel)]="partyObj.faxNo" id=""
+                      [mask]="faxMask">
+                    </kendo-maskedtextbox>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Income Tax No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="incometaxno" #incometaxno="ngModel"
+                      [(ngModel)]="partyObj.incomeTaxNo">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Tax No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="taxno" #taxno="ngModel" [(ngModel)]="partyObj.taxNo">
+                  </div>
+
+                  <div class="form-data">
+                    <label>Line Of Business<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': lineOfBusiness.invalid && (lineOfBusiness.dirty || lineOfBusiness.touched)}">
+                    <kendo-dropdownlist [data]="listBusinessTypeItems" name="lineOfBusiness" [valuePrimitive]="true"
+                      [(ngModel)]="partyObj.lineOfBusiness" #lineOfBusiness="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="k-text-right"></div>
+                  <div class="c-l-fs">
+                    <input type="checkbox" class="k-checkbox" name="isActive" [(ngModel)]="partyObj.isActive">
+                    <label class="k-checkbox-label" for="">Active</label>
+                  </div>
+
+                </div>
+              </div>
+              <div class="i-form om-add">
+                <h6 class="title"><i class="icon-mapmarker"></i>Address</h6>
+                <div class="grid">
+                  <div class="form-data">
+                    <label>Line1</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="partyObj.address.line1">
+                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Line2</label>
+                  </div>
+                  <div class="form-data">
+                    <textarea cols="4" type="text" id="" name="line2" #line2="ngModel"
+                      [(ngModel)]="partyObj.address.line2">
+                                        </textarea>
+                  </div>
+                  <div class="form-data">
+                    <label>Type</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listAddressTypeItems" [valuePrimitive]="true" name="addressType"
+                      #addressType="ngModel" [(ngModel)]="partyObj.address.type">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>Country</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true"
+                      [(ngModel)]="partyObj.address.country">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>State</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="partyObj.address.state">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>City</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="partyObj.address.city">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label>ZipCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="" name="zipcode" #zipcode="ngModel" [(ngModel)]="partyObj.address.zipCode">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onPartySubmit(partyForm,false)" [disabled]="!partyForm.valid" class="btn btn-primary"><i
+              class="icon-add"></i>New</button>
+          <button (click)="onPartySubmit(partyForm,true)" [disabled]="!partyForm.valid" class="btn btn-primary"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeRegPartyDialog(partyForm)"></div>
+  </form>
+</div>
+<!-- Add Party Modal End -->
+
+<div kendoDialogContainer></div>

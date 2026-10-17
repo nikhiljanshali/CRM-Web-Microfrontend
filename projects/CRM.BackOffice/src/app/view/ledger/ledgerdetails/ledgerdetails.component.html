@@ -1,0 +1,273 @@
+<title>Ledger Details</title>
+<div class="pdetails-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="middle-wrap row wb">
+                    <div class="e-left w-100">
+                        <div class="company-info">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                <div class="ci-top-left bread-size">
+                                    <ul>
+                                        <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                                        <li class="breadcrumb-item k-cursor-pointer" routerLink="/ledger">Ledger</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Ledger Details</li>
+                                    </ul>
+                                </div>
+                                <div class="ci-top-right">
+                                    <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton routerLink="/ledger"><i class="icon-back"></i></button>
+                                    </kendo-buttongroup>
+                                </div>
+                            </div>
+                            <div class="grid-wrap o-details e-details">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="i-form ed-top">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="en-form">
+                                                        <h6 class="title">Personal Information</h6>
+                                                        <div class="p-flex">
+                                                            <div class="row p-right e-details-n">
+                                                                <div
+                                                                    class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                    <div class="info-block">
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Name:</span>{{ledgerData?.name}}
+                                                                            </h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                    <div class="info-block we-3">
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Code
+                                                                                    :</span>{{ledgerData?.code}}</h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Email</span>{{ledgerData?.email}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li class="text-right">
+                                                                            <h6 class="c-name"><span>Mobile
+                                                                                    No.:</span>{{ledgerData?.mobileNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Phone:</span>{{ledgerData?.phoneNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Fax
+                                                                                    No:</span>{{ledgerData?.faxNo}}</h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="en-form mt-2">
+                                                        <h6 class="title">Address</h6>
+                                                        <div class="row e-details-n">
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Address line 1
+                                                                                :</span>{{ledgerData.address.line1}}
+                                                                        </h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Address line 2
+                                                                                :</span>{{ledgerData.address.line2}}
+                                                                        </h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Email
+                                                                                :</span>{{ledgerData.email}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Mobile No
+                                                                                :</span>{{ledgerData.mobileNo}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>City
+                                                                                :</span>{{ledgerData.address.city}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>State
+                                                                                :</span>{{ledgerData.address.state}}
+                                                                        </h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Country
+                                                                                :</span>{{ledgerData.address.country}}
+                                                                        </h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Type
+                                                                                :</span>{{ledgerData.address.type}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Zipcode
+                                                                                :</span>{{ledgerData.address.zipCode}}
+                                                                        </h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="en-form">
+                                                        <h6 class="title">Business Information</h6>
+                                                        <div class="p-flex">
+                                                            <div class="row p-right e-details-n">
+                                                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                    <div class="info-block">
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Contact
+                                                                                    Person:</span>{{ledgerData?.contactPerson}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Line Of
+                                                                                    Business.:</span>{{ledgerData?.lineOfBusiness}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>IncomeTax
+                                                                                    No.:</span>{{ledgerData?.incomeTaxNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Tax
+                                                                                    No.:</span>{{ledgerData?.taxNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Status
+                                                                                    :</span>{{ledgerData?.isActive}}
+                                                                            </h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="en-form mt-2" >
+                                                            <h6 class="title">Bank Information</h6>
+                                                            <div class="p-flex">
+                                                                <div class="row p-right e-details-n">
+                                                                    <div
+                                                                        class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                        <div class="info-block">
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Bank Name
+                                                                                        :</span>{{ledgerData?.bank?.bankName}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Branch
+                                                                                        :</span>{{ledgerData?.bank?.branch}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Account
+                                                                                        No:</span>{{ledgerData?.bank?.accountNo}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Account Name
+                                                                                        :</span>{{ledgerData?.bank?.accountName}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>IFSC Code
+                                                                                        :</span>{{ledgerData?.bank?.ifsc}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name">
+                                                                                    <span>Swift:</span>{{ledgerData?.bank?.swift}}
+                                                                                </h6>
+                                                                            </li>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12"
+                                                    *ngIf="isBrokerDtl">
+                                                    <div class="en-form">
+                                                        <div class="en-form mt-2">
+                                                            <h6 class="title">Broker Information</h6>
+                                                            <div class="p-flex">
+                                                                <div class="row p-right e-details-n">
+                                                                    <div
+                                                                        class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                        <div class="info-block">
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Brokrage %
+                                                                                        :</span>{{ledgerData?.broker?.brokrage}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Ref.
+                                                                                        Address:</span>{{ledgerData?.broker?.refAddress}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Ref. Company
+                                                                                        Name
+                                                                                        :</span>{{ledgerData?.broker?.refCompanyName}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Ref. Person
+                                                                                        Name
+                                                                                        :</span>{{ledgerData?.broker?.refPersonName}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Ref. Email
+                                                                                        :</span>{{ledgerData?.broker?.refemail}}
+                                                                                </h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h6 class="c-name"><span>Ref. Mobile No
+                                                                                        :</span>{{ledgerData?.broker?.refmobileNo}}
+                                                                                </h6>
+                                                                            </li>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

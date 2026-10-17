@@ -1,0 +1,26 @@
+<div class="h-100 d-flex flex-column">
+  <!-- Top Bar Start -->
+  <app-customer-header></app-customer-header>
+  <!-- Top Bar End -->
+
+  <!-- Sidebar Start -->
+  <app-customer-side-menu></app-customer-side-menu>
+  <!-- Sidebar End -->
+
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff"
+    template="<img src='commonAssets/images/gl.gif' style='width:80px;' />" [fullScreen]="true">
+    <!-- <p style="color: white"> Loading... </p> -->
+  </ngx-spinner>
+
+  <!-- Page main content -->
+  <router-outlet></router-outlet>
+  <!-- Page main content -->
+
+  <!-- Footer -->
+  <app-footer class="d-flex justify-content-center mt-auto"></app-footer>
+  <!-- Common Suggestion Dialog -->
+  <ng-container *ngIf="isSuggestion">
+    <app-suggestion></app-suggestion>
+  </ng-container>
+  <!-- Common Suggestion Dialog -->
+</div>

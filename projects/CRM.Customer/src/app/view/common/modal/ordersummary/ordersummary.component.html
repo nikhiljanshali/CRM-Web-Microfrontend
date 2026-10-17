@@ -1,0 +1,58 @@
+<div class="modal c-modal dialog-ui" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <form>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="icon-order"></i>Order Summary</h5>
+                    <button type="button" class="close" (click)="closeCheckoutDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-summary mb-2">
+                        <h6 class="title mb-2">VOW Discount Summary</h6>
+                        <p><i class="icon-doubleright mr-2"></i>Your Past 7 Days Purchase :
+                            <b>{{lastPurchase}} US $</b>
+                        </p>
+                        <p><i class="icon-doubleright mr-2"></i>Current Order Value : <b>{{totalAmount}}
+                                US $</b></p>
+                        <p><i class="icon-doubleright mr-2"></i>Total Purchase Of This Week Is :
+                            <b>{{totalVowValue}} US $</b>
+                        </p>
+                        <p><i class="icon-doubleright mr-2"></i>You Are Getting <b>{{appliedVowDisc}}
+                                %</b> (InAmount :
+                            <b>{{appliedVowAmt}} US $</b>) Addtional VOW On Your
+                            This Purchase.
+                        </p>
+                        <p><i class="icon-doubleright mr-2"></i>TOTAL AFTER ALL DISCOUNTS :
+                            <b>{{paybleAmount}} US $</b>
+                        </p>
+                    </div>
+                    <h6 class="title mb-2">Choose PickUp Location</h6>
+                    <div class="mb-1" *ngFor="let pLocation of pickupLocations">
+                        <input type="radio" id="{{pLocation.name}}" name="pickupLocation" [checked]="pLocation.name == pickUpLocation"
+                        (change)="addPickupLocation(pLocation, $event)" kendoRadioButton />
+                        <kendo-label class="k-radio-label" for="{{pLocation.name}}"> {{pLocation.name}}</kendo-label>
+                    </div>
+                    <div class="mb-1" *ngIf="isShowOtherLocation">
+                        <kendo-label class="k-radio-label"  text="{{otherLocation}}"> 
+                        </kendo-label>
+                    </div>
+                    <div *ngIf="isShowOtherLocation">
+                        <hr class="mt-3 mb-3">
+                        <p class="mb-2"><b>Your Registered Location : </b>{{otherLocation}}</p>
+                        <p class="mb-0"><b>Please Note :
+                          </b>Shipment Charges May Apply Extra, Please Contact your <b>RM</b>
+                          for more information</p>
+                      </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" [disabled]="(!pickUpLocation && !isContinuBtnDisabled) || (isContinuBtnDisabled)" (click)="continueCheckOut()"
+                    >Continue <i class="icon-doubleright"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div (document:keydown.esc)="closeCheckoutDialog()"></div>
+    </form>
+</div>

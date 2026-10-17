@@ -1,0 +1,37 @@
+.purchase-grid {
+    display              : grid;
+    grid-template-columns: 65px 1fr 54px 1fr 102px 1fr;
+    grid-column-gap      : 10px;
+    grid-row-gap         : 5px;
+}
+
+.input-grid {
+    grid-column-gap: 8px;
+}
+
+.grid-total {
+    grid-column-gap: 30px;
+    background     : #fafafa;
+}
+
+.grid-left-total {
+    display              : grid;
+    grid-template-columns: 50px 1fr 56px 1fr 26px 1fr;
+    grid-column-gap      : 10px;
+    grid-row-gap         : 5px;
+}
+
+.grid-left-total .form-data:last-child {
+    grid-column: 6 span / 7;
+}
+
+.grid-left-total .form-data textarea {
+    height: 70px;
+}
+
+.grid-right-total {
+    display              : grid;
+    grid-template-columns: 60px 1fr;
+    grid-column-gap      : 10px;
+    grid-row-gap         : 5px;
+}

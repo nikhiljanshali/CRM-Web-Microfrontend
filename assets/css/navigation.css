@@ -1,0 +1,245 @@
+span.l-click {
+    text-align   : right;
+    display      : block;
+    padding      : 8px 15px;
+    cursor       : pointer;
+    font-size    : 14px;
+    margin-bottom: 5px;
+}
+
+span.l-click:hover {
+    background-color: rgba(77, 77, 77, 0.26);
+}
+
+i.icon-leftall {
+    opacity: .6;
+}
+
+.profile-block {
+    padding: 15px;
+}
+
+.menu li {
+    border-bottom: 1px solid #d3d3d3;
+    position     : relative;
+}
+
+.submenu li:first-child {
+    border-top: 1px solid #d3d3d3;
+}
+
+.menu li:last-child {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.menu li .submenu-wrap ul li:last-child {
+    border-bottom: 0;
+}
+
+.menu li a {
+    font-family    : "Poppins-Medium";
+    font-size      : 13px;
+    display        : block;
+    color          : #000;
+    text-decoration: none;
+    margin         : auto;
+    padding        : 10px;
+    cursor         : pointer;
+}
+
+.submenu li a {
+    padding-left: 20px !important;
+    display     : block;
+}
+
+.menu li:hover>a,
+.sidebar-menu menu li.active {
+    color     : #fff !important;
+    background: #3d3d3d;
+}
+
+.menu li:hover>a,
+.menu li a.active {
+    color     : #000 !important;
+    background: #eeeeee;
+}
+
+.menu li a.active {
+    color     : #000 !important;
+    background: #e2e2e2;
+}
+
+.menu li:hover span.drop-arrow {
+    transition: all 0.5s ease;
+}
+
+img.sv-fill {
+    max-height: 20px;
+    max-width : 20px;
+}
+
+.menu li i {
+    vertical-align: initial;
+}
+
+.menu span {
+    padding-left: 7px;
+}
+
+.submenu-wrap {
+    display   : none;
+    transition: all 0.2s ease;
+}
+
+/* menu li:hover .submenu-wrap  */
+.left-sidebar li.active .submenu-wrap {
+    display            : block;
+    animation-name     : fadeInTop;
+    animation-duration : 0.5s;
+    animation-fill-mode: both;
+}
+
+span.drop-arrow {
+    position: absolute;
+    top     : 11px;
+    right   : 10px;
+}
+
+span.drop-arrow i {
+    padding   : initial;
+    display   : inline-block;
+    transition: all 0.5s ease;
+}
+
+/* .menu li:hover span.drop-arrow i */
+.menu li a.active-arrow i {
+    transform: rotate(-90deg);
+}
+
+.hum-menu {
+    position  : fixed;
+    top       : 7px;
+    right     : 10px;
+    cursor    : pointer;
+    z-index   : 1;
+    transition: all 0.5s ease;
+}
+
+.hum-menu.active {
+    right: 50px;
+}
+
+.left-sidebar {
+    width     : 220px;
+    position  : fixed;
+    transition: all 0.5s ease;
+    height    : 100%;
+    top       : 36px;
+    left      : 0;
+    z-index   : 11;
+}
+
+.left-sidebar .menu {
+    height    : calc(100vh - 238px);
+    border-top: 1px solid #d3d3d3;
+    overflow-y: auto;
+}
+
+body.active .left-sidebar .menu {
+    overflow-y: visible;
+}
+
+body.active span.l-click {
+    transform    : rotateY(180deg);
+    /* transition: all .5s linear; */
+}
+
+body.active .left-sidebar {
+    width: 42px;
+}
+
+body.active .middle-content {
+    margin-left: 42px;
+    min-width  : calc(100% - 42px);
+}
+
+body.active .menu span {
+    display: none;
+}
+
+body.active .menu li {
+    padding-right: 3px;
+}
+
+body.active .menu .submenu li {
+    padding-right: initial;
+}
+
+body.active .menu li a {
+    text-align: center;
+}
+
+body.active .submenu li a {
+    text-align: left;
+}
+
+body.active .profile-block .i-box {
+    width  : 32px;
+    height : 32px;
+    display: block;
+    margin : 0 auto 10px;
+}
+
+body.active .i-box img {
+    max-height: 100%;
+    position  : relative;
+    top       : 50%;
+    transform : translate(-50%, -50%);
+    left      : 50%;
+    margin    : auto;
+}
+
+body.active span.sub-name,
+body.active span.sup-name {
+    display: none;
+}
+
+body.active .profile-block {
+    padding: initial;
+}
+
+body.active .i-box img {
+    display   : block;
+    margin    : auto;
+    position  : static !important;
+    top       : initial !important;
+    transform : initial !important;
+    object-fit: initial;
+    width     : initial;
+    height    : initial;
+}
+
+body.active .submenu-wrap {
+    display: none !important;
+}
+
+body.active .menu li:hover .submenu-wrap {
+    display    : block !important;
+    position   : absolute;
+    top        : 0;
+    left       : 44px;
+    background : #f9f9f9;
+    width      : 220px;
+    z-index    : 999;
+    margin-left: 0;
+    border-left: 2px solid #3d3d3d;
+    box-shadow : 5px 0px 20px 0px #b7b7b7;
+}
+
+body.active .menu li:hover>span {
+    display: inline-block;
+}
+
+.menu li:hover .submenu-wrap span {
+    display: inline-block;
+}

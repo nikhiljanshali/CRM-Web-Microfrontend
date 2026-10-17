@@ -1,0 +1,128 @@
+<div class="dd-sidebar">
+  <div class="dd-sidebar-ui" [ngClass]="{'active': diamonddetailFlag}">
+    <h6><i class="icon-delete" (click)="closeDiamonddetailSidebar()"></i>
+    </h6>
+    <div class="dd-grid">
+      <div class="dd-leftsidebar">
+        <div class="dd-header mb-3">
+          <p class="mb-1"><b>Stock ID :</b> {{invItemObj.stoneId}}</p>
+          <p class="mb-0"><b>Status :</b> <span> Available</span></p>
+        </div>
+        <iframe class="frameStone" id="invItemsSearchResult.invItemID" scrolling="no" seamless="seamless"
+          src="https://diamdna.com/Vision360.html?d=aqx-303&amp;sr=-30&amp;s=30"
+          style="width: 100%;height: 470px;border: 0;"></iframe>
+        <div class="dd-icon">
+          <button kendoButton kendoTooltip position="bottom" title="View Image">
+            <i class="icon-camera"></i>
+          </button>
+          <button kendoButton kendoTooltip position="bottom" title="View Video">
+            <i class="icon-video-camera"></i>
+          </button>
+          <button kendoButton kendoTooltip position="bottom" title="View Heart Image">
+            <i class="icon-dd-heart"></i>
+          </button>
+          <button kendoButton kendoTooltip position="bottom" title="View Arrow Image">
+            <i class="icon-dd-arrow"></i>
+          </button>
+          <button kendoButton kendoTooltip position="bottom" title="View Certificate">
+            <i class="icon-cerificate"></i>
+          </button>
+          <button kendoButton kendoTooltip position="bottom" title="View Download">
+            <i class="icon-doc_download"></i>
+          </button>
+        </div>
+      </div>
+      <div class="dd-rightsidebar">
+        <div class="subtitle">
+          <p>Details</p>
+        </div>
+        <div class="dd-deatils-grid">
+          <div class="form-data"><label>Lab</label><span>{{invItemObj.lab}}</span></div>
+          <div class="form-data"><label>Shape</label><span>{{invItemObj.shape}}</span></div>
+          <div class="form-data"><label>Size</label><span>{{invItemObj.weight}}</span></div>
+          <div class="form-data"><label>Color</label><span>{{invItemObj.color}}</span></div>
+          <div class="form-data"><label>Clarity</label><span>{{invItemObj.clarity}}</span></div>
+          <div class="form-data"><label>Cut</label><span>{{invItemObj.cut}}</span></div>
+          <div class="form-data"><label>Polish</label><span>{{invItemObj.polish}}</span></div>
+          <div class="form-data"><label>Symmetry</label><span>{{invItemObj.symmetry}}</span></div>
+          <div class="form-data"><label>Fluoresence</label><span>{{invItemObj.fluorescence}}</span></div>
+          <div class="form-data"><label>Certificate No</label><span>{{invItemObj.certificateNo}}</span></div>
+        </div>
+        <div class="subtitle mt-3">
+          <p>Measurement</p>
+        </div>
+        <div class="dd-mesurement-grid">
+          <div class="form-data"><label>Length</label><span>{{invItemObj.measurement.length}}</span></div>
+          <div class="form-data"><label>Width</label><span>{{invItemObj.measurement.width}}</span></div>
+          <div class="form-data"><label>Depth</label><span>{{invItemObj.measurement.depth}}</span></div>
+          <div class="form-data"><label>Total depath%</label><span>{{invItemObj.measurement.height}}</span></div>
+          <div class="form-data"><label>Table%</label><span>{{invItemObj.measurement.table}}</span></div>
+          <div class="form-data"><label>Crown height</label><span>{{invItemObj.measurement.crownHeight}}</span></div>
+          <div class="form-data"><label>Crown angle</label><span>{{invItemObj.measurement.crownAngle}}</span></div>
+          <div class="form-data"><label>Pavilion depth</label><span>{{invItemObj.measurement.pavilionDepth}}</span>
+          </div>
+          <div class="form-data"><label>Pavilion angle</label><span>{{invItemObj.measurement.pavilionAngle}}</span>
+          </div>
+          <div class="form-data"><label>Girdle%</label><span>{{invItemObj.measurement.girdlePer}}</span></div>
+          <div class="form-data"><label>Girdle</label><span>{{invItemObj.measurement.minGirdle}} -
+              {{invItemObj.measurement.maxGirdle}}</span></div>
+          <div class="form-data"><label>Ratio</label><span>{{invItemObj.measurement.ratio}}</span></div>
+        </div>
+        <div class="subtitle mt-3">
+          <p>Inclusion</p>
+        </div>
+        <div class="dd-inclusion-grid">
+          <div class="form-data"><label>Brown</label><span>{{invItemObj.inclusion.brown}}</span></div>
+          <div class="form-data"><label>Green</label><span>{{invItemObj.inclusion.green}}</span></div>
+          <div class="form-data"><label>Milky</label><span>{{invItemObj.inclusion.milky}}</span></div>
+          <div class="form-data"><label>Shade</label><span>{{invItemObj.inclusion.shade}}</span></div>
+          <div class="form-data"><label>Black Table</label><span>{{invItemObj.inclusion.sideBlack}}</span></div>
+          <div class="form-data"><label>Black crown</label><span>{{invItemObj.inclusion.centerBlack}}</span></div>
+          <div class="form-data"><label>White table</label><span>{{invItemObj.inclusion.sideWhite}}</span></div>
+          <div class="form-data"><label>White crown</label><span>{{invItemObj.inclusion.centerWhite}}</span></div>
+          <div class="form-data"><label>Open crown</label><span>{{invItemObj.inclusion.openCrown}}</span></div>
+          <div class="form-data"><label>Open gridle</label><span>{{invItemObj.inclusion.openGirdle}}</span></div>
+          <div class="form-data"><label>Open pavilion</label><span>{{invItemObj.inclusion.openPavilion}}</span></div>
+          <div class="form-data"><label>Open table</label><span>{{invItemObj.inclusion.openTable}}</span></div>
+          <div class="form-data"><label>EFOC</label><span>{{invItemObj.inclusion.efoc}}</span></div>
+          <div class="form-data"><label>EFOP</label><span>{{invItemObj.inclusion.efop}}</span></div>
+          <div class="form-data"><label>Gridle condition</label><span>{{invItemObj.inclusion.girdleCondition}}</span>
+          </div>
+          <div class="form-data"><label>Culet</label><span>{{invItemObj.inclusion.culet}}</span></div>
+          <div class="form-data"><label>Nature On
+              pavilion</label><span>{{invItemObj.inclusion.naturalOnPavillion}}</span></div>
+          <div class="form-data"><label>Nature On crown</label><span>{{invItemObj.inclusion.naturalOnCrown}}</span>
+          </div>
+          <div class="form-data"><label>Nature On gridle</label><span>{{invItemObj.inclusion.naturalOnGirdle}}</span>
+          </div>
+          <div class="form-data"><label>Key to symbol</label><span>{{invItemObj.inclusion.ktoS}}</span></div>
+          <div class="form-data"><label>HNA</label><span>{{invItemObj.inclusion.hna}}</span></div>
+          <div class="form-data"><label>Eye clean</label><span>{{invItemObj.inclusion.eyeClean}}</span></div>
+        </div>
+        <div class="subtitle mt-3">
+          <p>Price (USD)</p>
+        </div>
+        <div class="dd-Price-grid">
+          <div class="form-data"><label>Rapaport</label><span>{{invItemObj.price.rap}}</span></div>
+          <div class="form-data"><label>Discolunt%</label><span>{{invItemObj.price.discount}}</span></div>
+          <div class="form-data"><label>$/Ct%</label><span>{{invItemObj.price.perCarat}}</span></div>
+          <div class="form-data"><label>Amount($)</label><span>{{invItemObj.price.netAmount}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dd-button text-right">
+      <button class="grid-btn mr-2"><i class="icon-icon_email mr-1"></i>Send Via Email</button>
+      <button class="grid-btn mr-2" (click)="addToWatchList()"><i class="icon-wishlist mr-1"></i>Add To Watchlist</button>
+      <button class="grid-btn mr-2" (click)="addToCart()"><i class="icon-addtocart mr-1"></i>Add To Cart</button>
+      <button class="grid-btn" (click)="openCheckoutDialog()"><i class="icon-order mr-1"></i>Add To Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- #region Checkout -->
+<ng-container *ngIf="isCheckout">
+  <app-ordersummary (toggle)="isCheckout=$event" [totalAmount]="totalAmount" [invIds]="invIds"
+    [pageFrom]="pageFrom" (childEvent)="parentMethodCall()">
+  </app-ordersummary>
+</ng-container>
+<!-- #endregion-->

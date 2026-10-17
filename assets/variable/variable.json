@@ -1,0 +1,19 @@
+{
+  "apiBaseUrl": "http://localhost:12360/api/",
+  "apiSupplierUrl": "http://localhost:27656/api/",
+  "apiPricingProjectUrl": "https://localhost:44351/api/",
+  "apiIdentityUrl": "http://localhost:4592/api/",
+  "apiFileUploadUrl": "http://localhost:26962/api/",
+  "apiCustomerUrl": "http://localhost:16322/api/",
+  "apiSellerUrl": "http://localhost:38981/api/",
+  "apiPricingUrl": "http://172.20.2.53:9897/api/Back/GetMfgAmtForDay",
+  "apiBasePricingUrl": "http://172.20.2.53:9897/api/Back/GetKapanDisc",
+  "apiMarketSheetPricingUrl": "http://172.20.2.53:9897/api/Back/Glow/GetSalesBestDisc/true",
+  "apiMeasureGradeUrl": "http://172.20.2.53:9897/api/MeasureGrade/GetBothGrade",
+  "invStoneCertiUrl": "https://diamdna.com/reports/",
+  "invStoneImageUrl": "https://diamdna.com/imaged/",
+  "notificationSocketUrl": "ws://localhost:2624/",
+  "notificationBaseUrl": "http://localhost:2624/",
+  "backOffliceBaseUrl": "http://localhost:25264/api/",
+  "frontOfficeBaseUrl": "https://localhost:44363/api/"
+}

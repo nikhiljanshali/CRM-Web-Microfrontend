@@ -1,0 +1,465 @@
+<title>Lab Expense</title>
+<div class="osummry-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Lab Expense</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button (click)="openDetailsDialog()" kendoButton title="Lab Invoice Details">
+                      <i class="icon-viewdetilas"></i>
+                    </button>
+                    <button (click)="openInvoiceDialog()" kendoButton title="Upload Invoice">
+                      <i class="icon-fileupload"></i>
+                    </button>
+                    <button kendoButton (click)="openGridConfigDialog()" title="Grid Configuration"><i
+                        class="icon-gridconfig"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap">
+              <!-- #region Skeleton start -->
+              <ng-container *ngIf="!labExpenseItems">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100 skeleton-tbl">
+                  <ng-container *ngFor="let field of fields">
+                    <th *ngIf="field.isSelected">
+                      {{field.title}}
+                    </th>
+                  </ng-container>
+                  <tr *ngFor="let field of skeletonArray">
+                    <ng-container *ngFor="let fieldItem of fields">
+                      <td *ngIf="fieldItem.isSelected">
+                        <kendo-skeleton shape="text" animation="wave" [width]="80" [height]="40">
+                        </kendo-skeleton>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- #endregion Skeleton end -->
+
+              <!-- #region Grid start-->
+              <kendo-grid [data]="gridView" [reorderable]="true" [resizable]="true" [groupable]="true" [sortable]="true"
+                [selectable]="selectableSettings" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [kendoGridSelectBy]="'id'" #gridContext (dblclick)="openDetailsDialog()"
+                (selectionChange)="onSelect($event)">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [field]="field.propertyName" [width]="field.width" [title]="field.title">
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='invoiceDate'">
+                          {{dataItem.invoiceDate | date:"dd/MM/yyyy"}}
+                        </ng-template>
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+              <!-- #region Grid End -->
+            </div>
+          </div>
+
+          <!-- Search start -->
+          <div class="e-right">
+            <div class="sr-wrap" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form" #partySearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="dpicker">From</label>
+                        <kendo-datepicker calendarType="classic" name="from" id="from" format="dd/MM/yyyy"
+                          [(ngModel)]="labexpenseSearchCriteria.from" #from="ngModel">
+                        </kendo-datepicker>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="dpicker">To</label>
+                        <kendo-datepicker calendarType="classic" name="to" id="to" format="dd/MM/yyyy"
+                          [(ngModel)]="labexpenseSearchCriteria.to" #to="ngModel">
+                        </kendo-datepicker>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Lab</label>
+                        <kendo-dropdownlist [data]="listLabItems" textField="text" valueField="value" name="Lab"
+                          [(ngModel)]="selectedLabItems" #Lab="ngModel">
+                        </kendo-dropdownlist>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Stone Id</label>
+                        <input type="text" class="input-sm form-control text-left" name="stoneId"
+                          [(ngModel)]="labexpenseSearchCriteria.stoneId" />
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Job No.</label>
+                        <input type="text" id="" name="jobNo" [(ngModel)]="labexpenseSearchCriteria.jobNo"
+                          #jobNo="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Invoice No.</label>
+                        <input type="text" id="" name="invoiceNo" [(ngModel)]="labexpenseSearchCriteria.invoiceNo"
+                          #invoiceNo="ngModel">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Certificate No.</label>
+                        <input type="text" class="input-sm form-control text-left" name="certificateNo"
+                          [(ngModel)]="labexpenseSearchCriteria.certificateNo" #certificateNo="ngModel" />
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Control No.</label>
+                        <input type="text" class="input-sm form-control text-left" name="controlNo"
+                          [(ngModel)]="labexpenseSearchCriteria.controlNo" #controlNo="ngModel" />
+                      </div>
+
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action" (click)="partySearchForm.form.valid && filterBySearch()">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button (click)="clearFilter(partySearchForm)" class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Search End -->
+        </div>
+        <div class="f-btn" [ngClass]="{'active': filterFlag}">
+          <ul>
+            <li><button class="open-filter" (click)="filterPartToggle()"><i class="icon-filter"></i></button></li>
+            <li><button (click)="partySearchForm.form.valid && filterBySearch()"><i
+                  class="icon-search"></i></button></li>
+            <li><button (click)="clearFilter(partySearchForm)"><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #region Details -->
+<div class="modal c-modal dialog-lg o-details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true" *ngIf="isDetails">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-viewdetilas"></i>Lab Invoice Details</h5>
+        <button type="button" class="close" (click)="closeDetailsDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body search-filter">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="en-form f-12">
+              <h6 class="title"><i class="icon-info"></i> Summary</h6>
+              <div class="inv-summary-details">
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Record(s) : </span>{{totalInvRecords}}</label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Stone(s) : </span>{{totalInvStones}}</label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Lab Fee : </span>{{totalInvLabFee | number:'0.2-2'}}
+                  </label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Handling Charge : </span>{{totalInvHandCharge | number:'0.2-2'}}
+                  </label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Shipping Charge : </span>{{totalShipCharge | number:'0.2-2'}}
+                  </label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Tax Amount : </span>{{totalInvTaxAmt | number:'0.2-2'}}
+                  </label>
+                </div>
+                <div class="grid-1">
+                  <label class="col-form-label"><span>Invoice Expense : </span>{{totalInvExpense | number:'0.2-2'}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <h6 class="title"></h6>
+          </div>
+          <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0">
+                <div class="ci-top-right mb-1">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openGridConfigDialogDet()" title="Grid Configuration Detail"><i
+                        class="icon-gridconfig p-0"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+            <div class="grid-wrap">
+              <ng-container *ngIf="!gridDetailView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fieldsDet && fieldsDet.length > 0" class="w-100">
+                  <th *ngFor="let field of fieldsDet">{{field.propertyName}}</th>
+                  <tr *ngFor="let field of skeletonArray">
+                    <td *ngFor="let field of fieldsDet">
+                      <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                      </kendo-skeleton>
+                    </td>
+                  </tr>
+                </table>
+              </ng-container>
+              <kendo-grid [data]="gridDetailView" class="grid-ui labsummary-grid" [sortable]="true"
+                [selectable]="selectableSettings" [resizable]="true" [reorderable]="true" [kendoGridSelectBy]="'id'">
+                <ng-container *ngIf="fieldsDet && fieldsDet.length > 0">
+                  <ng-container *ngIf="fieldsDet && fieldsDet.length > 0">
+                    <ng-container *ngFor="let field of fieldsDet">
+                      <ng-container *ngIf="field.isSelected">
+                        <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                          <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='invoiceDate'">
+                            {{dataItem.invoiceDate | date:"dd/MM/yyyy"}}
+                          </ng-template>
+                        </kendo-grid-column>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- #regionend -->
+
+<!-- #region Invoice Summry -->
+<div class="modal c-modal dialog-lg addemp inv-info" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true" *ngIf="InvoiceSummary">
+  <form name="invoiceForm" #invoiceForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-viewdetilas"></i>Upload Lab Invoice</h5>
+          <button type="button" class="close" (click)="closeInvoiceDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="en-form f-12">
+                <div class="inv-summry-grid mb-2">
+
+                  <div class="form-data">
+                    <label>Lab</label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': Lab.invalid && (Lab.dirty || Lab.touched)}">
+                    <kendo-dropdownlist [data]="listLabItems" textField="text" valueField="value" name="Lab"
+                      [(ngModel)]="selectedLabItems" #Lab="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Invoice Date</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-datepicker calendarType="classic" name="invoiceDueDate" #invoiceDueDate="ngModel"
+                      format="dd/MM/yyyy" [(ngModel)]="labExpense.invoiceDate"></kendo-datepicker>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Currency Type<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': InvoiceCurrencyType.invalid && (InvoiceCurrencyType.dirty || InvoiceCurrencyType.touched)}">
+                    <kendo-dropdownlist class="w-auto" [data]="listInvoiceCurrencyType" [valuePrimitive]="true"
+                      textField="text" valueField="value" name="InvoiceCurrencyType"
+                      [(ngModel)]="labExpense.currencyType" #InvoiceCurrencyType="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="form-data">
+                    <label>Currency Rate<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': currencyRate.invalid && (currencyRate.dirty || currencyRate.touched)}">
+                    <input type="text" name="currencyRate" autocomplete="off"
+                      (keypress)="utilityService.floatOnly($event)" [(ngModel)]="labExpense.currencyRate"
+                      #currencyRate="ngModel" id="currencyRate" required>
+                  </div>
+
+                  <input #file type="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
+                    (click)="file.value=''" (change)="onSelectExcelFile($event)" hidden />
+                  <button kendoButton (click)="file.click()" title="Lab Expense Upload">
+                    <i class="icon-excelnew p-0"></i>
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="en-form f-12">
+                <h6 class="title"><i class="icon-info"></i> Summary</h6>
+                <div class="inv-summary-details">
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Record(s) : </span>{{totalInvRecords}}</label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Stone(s) : </span>{{totalInvStones}}</label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Lab Fee : </span>{{totalInvLabFee | number:'0.2-2'}}
+                    </label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Handling Charge : </span>{{totalInvHandCharge | number:'0.2-2'}}
+                    </label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Shipping Charge : </span>{{totalShipCharge | number:'0.2-2'}}
+                    </label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Tax Amount : </span>{{totalInvTaxAmt | number:'0.2-2'}}
+                    </label>
+                  </div>
+                  <div class="grid-1">
+                    <label class="col-form-label"><span>Invoice Expense : </span>{{totalInvExpense | number:'0.2-2'}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <h6 class="title"></h6>
+
+              <div class="grid-wrap mt-2">
+                <div class="company-info">
+                  <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+                    <div class="ci-top-left">
+                      <h6 class="title mb-0 border-0"><i class="icon-diamond"></i> Invoice Stone(s)</h6>
+                    </div>
+                    <div class="ci-top-right">
+                      <kendo-buttongroup kendoTooltip position="bottom">
+                        <button kendoButton (click)="openGridConfigDialogInvoice()" title="Grid Configuration"><i
+                            class="icon-gridconfig p-0"></i></button>
+                      </kendo-buttongroup>
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngIf="!InsertlabExcelItems">
+                  <div class="k-grouping-header k-grouping-header-flex">
+                    <div class="k-indicator-container">
+                      <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                      </kendo-skeleton>
+                    </div>
+                  </div>
+                  <table *ngIf="fieldsInvoice && fieldsInvoice.length > 0" class="w-100">
+                    <th *ngFor="let field of fieldsInvoice">{{field.propertyName}}</th>
+                    <tr *ngFor="let field of skeletonArray">
+                      <td *ngFor="let field of fieldsInvoice">
+                        <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                        </kendo-skeleton>
+                      </td>
+                    </tr>
+                  </table>
+                </ng-container>
+                <kendo-grid [data]="InsertlabExcelItems" class="grid-ui invsummary-grid" [resizable]="true">
+                  <ng-container *ngIf="fieldsInvoice && fieldsInvoice.length > 0">
+                    <ng-container *ngIf="fieldsInvoice && fieldsInvoice.length > 0">
+                      <ng-container *ngFor="let field of fieldsInvoice">
+                        <ng-container *ngIf="field.isSelected">
+                          <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                            <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.propertyName=='invoiceDate'">
+                              {{dataItem.invoiceDate | date:"dd/MM/yyyy"}}
+                            </ng-template>
+                          </kendo-grid-column>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </kendo-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onInvSubmit(invoiceForm)"><i class="icon-save"></i>Save</button>
+          <button type="button" class="btn btn-primary" (click)="closeInvoiceDialog()">
+            <i class="icon-clear"></i>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- #regionend -->
+
+<!-- #region Grid config -->
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'Labexpense'" [gridName]="'LabexpenseGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion Grid config -->
+
+<!-- #region Grid Config-->
+<ng-container *ngIf="isGridConfigDet">
+  <app-gridconfiguration [fields]="fieldsDet" [pageName]="'LabExpenseDet'" [gridName]="'LabExpenseDetGrid'"
+    [gridConfigId]="gridConfigDet ? gridConfigDet.id : undefined" (toggle)="isGridConfigDet=$event"
+    (ChildEvent)="setNewGridConfigDet($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Grid Config-->
+<ng-container *ngIf="isGridConfigInvoice">
+  <app-gridconfiguration [fields]="fieldsInvoice" [pageName]="'Labinvoice'" [gridName]="'LabinvoiceGrid'"
+    [gridConfigId]="gridConfigInvoice ? gridConfigInvoice.id : undefined" (toggle)="isGridConfigInvoice=$event"
+    (ChildEvent)="setNewGridConfigInvoice($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,382 @@
+<title>Register</title>
+<div class="form-wrap register">
+  <div class="c-flex">
+    <div class="c-left">
+      <div class="f-side">
+        <div class="left-wrap">
+          <div class="img-box">
+            <img src="../assets/images/login_Component.png" alt="login-page">
+          </div>
+          <div class="banner-text">
+            <h3>Excellence In Diamonds</h3>
+            <div class="pattern-title">
+              <img src="../assets/images/svg/diamond.svg" alt="diamond">
+            </div>
+            <p>"GlowStar" is an identity in the world of Diamond Manufacturers since 1995. The Company
+              well-known in
+              India for providing employment opportunities in Diamond industry, with tons of skilled
+              craftsmen
+              and
+              professionals under its umbrella, adding value to the diamond it creates. With a massive
+              production
+              of polished diamonds.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c-right">
+      <div class="right-wrap">
+        <div class="back-arrow" (click)="navigateBackward()">
+          <span><i class="icon-back" title="Back"></i></span>
+        </div>
+        <div class="logo">
+          <a routerLink="/login"><img src="../assets/images/Glowstar.png" alt="logo"></a>
+        </div>
+        <div class="r-form">
+          <h6>Register Form</h6>
+          <p>Let's get you all set up so we can verify your personal account and begin setting up your
+            profile.</p>
+        </div>
+        <div class="ri-form-wrap">
+          <form name="registerForm" #registerForm="ngForm">
+            <div class="i-form">
+              <h6 class="title">Personal Information</h6>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="lname">FirstName<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': firstName.invalid && (firstName.dirty || firstName.touched)}">
+                    <input type="text" id="" name="firstName" #firstName="ngModel"
+                      [(ngModel)]="registerCustomer.name.firstName" required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="lname">MiddleName</label>
+                  <div class="form-data">
+                    <input type="text" id="" name="middleName" #middleName="ngModel"
+                      [(ngModel)]="registerCustomer.name.middleName">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="lname">LastName<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': lastName.invalid && (lastName.dirty || lastName.touched)}">
+                    <input type="text" id="" name="lastName" #lastName="ngModel"
+                      [(ngModel)]="registerCustomer.name.lastName" required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="dpicker">Birth Date<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': birthDate.invalid && (birthDate.dirty || birthDate.touched)}">
+                    <kendo-datepicker [readOnlyInput]="true" [disabledDates]="disabledDates" format="dd/MM/yyyy" id=""
+                      name="birthDate" #birthDate="ngModel" [(ngModel)]="registerCustomer.birthDate" required>
+                    </kendo-datepicker>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="mobile">Mobile No 1<span class="require">*</span></label>
+                  <div class="form-data country-code"
+                    [ngClass]="{ 'error':primaryMobile.invalid && (primaryMobile.dirty || primaryMobile.touched)}">
+                    <ngx-intl-tel-input [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="true"
+                      [enablePlaceholder]="true" [searchCountryFlag]="true"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India" maxLength="15"
+                      [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                      [numberFormat]="PhoneNumberFormat.National" name="primaryMobile" #primaryMobile="ngModel"
+                      [(ngModel)]="primaryMobileNo" required>
+                    </ngx-intl-tel-input>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="phono">Mobile No 2<span class="require">*</span></label>
+                  <div class="form-data country-code"
+                    [ngClass]="{ 'error': secondaryMobile.invalid && (secondaryMobile.dirty || secondaryMobile.touched)}">
+                    <ngx-intl-tel-input [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="true"
+                      [enablePlaceholder]="true" [searchCountryFlag]="true"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India" maxLength="15"
+                      [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                      [numberFormat]="PhoneNumberFormat.National" name="secondaryMobile" #secondaryMobile="ngModel"
+                      [(ngModel)]="secondaryMobileNo" required>
+                    </ngx-intl-tel-input>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="memail">Email<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': email.invalid && ((email.touched && email.hasError('email')) || (email.errors?.required && email.touched))}">
+                    <input type="text" id="" name="email" #email="ngModel" [(ngModel)]="registerCustomer.email" email
+                      required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="tphono">Telephone No<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': phoneNo.invalid && (phoneNo.dirty || phoneNo.touched)}">
+                    <kendo-maskedtextbox type="text" id="" name="phoneNo" #phoneNo="ngModel"
+                      [(ngModel)]="registerCustomer.phoneNo" [mask]="phoneMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="i-form bu-inf">
+              <h6 class="title">Business Information</h6>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="cname">Company Name<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': companyName.invalid && (companyName.dirty || companyName.touched)}">
+                    <input type="text" id="" name="companyName" #companyName="ngModel"
+                      [(ngModel)]="registerCustomer.companyName" required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="desig">Designation<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': designation.invalid && (designation.dirty || designation.touched)}">
+                    <kendo-dropdownlist [data]="listDesignationItems" name="designation" #designation="ngModel"
+                      [(ngModel)]="registerCustomer.designation" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label>Business Type<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': businessType.invalid && (businessType.dirty || businessType.touched)}">
+                    <kendo-dropdownlist [data]="listBusinessTypeItems" name="businessType" #businessType="ngModel"
+                      [(ngModel)]="registerCustomer.businessType" required>
+                    </kendo-dropdownlist>
+                  </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="bemail">Business Email<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': businessEmail.invalid && ((businessEmail.touched && businessEmail.hasError('email')) || (businessEmail.errors?.required && businessEmail.touched))}">
+                    <input type="text" id="" name="businessEmail" #businessEmail="ngModel"
+                      [(ngModel)]="registerCustomer.businessEmail" email required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="phono">Business Mobile No<span class="require">*</span></label>
+                  <div class="form-data country-code"
+                    [ngClass]="{ 'error': businessMobileNo.invalid && (businessMobileNo.dirty || businessMobileNo.touched)}">
+                    <ngx-intl-tel-input [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="true"
+                      [enablePlaceholder]="true" [searchCountryFlag]="true"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India" maxLength="15"
+                      [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                      [numberFormat]="PhoneNumberFormat.National" name="businessMobileNo" #businessMobileNo="ngModel"
+                      [(ngModel)]="businessMobile" required>
+                    </ngx-intl-tel-input>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="tphono">Business Phone No<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': businessPhoneNo.invalid && (businessPhoneNo.dirty || businessPhoneNo.touched)}">
+                    <kendo-maskedtextbox type="text" id="" name="businessPhoneNo" #businessPhoneNo="ngModel"
+                      [(ngModel)]="registerCustomer.businessPhoneNo" [mask]="phoneMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-sm-6 col-xs-12 form-data">
+                  <label>Country<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': country.invalid && (country.dirty || country.touched)}">
+                    <kendo-dropdownlist [data]="countryItems" [kendoDropDownFilter]="filterSettings"
+                      [textField]="'name'" [valueField]="'name'" name="country" #country="ngModel"
+                      (valueChange)="onCountryChange($event)" [valuePrimitive]="true"
+                      [(ngModel)]="registerCustomer.address.country" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-sm-6 col-xs-12 form-data">
+                  <label>State<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': state.invalid && (state.dirty || state.touched)}">
+                    <kendo-dropdownlist [data]="stateItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onStateChange($event)" [valuePrimitive]="true" name="state"
+                      #state="ngModel" [(ngModel)]="registerCustomer.address.state" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12 form-data">
+                  <label for="ctname">City<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': city.invalid && (city.dirty || city.touched)}">
+                    <kendo-dropdownlist [data]="cityItems" [kendoDropDownFilter]="filterSettings" [textField]="'name'"
+                      [valueField]="'name'" (valueChange)="onCityChange($event)" [valuePrimitive]="true" name="city"
+                      #city="ngModel" [(ngModel)]="registerCustomer.address.city" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <label for="addre">Address<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': line1.invalid && (line1.dirty || line1.touched)}">
+                    <textarea class="textarea-wrap" cols="4" rows="3" type="text" id="" name="line1" #line1="ngModel"
+                      [(ngModel)]="registerCustomer.address.line1" required>
+                                                                                                  </textarea>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="zip">Postal Code<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': postalCode.invalid && (postalCode.dirty || postalCode.touched)}">
+                    <input type="text" id="" name="postalCode" #postalCode="ngModel"
+                      [(ngModel)]="registerCustomer.address.zipCode" required>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data">
+                  <label for="Fax">Fax<span class="require">*</span></label>
+                  <div class="form-data" [ngClass]="{ 'error': faxNo.invalid && (faxNo.dirty || faxNo.touched)}">
+                    <kendo-maskedtextbox type="text" id="" name="faxNo" #faxNo="ngModel"
+                      [(ngModel)]="registerCustomer.faxNo" [mask]="faxMask" required>
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                  <label for="tref">Reference<span class="require">*</span></label>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': referenceName.invalid && (referenceName.dirty || referenceName.touched)}">
+                    <input type="text" id="" name="referenceName" #referenceName="ngModel"
+                      [(ngModel)]="registerCustomer.referenceName" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="i-form doc-up">
+              <h6 class="title">Profile and identity proof images</h6>
+              <div class="row">
+                <!-- Profile Photo -->
+                <div class="col-xl-4 col-lg-4 col-sm-6 col-xs-12 form-data">
+                  <label>Profile image<span class="require">*</span></label>
+                  <div class="c-upload">
+                    <label for="file-input">
+                      <span><i class="icon-upload"></i></span>
+                      <span>Select files</span>
+                    </label>
+                    <input #profileFileupload type="file" (change)="uploadFiles(registerForm,$event,'profile')"
+                      accept="image/png, image/gif, image/jpeg" id="file-input" type="file" name="profileImage" />
+                    <input type="hidden" name="fileHidden">
+                  </div>
+                  <div class="msg-box" [ngStyle]="{'border-bottom-color': '#028e02'  }" *ngIf="profileImageModel">
+                    <div class="success">File successfully attached
+                    </div>
+                    <button type="button" (click)="clearPhotoProfile(registerForm)" class="btn"><i
+                        class="icon-delete"></i></button>
+                  </div>
+                  <span class="im-bottom">Personal image</span>
+                  <span *ngIf="profileImageFlag" class="s-error">Profile image is
+                    required</span>
+                </div>
+                <!-- Photo identity proof -->
+                <div class="col-xl-4 col-lg-4 col-sm-6 col-xs-12 form-data">
+                  <label>Photo identity proof<span class="require">*</span></label>
+                  <div class="c-upload">
+                    <label for="file-input">
+                      <span><i class="icon-upload"></i></span>
+                      <span>Select files</span>
+                    </label>
+                    <input #photoIdentityFileupload type="file"
+                      (change)="uploadFiles(registerForm,$event,'photoIdentity')" accept=".jpg,.png,.pdf"
+                      id="file-input" type="file" name="photoIdentity" />
+                    <input type="hidden" name="fileHidden">
+                  </div>
+                  <div class="msg-box" [ngStyle]="{'border-bottom-color': '#028e02' }" *ngIf="photoIdentityModel">
+                    <div class="success">File successfully attached
+                    </div>
+                    <button type="button" (click)="clearPhotoIdentity(registerForm)" class="btn"><i
+                        class="icon-delete"></i></button>
+                  </div>
+
+                  <span class="im-bottom">Passport, Driving License etc... (Upload image or PDF
+                    file)</span>
+                  <span *ngIf="photoIdentityFlag" class="s-error">Photo
+                    identity is required</span>
+                </div>
+                <!-- Business Card -->
+                <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12 form-data">
+                  <label>Business proof<span class="require">*</span></label>
+                  <div class="c-upload">
+                    <label for="file-input">
+                      <span><i class="icon-upload"></i></span>
+                      <span>Select files</span>
+                    </label>
+                    <input #businessIndentityFileupload type="file"
+                      (change)="uploadFiles(registerForm,$event,'businessindentity')" accept=".jpg,.png,.pdf"
+                      id="file-input" type="file" name="businessIdentity" />
+                    <input type="hidden" name="fileHidden">
+                  </div>
+                  <div class="msg-box" [ngStyle]="{'border-bottom-color':  '#028e02' }" *ngIf="businessIdentityModel">
+                    <div class="success">File successfully attached
+                    </div>
+                    <button type="button" (click)="clearBusinessIdentity(registerForm)" class="btn"><i
+                        class="icon-delete"></i></button>
+                  </div>
+                  <span class="im-bottom">Business Card <br>(Upload image or PDF file)</span>
+                  <span *ngIf="businessIdentityFlag" class="s-error">Business identity is
+                    required</span>
+                </div>
+              </div>
+            </div>
+            <div class="i-form re-social">
+              <h6 class="title">Link your social media accounts</h6>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-whatsapp"></i>
+                  <div
+                    [ngClass]="{ 'error': whatsAppNumberV.invalid && (whatsAppNumberV.dirty || whatsAppNumberV.touched)}">
+                    <kendo-maskedtextbox type="text" id="" name="whatsAppNumberV" #whatsAppNumberV="ngModel"
+                      [(ngModel)]="whatsAppNumber" [mask]="phoneMask">
+                    </kendo-maskedtextbox>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-wechat"></i>
+                  <div
+                    [ngClass]="{ 'error': messengerLinkV.invalid && ((messengerLinkV.touched && messengerLinkV.hasError('pattern')) || (messengerLinkV.errors?.required && messengerLinkV.touched))}">
+                    <input type="text" id="" name="messengerLinkV" #messengerLinkV="ngModel" [(ngModel)]="messengerLink"
+                      [pattern]="websitePattern" placeholder="messenger-link">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-skype"></i>
+                  <input type="text" id="" name="skypeUserNameV" #skypeUserNameV="ngModel" [(ngModel)]="skypeUserName"
+                    placeholder="skype username">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-snapchat"></i>
+                  <input type="text" id="" name="snapChatUserNameV" #snapChatUserNameV="ngModel"
+                    [(ngModel)]="snapChatUserName" placeholder="snapchat username">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-telegram"></i>
+                  <input type="text" id="" name="telegramUserNameV" #telegramUserNameV="ngModel"
+                    [(ngModel)]="telegramUserName" placeholder="telegram username">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data social">
+                  <i class="icon-linkedin"></i>
+                  <input type="text" id="" name="linkedInUserNameV" #linkedInUserNameV="ngModel"
+                    [(ngModel)]="linkedInUserName" placeholder="linkedin username">
+                </div>
+              </div>
+            </div>
+            <div class="i-form">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data sub-btn">
+                  <button type="submit" (click)="onRegisterSubmit(registerForm)" [disabled]="!registerForm.valid"
+                    class="c-btn">Register</button>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-12 form-data sub-btn">
+                  <button type="button" (click)="resetForm(registerForm)" class="c-btn">Reset</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

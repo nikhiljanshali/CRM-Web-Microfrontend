@@ -1,0 +1,172 @@
+<title>Master Config</title>
+<div id="wrapper">
+  <div class="row container-fluid">
+    <div class="middle-content p-0 d-shadow">
+      <div class="breadcrumb">
+        <ul>
+          <li class="breadcrumb-item">
+            <a href="#"></a><i class="icon-home"></i> Home
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Configuration</li>
+        </ul>
+      </div>
+
+      <div class="config-main">
+        <div class="col-12 p-0 mb-2 text-right">
+          <button kendoTooltip position="bottom" (click)="updateConfigurationData()" title="Save Configruation"
+            kendoButton class="k-button"><i class="icon-save"></i></button>
+        </div>
+        <div class="panelbar-wrapper">
+          <kendo-panelbar>
+            <kendo-panelbar-item title="Diamond Configuration" [expanded]="true">
+              <ng-template kendoPanelBarContent>
+                <div class="diamond-config-grid">
+                  <div class="permission_body--item">
+                    <input type="checkbox" class="k-checkbox" id="allowBidHistory" name="allowBidHistory"
+                      [(ngModel)]="configurations.allowBidHistory">
+                    <label class="k-checkbox-label" for="allowBidHistory">Allow User To Show
+                      BidHistory</label>
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Days For New Diamonds</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.newDiamondsDays"
+                      (keypress)="utilityService.numberOnly($event)" class="input-sm form-control text-left"
+                      name="newDiamondsDays" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Month For InActivate Account</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.inActiveAccountMonth"
+                      (keypress)="utilityService.numberOnly($event)" class="input-sm form-control text-left"
+                      name="inActiveAccountMonth" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Minutes For Remove Diamond From Cart</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.removeDiamondsCartMinutes"
+                      (keypress)="utilityService.numberOnly($event)" class="input-sm form-control text-left"
+                      name="removeDiamondsCartMinutes" />
+                  </div>
+                  <div class="permission_body--item">
+                    <input type="checkbox" class="k-checkbox" id="vow" name="vow"
+                      [(ngModel)]="configurations.showVOWDiscount">
+                    <label class="k-checkbox-label" for="vow">Show V.O.W. Dis</label>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+            <kendo-panelbar-item title="Email Credential" [expanded]="true">
+              <ng-template kendoPanelBarContent>
+                <div class="email-credential-grid-1">
+                  <div class="form-data">
+                    <label class="col-from-label">Email ID</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailCredential.emailId"
+                      class="input-sm form-control text-left" name="emailId" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Password</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="password" [(ngModel)]="configurations.emailCredential.password"
+                      class="input-sm form-control text-left" name="password" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">SMTP</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailCredential.smtp"
+                      class="input-sm form-control text-left" name="smtp" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Pert No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailCredential.pertNo"
+                      class="input-sm form-control text-left" name="pertNo" />
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+            <kendo-panelbar-item title="Email Configuration" [expanded]="true">
+              <ng-template kendoPanelBarContent>
+                <div class="email-credential-grid">
+                  <div class="form-data">
+                    <label class="col-from-label">Contact No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.contactNo"
+                      class="input-sm form-control text-left" name="contactNo" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">LandLine No</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.landlineNo"
+                      class="input-sm form-control text-left" name="landlineNo" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">WebSite</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.website"
+                      class="input-sm form-control text-left" name="website" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Address</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.address"
+                      class="input-sm form-control text-left" name="address" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Facebook Link</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.facebookLink"
+                      class="input-sm form-control text-left" name="facebookLink" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Tweeter Link</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.emailConfiguration.tweeterLink"
+                      class="input-sm form-control text-left" name="tweeterLink" />
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+            <kendo-panelbar-item title="API" [expanded]="true">
+              <ng-template kendoPanelBarContent>
+                <div class="email-credential-grid">
+                  <div class="form-data">
+                    <label class="col-from-label">Sales API</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.apiConfiguration.salesApi"
+                      class="input-sm form-control text-left" name="salesApi" />
+                  </div>
+                  <div class="form-data">
+                    <label class="col-from-label">Media API</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" [(ngModel)]="configurations.apiConfiguration.mediaApi"
+                      class="input-sm form-control text-left" name="mediaApi" />
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+          </kendo-panelbar>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

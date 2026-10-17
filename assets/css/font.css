@@ -1,0 +1,38 @@
+@font-face {
+     font-family: "Poppins-Bold";
+     font-display: swap;
+     src: url("../font/Poppins-Bold.woff2") format("woff2"), url("../font/Poppins-Bold.woff") format("woff"),
+          url("../font/Poppins-Bold.ttf") format("truetype");
+}
+
+@font-face {
+     font-family: "Poppins-Regular";
+     font-display: swap;
+     src: url("../font/Poppins-Regular.woff2") format("woff2"),
+          url("../font/Poppins-Regular.woff") format("woff"),
+          url("../font/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+     font-family: "Poppins-Medium";
+     font-display: swap;
+     src: url("../font/Poppins-Medium.woff2") format("woff2"),
+          url("../font/Poppins-Medium.woff") format("woff"),
+          url("../font/Poppins-Medium.ttf") format("truetype");
+}
+
+@font-face {
+     font-family: "Poppins-SemiBold";
+     font-display: swap;
+     src: url("../font/Poppins-SemiBold.woff2") format("woff2"),
+          url("../font/Poppins-SemiBold.woff") format("woff"),
+          url("../font/Poppins-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+     font-family: "Poppins-Italic";
+     font-display: swap;
+     src: url("../font/Poppins-Italic.woff2") format("woff2"),
+          url("../font/Poppins-Italic.woff") format("woff"),
+          url("../font/Poppins-Italic.ttf") format("truetype");
+}

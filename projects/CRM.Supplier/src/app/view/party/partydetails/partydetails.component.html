@@ -1,0 +1,175 @@
+<title>Party Details</title>
+<div class="pdetails-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="middle-wrap row wb">
+                    <div class="e-left w-100">
+                        <div class="company-info">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                <div class="ci-top-left bread-size">
+                                    <ul>
+                                        <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                                        <li class="breadcrumb-item k-cursor-pointer" routerLink="/party">Party</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Party Details</li>
+                                    </ul>
+                                </div>
+                                <div class="ci-top-right">
+                                    <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton><i class="icon-back" routerLink="/party"></i></button>
+                                    </kendo-buttongroup>
+                                </div>
+                            </div>
+                            <div class="grid-wrap o-details e-details">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="i-form ed-top">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="en-form">
+                                                        <h6 class="title">Personal Information</h6>
+                                                        <div class="p-flex">
+                                                            <div class="row p-right e-details-n">
+                                                                <div
+                                                                    class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                    <div class="info-block">
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Name:</span>{{partyData?.name}}
+                                                                            </h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                    <div class="info-block we-3">
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Code
+                                                                                    :</span>{{partyData?.code}}</h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Email</span>{{partyData?.email}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li class="text-right">
+                                                                            <h6 class="c-name"><span>Mobile
+                                                                                    No.:</span>{{partyData?.mobileNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name">
+                                                                                <span>Phone:</span>{{partyData?.phoneNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Fax
+                                                                                    No:</span>{{partyData?.faxNo}}</h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="en-form mt-2">
+                                                        <h6 class="title">Address</h6>
+                                                        <div class="row e-details-n">
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Address line 1
+                                                                                :</span>{{partyData.address.line1}}</h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Address line 2
+                                                                                :</span>{{partyData.address.line2}}</h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <div class="info-block">
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Email
+                                                                                :</span>{{partyData.email}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Mobile No
+                                                                                :</span>{{partyData.mobileNo}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>City
+                                                                                :</span>{{partyData.address.city}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>State
+                                                                                :</span>{{partyData.address.state}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Country
+                                                                                :</span>{{partyData.address.country}}
+                                                                        </h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Type
+                                                                                :</span>{{partyData.address.type}}</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <h6 class="c-name"><span>Zipcode
+                                                                                :</span>{{partyData.address.zipCode}}
+                                                                        </h6>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="en-form">
+                                                        <h6 class="title">Business Information</h6>
+                                                        <div class="p-flex">
+                                                            <div class="row p-right e-details-n">
+                                                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                    <div class="info-block">
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Contact
+                                                                                    Person:</span>{{partyData?.contactPerson}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Line Of
+                                                                                    Business.:</span>{{partyData?.lineOfBusiness}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>IncomeTax
+                                                                                    No.:</span>{{partyData?.incomeTaxNo}}
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Tax
+                                                                                    No.:</span>{{partyData?.taxNo}}</h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h6 class="c-name"><span>Status
+                                                                                    :</span>{{partyData?.isActive}}</h6>
+                                                                        </li>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

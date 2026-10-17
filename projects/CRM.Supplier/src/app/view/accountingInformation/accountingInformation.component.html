@@ -1,0 +1,349 @@
+<title>Accounting Information Details</title>
+<div class="edetails-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Accounting Information Details</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap o-details e-details">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="i-form ed-top">
+                    <h6 class="title">Organization Information</h6>
+                    <div class="row" *ngIf="organizationData">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form">
+                          <div class="p-flex">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3">
+                                  <li>
+                                    <h6 class="c-name"><span>Name :
+                                      </span>{{organizationData?.name}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Org.Type
+                                        :</span>{{organizationData?.organizationType}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Business Type
+                                        :</span>{{organizationData?.businessType}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Registration No
+                                        :</span>{{organizationData?.registrationNo}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>IncomeTax No :
+                                      </span>{{organizationData?.incomeTaxNo}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Membership
+                                        :</span>{{organizationData?.membership}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Website
+                                        :</span>{{organizationData?.website}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Person
+                                        :</span>{{organizationData?.person}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Country
+                                        :</span>{{organizationData?.address?.country}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Email
+                                        :</span>{{organizationData?.email}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Mobile No
+                                        :</span>{{organizationData.mobileNo |
+                                      numberfilter:'mobile'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Phone
+                                        :</span>{{organizationData.phoneNo |
+                                      numberfilter:'phone'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Fax No
+                                        :</span>{{organizationData.faxNo |
+                                      numberfilter:'fax'}}</h6>
+                                  </li>
+                                </div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>Address Note :</span>
+                                      {{organizationData?.address?.line1}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form b-des">
+                          <h6 class="b-title">Tax Information</h6>
+                          <div class="e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Tax No :
+                                    </span>{{organizationData?.taxNo}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="en-form mt-2 b-des">
+                          <h6 class="b-title">Credit Limit Details</h6>
+                          <div class="e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Amount :
+                                    </span>{{organizationData?.creditLimit?.amount}}
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Days :
+                                    </span>{{organizationData?.creditLimit?.days}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="i-form ed-top">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="flex">
+                          <div class="o-title">
+                            <h6 class="title">Bank Details</h6>
+                          </div>
+                          <div class="o-edit">
+                            <kendo-buttongroup kendoTooltip position="bottom">
+                              <button kendoButton title="Add Bank" (click)="openAddBankDialog()"><i
+                                  class="icon-add"></i></button>
+                            </kendo-buttongroup>
+                          </div>
+                        </div>
+                        <div *ngIf="bankItems && bankItems.length > 0" class="br-wrap">
+                          <div *ngFor="let item of bankItems" class="en-form mb-2">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-4 we-3 b-des">
+                                  <div class="flex in-block">
+                                    <div class="o-title">
+                                      <h6 class="b-title">{{item.name}}</h6>
+                                    </div>
+                                    <div class="o-edit">
+                                      <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton (click)="updateBank(item)"><i
+                                            class="icon-edit"></i></button>
+                                        <button kendoButton (click)="deleteBank(item)"><i
+                                            class="icon-trash"></i></button>
+                                      </kendo-buttongroup>
+                                    </div>
+                                  </div>
+                                  <div class="li-wrap">
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Account Name:</span>{{item.accountName}}</h6>
+                                    </li>
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Account Number:</span>{{item.acNo}}</h6>
+                                    </li>
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Address :</span>{{item.address}}
+                                      </h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>SwiftCode:</span>{{item.swiftCode}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>IFSC Code:</span>{{item.ifscCode}}</h6>
+                                    </li>
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Intermediate:</span>{{item.intermediate}}</h6>
+                                    </li>
+                                    <li class="w-100">
+                                      <h6 class="c-name"><span>Intermediate
+                                          SwiftCode:</span>{{item.intermediateSwiftCode}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Code:</span>{{item.code}}</h6>
+                                    </li>
+                                    <li>
+                                      <h6 class="c-name"><span>Active :</span><input type="checkbox" class="k-checkbox"
+                                          disabled [checked]="item.isActive" /></h6>
+                                    </li>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="br-wrap" *ngIf="bankItems == undefined || bankItems.length == 0">
+                          <div class="data-notfound">
+                            <h6 class="title">Data Not Found</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Bank Modal Start -->
+<div class="modal addemp c-modal br-ref" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddBank">
+  <form name="form" #bankForm="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-creditlimit"></i>Add Bank</h5>
+          <button type="button" class="close" (click)="closeAddBankDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ad-branch">
+                <h6 class="title"><i class="icon-creditlimit"></i>Bank Information</h6>
+                <div class="grid">
+
+                  <div class="form-data">
+                    <label for="">Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                    <input type="text" name="name" [(ngModel)]="bankObj.name" #name="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Code<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': code.invalid && (code.dirty || code.touched)}">
+                    <input type="text" name="code" [(ngModel)]="bankObj.code" #code="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Account Name<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data"
+                    [ngClass]="{ 'error': accountName.invalid && (accountName.dirty || accountName.touched)}">
+                    <input type="text" name="accountName" [(ngModel)]="bankObj.accountName" #accountName="ngModel" id=""
+                      required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Acc. No.<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data" [ngClass]="{ 'error': acNo.invalid && (acNo.dirty || acNo.touched)}">
+                    <input type="text" name="acNo" [(ngModel)]="bankObj.acNo" #acNo="ngModel" id="" required>
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">SwiftCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="swiftCode" [(ngModel)]="bankObj.swiftCode" #swiftCode="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">IFSC Code</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="iFSCCode" [(ngModel)]="bankObj.ifscCode" #iFSCCode="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Intermediate</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="intermediate" [(ngModel)]="bankObj.intermediate" #intermediate="ngModel"
+                      id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Int.SwiftCode</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" name="intermediateSwiftCode" [(ngModel)]="bankObj.intermediateSwiftCode"
+                      #intermediateSwiftCode="ngModel" id="">
+                  </div>
+
+                  <div class="form-data">
+                    <label for="">Address<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data add-te-bank"
+                    [ngClass]="{ 'error': address.invalid && (address.dirty || address.touched)}">
+                    <textarea cols="4" name="address" [(ngModel)]="bankObj.address" #address="ngModel" id=""></textarea>
+                  </div>
+
+                  <div class="k-text-right"></div>
+                  <div class="c-l-fs">
+                    <input type="checkbox" class="k-checkbox" name="isActive" [(ngModel)]="bankObj.isActive">
+                    <label class="k-checkbox-label" for="">Active</label>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onBankSubmit(bankForm,false)" [disabled]="!bankForm.valid" class="btn btn-primary"><i
+              class="icon-add"></i>New</button>
+          <button (click)="onBankSubmit(bankForm,true)" [disabled]="!bankForm.valid" class="btn btn-primary"><i
+              class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeAddBankDialog()"></div>
+  </form>
+</div>
+<!-- Add Branch Modal End -->
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,132 @@
+<title>Forgot Password</title>
+<div class="form-wrap fpass">
+    <div class="c-flex">
+        <div class="c-left">
+            <div class="f-side">
+                <div class="left-wrap">
+                    <div class="img-box">
+                        <img src="../assets/images/login_Component.png" alt="login-page">
+                    </div>
+                    <div class="banner-text">
+                        <h3>Excellence In Diamonds</h3>
+                        <div class="pattern-title">
+                            <img src="../assets/images/svg/diamond.svg" alt="diamond">
+                        </div>
+                        <p>"GlowStar" is an identity in the world of Diamond Manufacturers since 1995. The Company
+                            well-known in
+                            India for providing employment opportunities in Diamond industry, with tons of skilled
+                            craftsmen
+                            and
+                            professionals under its umbrella, adding value to the diamond it creates. With a massive
+                            production
+                            of polished diamonds.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-right">
+            <div class="right-wrap">
+                <div class="logo">
+                    <a routerLink="/login"><img src="../assets/images/Glowstar.png" alt="logo"></a>
+                </div>
+                <div class="ri-form-wrap f-main create-pass" *ngIf="emailSection">
+                    <form>
+                        <div class="r-form">
+                            <h6>Forgot Password ?</h6>
+                            <p>Please enter your registered email address below to receive an instructions for resetting
+                                password.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                <label for="Username">Username<span class="require">*</span></label>
+                                <input type="text" id="uname">
+                                <span class="s-error">Invalid your username</span>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data sub-btn">
+                                <button class="c-btn n-btn" (click)="sendEmail()">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="r-bottom b-center">
+                        <div class="row">
+                            <div class="form-data">
+                                <span><i class="icon-left-new"></i></span>
+                                <a routerLink="/login">Back to Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ri-form-wrap verification create-pass" *ngIf="codeSection">
+                    <form>
+                        <div class="r-form">
+                            <h6>Verification</h6>
+                            <p>Enter the verification code we just sent you on your email address.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="">
+                                        <label>Code<span class="require">*</span></label>
+                                        <div class="d-flex flex-row p-lr-90">
+                                            <input type="text" class="form-control" autofocus=""
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                maxlength="1">
+                                            <input type="text" class="form-control"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                maxlength="1">
+                                            <input type="text" class="form-control"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                maxlength="1">
+                                            <input type="text" class="form-control"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                maxlength="1">
+                                        </div>
+                                        <div class="text-center">
+                                            <span class="d-block mobile-text">Don't receive the code ?
+                                                <a href="javascript:void()">Resend</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data sub-btn">
+                                <button class="c-btn n-btn" (click)="verifiedOTP()">Verify</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class=" ri-form-wrap c-pass create-pass" *ngIf="setPasswordSection">
+                    <form>
+                        <div class="war-wrap create-pass" id="div4">
+                            <div class="alert alert-primary sus-alert" role="alert">
+                                <p>Password Updated !</p>
+                                <span>Your password has been changed successfully.</span>
+                            </div>
+                        </div>
+                        <div class="r-form">
+                            <h6>Create New Password ?</h6>
+                            <p>You new password must be different from previously used passwords</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                <label for="">Password<span class="require">*</span></label>
+                                <input type="password" id="">
+                                <span class="s-error">Invalid your password</span>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                <label for="">Confirm Password<span class="require">*</span></label>
+                                <input type="password" id="">
+                                <span class="s-error">Invalid your password</span>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data sub-btn">
+                                <button class="c-btn" (click)="changePasswordClick()">Change
+                                    password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

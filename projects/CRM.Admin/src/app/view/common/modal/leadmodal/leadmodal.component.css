@@ -1,0 +1,1394 @@
+.grid-container-chartitems {
+    display              : grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap             : 0px;
+}
+
+.float-right.filterbuttons butoon {
+    display: inline-block;
+}
+
+.filterbuttons .button {
+    display      : inline-block;
+    background   : none;
+    border-radius: 0;
+    border       : 0;
+    padding      : 0 4px;
+    padding      : 0px 9px;
+    width        : auto;
+}
+
+.filterbuttons .button:hover {
+    background: rgba(218, 218, 218, 1);
+}
+
+.filterbuttons .button i {
+    font-size     : 16px;
+    padding       : 0 4px;
+    vertical-align: middle;
+    text-align    : center;
+    line-height   : 32px;
+}
+
+.filterheading {
+    height        : 45px;
+    padding-top   : 8px;
+    padding-bottom: 8px;
+    border-bottom : 1px solid #ddd;
+}
+
+.backlog-headings h5 {
+    font-size  : 14px;
+    font-weight: normal;
+}
+
+.toggle-content-panel {
+    padding      : 8px;
+    height       : 47px;
+    border-radius: 4px;
+    margin-top   : 8px;
+    margin-bottom: 8px;
+    background   : #f0f0f0;
+}
+
+.toggle-content-panel.toggle-content {
+    display: none;
+}
+
+.search-filter {
+    margin-right: 8px;
+    min-width   : 30%;
+    display     : flex;
+    float       : left;
+    flex-grow   : 1;
+}
+
+input.board-textbox {
+    border          : none;
+    outline         : none;
+    margin-left     : 4px;
+    margin-right    : 4px;
+    background-color: inherit;
+    padding         : 0;
+    resize          : none;
+    font-size       : 14px;
+    width           : 100%;
+}
+
+.filter-categories {
+    float: right;
+}
+
+.filter-categories ul li {
+    list-style  : none;
+    display     : inline;
+    line-height : 16px;
+    margin-right: 10px;
+}
+
+.filter-categories i {
+    margin-left   : 6px;
+    vertical-align: middle;
+    color         : rgba(0, 0, 0, 0.55);
+}
+
+.search-filter span {
+    font-size   : 16px;
+    align-self  : center;
+    margin-right: 6px;
+    margin-top  : 5px;
+}
+
+.filter-categories ul li a {
+    padding    : 11px 10px 16px 10px;
+    color      : rgba(0, 0, 0, 0.55);
+    font-size  : 14px;
+    line-height: 27px;
+}
+
+.filter-categories ul li a:hover {
+    background: #ddd;
+    cursor    : pointer;
+}
+
+.filter-categories ul {
+    margin-bottom: 0px;
+    padding-left : 0px;
+}
+
+.drp-submenu {
+    display: none;
+}
+
+.drp-submenu.main {
+    display                : block;
+    position               : absolute;
+    top                    : 87%;
+    z-index                : 1000;
+    min-width              : 300px;
+    padding                : 0px 0;
+    margin                 : 0px 0 0;
+    font-size              : 14px;
+    text-align             : left;
+    list-style             : none;
+    background-color       : #fff;
+    -webkit-background-clip: padding-box;
+    background-clip        : padding-box;
+    border-radius          : 4px;
+    -webkit-box-shadow     : 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow             : 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.drp-header {
+    border-bottom: 1px solid #ddd;
+    padding      : 10px;
+}
+
+input.background-textbox {
+    border       : 0px;
+    height       : 32px;
+    width        : 100%;
+    background   : #f0f0f0;
+    border-radius: 3px;
+    padding      : 6px 0px 6px 26px;
+}
+
+input.background-textbox:focus {
+    outline: none;
+}
+
+.drp-Footer {
+    border-top: 1px solid #ddd;
+    padding   : 5px;
+    overflow  : hidden;
+}
+
+button.footer-button i {
+    font-size: 12px;
+}
+
+.footer-button {
+    float     : right;
+    width     : 81px;
+    height    : 32px;
+    background: none;
+    border    : 0;
+    font-size : 16px;
+}
+
+.footer-button:hover {
+    background   : #f0f0f0;
+    cursor       : pointer;
+    border-radius: 3px;
+}
+
+.cell-items {
+    border-right: 4px solid #fff;
+    margin      : 0px 5px 0px 5px;
+}
+
+.new,
+.done {
+    cursor    : pointer;
+    text-align: center;
+    float     : right;
+}
+
+span.current {
+    font-size: 18px;
+}
+
+span.middle {
+    font-size: 14px;
+}
+
+span.limit {
+    font-size: 12px;
+}
+
+.kanban-header span.header-left {
+    font-weight: normal;
+    font-size  : 14px;
+}
+
+span.header-left {
+    font-size: 13px;
+}
+
+.kanban-header {
+    display: table;
+}
+
+.kanban-header.width-changes span.header-left.new {
+    display: none;
+}
+
+.kanban-header.width-changes.header-left.done {
+    display: none;
+}
+
+.width-changes .new,
+.width-changes.right-width-changes .new {
+    float: none;
+}
+
+.kanban-header.width-changes th:first-child {
+    width: 23px;
+}
+
+.kanban-header.width-changes.right-width-changes th:first-child {
+    width: 15px !important;
+}
+
+.header-table-row {
+    display: table-row;
+}
+
+.kanban-header.right-width-changes th {
+    width: 142px !important;
+}
+
+.kanban-header.right-width-changes .done {
+    float: none;
+}
+
+.kanban-content {
+    clear    : both;
+    display  : flex;
+    flex-wrap: wrap;
+}
+
+.kanban-content-top {
+    height: 100%;
+    width : 100%;
+}
+
+.kanban-content.height-changes {
+    height: calc(100vh - 240px) !important;
+}
+
+.kanban-header.right-width-changes th:last-child {
+    width: 19px !important;
+}
+
+.cell-items span {
+    line-height: 19px;
+}
+
+cell-items i {
+    color    : rgba(0, 0, 0, 0.55);
+    font-size: 12px;
+}
+
+.drp-header span {
+    position: relative;
+}
+
+.drp-header span i {
+    position: absolute;
+    top     : 5px;
+}
+
+/* .submenu li > div {
+    overflow: hidden;
+    padding: 5px 0px 5px 0px;
+  }
+  
+  .submenu {
+    padding: 10px !important;
+    overflow-y: auto;
+    max-height: 270px;
+  }
+  
+  .submenu li {
+    margin: 0px !important;
+  }
+  
+  ul.submenu li {
+    margin: 0px !important;
+  } */
+
+.filter-categories ul li:nth-child(1) .drp-submenu.main {
+    right: 230px;
+}
+
+.filter-categories ul li:nth-child(1) .drp-submenu.main:before {
+    content      : "";
+    border-bottom: 10px solid #fff;
+    border-right : 10px solid transparent;
+    border-left  : 10px solid transparent;
+    position     : absolute;
+    top          : -10px;
+    right        : 24px;
+    z-index      : 10;
+}
+
+.filter-categories ul li:nth-child(2) .drp-submenu.main {
+    right: 124px;
+}
+
+.filter-categories ul li:nth-child(2) .drp-submenu.main:before {
+    content      : "";
+    content      : "";
+    border-bottom: 10px solid #fff;
+    border-right : 10px solid transparent;
+    border-left  : 10px solid transparent;
+    position     : absolute;
+    top          : -10px;
+    right        : 24px;
+    z-index      : 10;
+}
+
+.filter-categories ul li:nth-child(3) .drp-submenu.main {
+    right: 32px;
+}
+
+.filter-categories ul li:nth-child(3) .drp-submenu.main:before {
+    content      : "";
+    content      : "";
+    border-bottom: 10px solid #fff;
+    border-right : 10px solid transparent;
+    border-left  : 10px solid transparent;
+    position     : absolute;
+    top          : -10px;
+    right        : 24px;
+    z-index      : 10;
+}
+
+/*kanbanbord css end*/
+
+/*board-content css start*/
+
+.task-no {
+    user-select : text;
+    display     : inline;
+    font-weight : bold;
+    margin-right: 5px;
+}
+
+.create-link {
+    display: inline;
+}
+
+.create-link a {
+    font-size: 12px;
+}
+
+.task-no>span {
+    font-size: 12px;
+}
+
+.profile-left {
+    margin-top: 10px;
+}
+
+.profile-left-content {
+    font-size     : 16px;
+    position      : relative;
+    vertical-align: middle;
+}
+
+.field-label.ellipsis {
+    display      : block;
+    width        : 34%;
+    float        : left;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+    margin-right : 11px;
+    font-size    : 12px;
+}
+
+.textdiv {
+    font-size: 12px;
+}
+
+.board-filed-content {
+    margin-top   : 10px;
+    margin-bottom: 10px;
+}
+
+.board-content {
+    vertical-align  : top;
+    width           : auto;
+    margin-top      : 10px;
+    padding         : 5px 8px 5px 5px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+span.header-left.new {
+    display: block;
+}
+
+.right-width-changes span.header-left.new {
+    display: block;
+}
+
+.kanban-content.right-width-changes.width-changes .board-content {
+    min-width: 370px;
+}
+
+.status-content i {
+    color: green;
+}
+
+span.status i {
+    margin-right: 3px;
+    font-size   : 8px;
+}
+
+.heading-content-icons {
+    vertical-align: middle;
+}
+
+.board-content.gu-mirror {
+    display: initial;
+    width  : 259px;
+}
+
+/*board-content css end*/
+
+/*configurable kanban board css start*/
+.main-content-kanban {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-top: 20px;
+    font-size : 12px;
+    min-height: 50px;
+}
+
+.main-content-kanban.maincontent-height {
+    height: 783px;
+}
+
+.board-content:last-child {
+    margin-bottom: 10px;
+}
+
+.pane-vScroll.height-changes {
+    height: 750px;
+}
+
+.pane-vScroll.height-changes td {
+    height: 74vh;
+}
+
+.main-content-kanban .pane-vScroll.height-changes {
+    height: 78vh;
+}
+
+.status-content i {
+    color: green;
+}
+
+.heading-content-icons {
+    vertical-align: middle;
+}
+
+img.board-images {
+    width       : 18px;
+    height      : 18px;
+    margin-right: 3px;
+}
+
+.task-no {
+    user-select : text;
+    display     : inline;
+    font-weight : bold;
+    margin-right: 5px;
+}
+
+.create-link {
+    display: inline;
+}
+
+.create-link a {
+    font-size: 12px;
+}
+
+.create-link a:hover {
+    text-decoration: underline;
+    cursor         : pointer;
+}
+
+.task-no>span {
+    font-size: 12px;
+}
+
+.create-link a {
+    font-size: 12px;
+}
+
+.board-filed-content {
+    margin-top   : 10px;
+    margin-bottom: 10px;
+}
+
+.textdiv {
+    font-size: 12px;
+}
+
+.status-content i {
+    color: green;
+}
+
+.field-label.ellipsis {
+    display      : block;
+    width        : 34%;
+    float        : left;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+    margin-right : 11px;
+    font-size    : 12px;
+}
+
+.kanban-content-child {
+    padding        : 2px 4px;
+    height         : 100%;
+    background     : #f0f0f0;
+    /* border-right: 6px solid #fff; */
+    overflow-y     : auto;
+    overflow-x     : hidden;
+    height         : 850px;
+}
+
+.kanban-content .cus-wid-2:last-child .kanban-content-child {
+    border-right: 0;
+}
+
+.kanban-content-child::-webkit-scrollbar {
+    width: 1px;
+}
+
+.addnewitem {
+    display   : inline-block;
+    background: #fff;
+    padding   : 3px 3px;
+}
+
+.addnewitem>span:first-child {
+    background: green;
+    color     : #fff;
+    padding   : 3px 3px;
+}
+
+.addnewitem>span {
+    font-size: 13px;
+}
+
+.search-icon {
+    display: inline-block;
+    float  : right;
+}
+
+td.width-changes .addnewitem,
+td.width-changes .search-icon {
+    display: none;
+}
+
+/*updated css*/
+th.width-changes.right-width-changes:first-child {
+    width: 40px !important;
+}
+
+td.width-changes.right-width-changes:first-child {
+    width: 40px !important;
+}
+
+th.width-changes.right-width-changes:last-child {
+    width: 40px !important;
+}
+
+td.width-changes.right-width-changes:last-child {
+    width: 40px !important;
+}
+
+th.width-changes:first-child {
+    width: 40px !important;
+}
+
+td.width-changes:first-child {
+    width: 40px !important;
+}
+
+th.right-width-changes:last-child {
+    width: 40px !important;
+}
+
+td.right-width-changes:last-child {
+    width: 40px !important;
+}
+
+.right-width-changes .header-left.done {
+    display: none;
+}
+
+.pane-hScroll {
+    overflow: auto;
+    width   : 100%;
+}
+
+/* .pane-vScroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height    : 750px;
+} */
+
+/*updated css*/
+
+/*kanban content details css start*/
+.profile-header {
+    padding      : 7px;
+    width        : 100%;
+    cursor       : context-menu;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-header .profile-left {
+    margin: 0px;
+}
+
+.text-wrapper-icon {
+    vertical-align: middle;
+}
+
+.text-wrapper-icon i {
+    font-size: 16px;
+}
+
+a.text-content {
+    padding-right  : 5px;
+    text-decoration: none;
+    text-transform : uppercase;
+    font-size      : 12px;
+    color          : #000;
+}
+
+.info-text-wrapper {
+    margin-bottom: 0px;
+    overflow     : hidden;
+}
+
+a.text-content:hover {
+    text-decoration: underline;
+}
+
+.top-header {
+    margin-bottom: 5px;
+    clear        : both;
+    overflow     : hidden;
+}
+
+.top-header span {
+    font-size    : 18px;
+    padding-right: 10px;
+    float        : left;
+    line-height  : 1.8em;
+}
+
+.content-l {
+    display: inline-block;
+    width  : 100%;
+    padding: 1px 2px;
+    border : 1px solid transparent;
+}
+
+.content-l.bordmain {
+    border: 1px solid #ddd;
+}
+
+/*on label hover display dropdownlist css start*/
+.content-l:hover {
+    border: 1px solid #ddd;
+}
+
+.drp-icon {
+    opacity       : 0;
+    vertical-align: middle;
+    line-height   : 23px;
+}
+
+.position:first-child:hover .drp-icon {
+    opacity: 1;
+}
+
+img.board-images.imgopen {
+    display: none;
+}
+
+/*on label hover display dropdownlist css end*/
+
+.profile-left .profile-left-content {
+    margin-left   : 2px;
+    font-size     : 12px;
+    vertical-align: middle;
+}
+
+.board-profile-content i {
+    font-size: 13px;
+}
+
+span.status {
+    font-size     : 11px;
+    vertical-align: sub;
+}
+
+.semicolun {
+    position: relative;
+    display : inline-block;
+}
+
+.profile-content {
+    clear  : both;
+    float  : left;
+    width  : 100%;
+    padding: 10px 10px;
+    cursor : pointer;
+}
+
+.profile-content .content-l:hover {
+    border: 1px solid transparent;
+}
+
+.details-tab {
+    clear     : both;
+    margin-top: 10px;
+    overflow  : hidden;
+    cursor    : context-menu;
+}
+
+.nav_select.drp {
+    display   : block;
+    position  : absolute;
+    left      : 43px;
+    width     : 18%;
+    z-index   : 0;
+    background: none;
+}
+
+.nav_select.drp #myList {
+    height    : 26px;
+    background: transparent;
+    z-index   : 0;
+}
+
+/*kanban content details css end*/
+
+/*kanban content state graph css start*/
+.trans-content {
+    float       : left;
+    height      : 100px;
+    text-align  : center;
+    padding     : 4px;
+    position    : relative;
+    margin-right: 9px;
+}
+
+.trans-arrow {
+    height    : 18px;
+    position  : relative;
+    top       : 50%;
+    margin-top: -10px;
+}
+
+.arrow-state {
+    border    : 5px solid;
+    width     : 100%;
+    margin-top: -4px;
+    float     : left;
+    position  : relative;
+    top       : 50%;
+}
+
+.arrowright {
+    position   : absolute;
+    margin-left: 100%;
+    width      : 10px;
+    height     : 20px;
+    overflow   : hidden;
+}
+
+.arrowright::after {
+    content  : "";
+    display  : block;
+    transform: rotate(45deg);
+    border   : 10px solid;
+    left     : -14px;
+    position : absolute;
+    z-index  : 1;
+}
+
+.trans-backlog-item {
+    position: relative;
+    bottom  : 22px;
+    color   : rgba(0, 0, 0, 0.55);
+}
+
+.trans-change-info {
+    position: relative;
+    top     : -7px;
+    color   : rgba(0, 0, 0, 0.55);
+}
+
+.owner-name {
+    display: inline-block;
+    width  : 100%;
+}
+
+.state-content {
+    float     : left;
+    height    : 75px;
+    text-align: center;
+    padding   : 4px;
+    position  : relative;
+}
+
+span.state {
+    margin-top: 98%;
+    display   : block;
+}
+
+.state {
+    padding   : 10px;
+    position  : relative;
+    top       : 50%;
+    margin-top: -10.5px;
+    background: rgba(222, 236, 249, 1);
+}
+
+.state i {
+    margin-right  : 7px;
+    vertical-align: middle;
+    color         : rgb(178, 178, 178);
+    line-height   : 10px;
+}
+
+.owner-name>img {
+    float: left;
+}
+
+.owner-name>span {
+    display   : block;
+    outline   : none;
+    margin    : 1px;
+    width     : 100%;
+    text-align: center;
+}
+
+.info-date {
+    margin-left: 17px;
+}
+
+/*kanban content state graph css end*/
+
+/*attchment tab css start*/
+.attachment-content {
+    margin-top   : 9%;
+    margin-bottom: 9%;
+    text-align   : center;
+}
+
+.attachment-content-icon i {
+    font-size: 74px;
+    color    : rgba(0, 0, 0, 0.55);
+}
+
+.attachment-content-icon {
+    width  : 13%;
+    margin : auto;
+    padding: 20px;
+}
+
+span.hidden-text {
+    font-size    : 17px;
+    color        : #ddd;
+    margin-bottom: 14px;
+}
+
+.attachment-dropdown {
+    margin-top: 10px;
+}
+
+.attchment {
+    border : 0px;
+    padding: 10px 14px;
+    color  : #fff;
+}
+
+.attchment:hover {
+    cursor: pointer;
+}
+
+span.Attachment-text {
+    text-align: center;
+}
+
+span.Attachment-text i {
+    margin-right: 11px;
+}
+
+.attachment-dropdown .submenu {
+    display   : none;
+    padding   : 10px !important;
+    overflow-y: auto;
+    max-height: 270px;
+    position  : absolute;
+    bottom    : 28px;
+    left      : 0;
+    width     : 300px;
+    margin    : auto;
+    right     : 0;
+    background: #f0f0f0;
+}
+
+.submenu.main-new {
+    display: block;
+}
+
+/*attchment tab css end*/
+
+/*dropdown content css start*/
+.profile-dropdown ul li {
+    list-style: none;
+}
+
+profile-dropdown ul {
+    padding-left: 0px;
+}
+
+.profile-dropdown ul {
+    padding-left : 0px;
+    max-height   : 307px;
+    overflow     : auto;
+    margin-bottom: 0px;
+}
+
+span.board-email {
+    float: left;
+}
+
+.board-email {
+    display: inline-block;
+}
+
+.top-child-con {
+    display  : inline-block;
+    font-size: 11px;
+}
+
+.grp-con-child {
+    font-weight: bold;
+}
+
+.grp-content img {
+    vertical-align: top;
+    margin        : 4px;
+    float         : left;
+    width         : 30px;
+    height        : 30px;
+    margin-right  : 10px;
+}
+
+.result-status {
+    font-size: 14px;
+    color    : #9e9c9c;
+    padding  : 4px 4px;
+}
+
+.top-child-hover {
+    display       : none;
+    float         : right;
+    vertical-align: bottom;
+    padding       : 6px;
+}
+
+.grp-content:hover .top-child-hover {
+    display: inline-block;
+    cursor : pointer;
+}
+
+.grp-content:hover {
+    background: rgba(234, 234, 234, 1);
+    cursor    : pointer;
+}
+
+.grp-content {
+    padding: 5px 4px;
+}
+
+.position {
+    display : inline-block;
+    width   : 24%;
+    position: relative;
+}
+
+a.prioritycontent {
+    padding: 4px 4px;
+    width  : 100%;
+}
+
+.profile-dropdown .priority-li:hover {
+    background: rgba(199, 224, 244, 1);
+}
+
+.priority-ul {
+    overflow     : hidden !important;
+    margin-bottom: 0px;
+    padding-left : 0px;
+}
+
+li.priority-li {
+    list-style: none;
+}
+
+li.priority-li:hover {
+    background: rgba(239, 246, 252, 1);
+}
+
+.position:last-child .content-l:hover {
+    border: 1px solid transparent;
+}
+
+.position:nth-child(2) .content-l:hover {
+    border: 1px solid transparent;
+}
+
+.status-new {
+    display: inline-block;
+}
+
+.status:hover {
+    border: 1px solid #ddd;
+}
+
+.status.open-status {
+    border: 1px solid #ddd;
+}
+
+.status {
+    border        : 1px solid transparent;
+    padding       : 2px;
+    vertical-align: middle;
+    width         : 200px;
+    position      : relative;
+    display       : inline-block;
+}
+
+.status:hover .drp-icon {
+    opacity: 1;
+}
+
+.priority-dropdown.open {
+    display: block;
+}
+
+.priority-dropdown {
+    display   : none;
+    position  : absolute;
+    background: #fff;
+    z-index   : 999999;
+    left      : 0;
+    right     : 0;
+    top       : 100%;
+    border    : 1px solid #aba8a8;
+}
+
+.status-new i {
+    vertical-align: middle;
+    color         : #aba8a8;
+}
+
+/*dropdown content css end*/
+
+
+
+.chart-window.k-window {
+    width     : 1300px;
+    height    : auto;
+    cursor    : move;
+    box-shadow: 3px 3px 11px 0 rgba(0, 0, 0, 0.4);
+}
+
+.kanban-content-window .k-window-titlebar {
+    position: absolute;
+    right   : 0;
+    left    : 0;
+    z-index : 9999999;
+}
+
+.k-window-title {
+    margin       : 0;
+    font-size    : 16px;
+    text-overflow: ellipsis;
+    overflow     : hidden;
+    cursor       : default;
+    flex         : 1;
+}
+
+.k-window-actions {
+    margin        : calc(-0.375rem + -1px);
+    line-height   : 1;
+    display       : flex;
+    flex-direction: row;
+    flex-shrink   : 0;
+    align-items   : center;
+    vertical-align: top;
+}
+
+.chart-window .k-window-titlebar {
+    background: none;
+    color     : #000;
+    border    : 0;
+    padding   : 22px 12px;
+}
+
+.kanban-content-window .k-window-titlebar {
+    position: absolute;
+    right   : 0;
+    left    : 0;
+    z-index : 9999999;
+}
+
+.chart-window .k-button-icon.k-button.k-bare {
+    display: none !important;
+}
+
+.chart-window .k-button-icon.k-button.k-bare:last-child {
+    display : block !important;
+    position: absolute;
+    right   : 0;
+    top     : 0;
+    cursor  : pointer;
+    z-index : 9999;
+}
+
+.custom-bord-text {
+    border   : 0;
+    padding  : 4px;
+    height   : 20px;
+    font-size: 14px;
+}
+
+.profile-dropdown {
+    display   : none;
+    position  : absolute;
+    background: #fff;
+    z-index   : 999999;
+    left      : 0;
+    right     : 0;
+    border    : 1px solid #aba8a8;
+}
+
+.profile-dropdown.open {
+    display: block;
+}
+
+.details-tab ul.k-tabstrip-items {
+    display   : block;
+    text-align: right;
+}
+
+.details-tab .k-tabstrip .k-item {
+    display                : inline-block !important;
+    border                 : 1px solid #ddd;
+    border-right           : 0;
+    border-radius          : 0;
+    border-top-left-radius : 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.details-tab .k-content {
+    height: 46vh;
+}
+
+.cust-panel kendo-panelbar.k-widget.k-panelbar {
+    border: 0;
+}
+
+.cust-panel .k-panelbar>.k-item {
+    border    : 0 !important;
+    background: none !important;
+    width     : 100%;
+}
+
+/* Collapse tab css */
+.c-click i {
+    font-size: 12px;
+}
+
+.c-width .kanban-content-child {
+    width: 45px;
+}
+
+.cus-wid-2.c-width {
+    flex        : 0 0 45px;
+    /* max-width: 45px; */
+}
+
+.cus-wid-2 {
+    /* flex     : 0 0 16.666667%; */
+    flex     : 0 0 14.285714%;
+    flex-grow: 1;
+    position : relative;
+    padding  : 0 3px;
+}
+
+.c-width .float-left,
+.c-width .board-content {
+    display: none;
+}
+
+th.c-width .float-right {
+    text-align: center;
+    width     : 100%;
+}
+
+.c-width span.c-click i {
+    transform: rotate(180deg);
+    display  : inline-block;
+}
+
+.c-width .float-right span {
+    display: none;
+}
+
+.c-width .float-right span.c-click {
+    display: block;
+}
+
+.c-info {
+    display: none;
+}
+
+.c-width.c-info {
+    display: block;
+}
+
+.c-width .c-info {
+    display  : block;
+    position : absolute;
+    top      : 5%;
+    left     : 50%;
+    transform: translateX(-50%);
+    width    : 45px;
+}
+
+.c-width span.header-left.h-ver {
+    transform: rotate(90deg);
+    display  : block;
+    margin   : 20px 0 65px 0;
+}
+
+.c-width .c-info .top span {
+    font-size: 80%;
+}
+
+.c-width .cell-items span {
+    margin-left: 10px;
+}
+
+.i-form.ad-le-top .grid {
+    grid-template-columns: 54px 1fr 85px 1fr;
+}
+
+.i-form.ad-le-top.isneg .grid {
+    grid-template-columns: 54px 1fr 85px 1fr 80px 1fr;
+}
+
+.i-form.lab-iss-mod.a-lead .grid {
+    grid-template-columns: 55px 90px 165px 165px auto auto;
+    align-items          : center;
+    background-color     : #f4f4f4;
+    padding              : 0px 0px 0px 5px;
+    display              : flex;
+}
+
+.ad-le-top.s-search .grid {
+    grid-template-columns: auto auto !important;
+    margin-right         : 5px;
+}
+
+.mo-he-fix .k-content,
+.mo-he-fix .treeview_parent {
+    height: 400px;
+}
+
+.mo-he-fix .mod-wrap .grid-wrap .k-grid {
+    height: 298px;
+}
+
+.mo-he-fix .modal-dialog {
+    max-width: 1250px;
+}
+
+.i-form.co-inv-pa.le-name .grid {
+    grid-template-columns: 80px 1fr 55px 1fr;
+}
+
+.status-content img {
+    max-height  : 18px;
+    margin-right: 5px;
+}
+
+span.sum-title {
+    font-size  : 12px;
+    font-weight: 600;
+    margin-top : 10px;
+    display    : block;
+    width      : 100%;
+}
+
+span.task-info,
+.board-timer {
+    font-size  : 11px;
+    font-weight: 600;
+}
+
+span.na-info {
+    font-size: 12px;
+}
+
+.mo-he-fix .k-tabstrip {
+    height: 425px;
+}
+
+.c-width .top {
+    text-align : center;
+    font-weight: 600;
+}
+
+.im-pro {
+    cursor: pointer;
+}
+
+.im-pro:hover span {
+    text-decoration: underline;
+}
+
+.p-wrap {
+    border-bottom: 1px solid #000;
+}
+
+.p-wrap h6.title {
+    margin       : 2px 0;
+    border-bottom: initial;
+}
+
+
+.board-timer span.exday {
+    color: #ff0000;
+}
+
+span.p-unit {
+    font-size  : 10px;
+    margin-left: 1px;
+}
+
+.pa-name .grid {
+    grid-template-columns: 80px 150px;
+}
+
+.le-modal button.btn.btn-primary {
+    font-size    : 10px;
+    padding      : 2px;
+    height       : 20px;    
+}

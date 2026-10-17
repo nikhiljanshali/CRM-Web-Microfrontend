@@ -1,0 +1,787 @@
+<title>stockonhand</title>
+<div class="stockmain-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Stock On Hand</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+                <div class="tag ci-top-left">
+                  <ul>
+                    <li><span class="t-title">Stone Count:</span>{{totalCount}}</li>
+                    <li><span class="t-title">Weight:</span>{{totalWeight}}</li>
+                    <li><span class="t-title">Value:</span>{{totalNetAmount}}</li>
+                    <li><span class="t-title">Selected Stone(s):</span>{{mySelection.length}}</li>
+                  </ul>
+                </div>
+                <!-- #region Button -->
+                <div class="ci-top-right pr-0">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="filterSidebar()" class="c-searh-btn"><i class="icon-search"
+                        title="Search Stone"></i></button>
+                    <button kendoButton (click)="openManualIssueDialog()"><i class="icon-Manual_Issue_Packet"
+                        title="Manual Issue"></i></button>
+                    <button kendoButton #anchorSummary title="Summry" (click)="openSummary()">
+                      <i class="icon-summary"></i>
+                    </button>
+                    <button kendoButton (click)="exportToExcel()" title="Export Excel"><i
+                        class="icon-excelnew "></i></button>
+                    <button kendoButton [disabled]="mySelection.length == 0" (click)="setPricingRequest()"
+                      title="Pricing Request"><i class="icon-api"></i></button>
+                    <button kendoButton (click)="openLabIssueDialog()" title="Lab Issue"><i
+                        class="icon-labissue"></i></button>
+                    <button kendoButton (click)="openLabReceiveDialog()" title="Lab Receive"><i
+                        class="icon-labrecive"></i></button>
+                    <button kendoButton (click)="openMemoDialog()" title="Memo Issue"><i
+                        class="icon-memoissue"></i></button>
+                    <button kendoButton (click)="printStoneDetail()" title="Print Stone"
+                      [disabled]="mySelection.length == 0"><i class="icon-print"></i></button>
+                    <button kendoButton title="Export for MarketSheet" [disabled]="mySelection.length == 0"
+                      (click)="exportForMarketSheet()"><i class="icon-doc_download"></i></button>
+                    <button [disabled]="disabledFlag" kendoButton title="Hold Stone" (click)="changeHoldData(true)"><i
+                        class="icon-hold"></i>
+                    </button>
+                    <button [disabled]="disabledFlag" kendoButton title="Release Hold Stone"
+                      (click)="changeHoldData(false, true)"><i class="icon-stonerelease"></i>
+                    </button>
+                    <button kendoButton title="Grid Config"><i class="icon-gridconfig"
+                        (click)="openGridConfigDialog()"></i></button>
+                  </kendo-buttongroup>
+                  <!-- <kendo-popup [anchor]="$any(anchor)" #popup (anchorViewportLeave)="showExcelOption = false"
+                    *ngIf="showExcelOption" [anchorAlign]="anchorAlign" [popupAlign]="popupAlign">
+                    <div class="content">
+                      <div class="pt-2 pl-2 pr-2">
+                        <div>
+                          <input type="radio" name="excelOption" value="searched" #searched [(ngModel)]="excelOption"
+                            kendoRadioButton />
+                          <label class="k-label" class="ml-2" [for]="searched">Searched Stone</label>
+                        </div>
+                        <div>
+                          <input type="radio" name="excelOption" value="selected" #selected [(ngModel)]="excelOption"
+                            kendoRadioButton />
+                          <label class="k-label" class="ml-2" [for]="selected">Selected Stone</label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="text-center pb-2">
+                          <button class="btn btn-primary w-100" [disabled]="excelOption == null"
+                            (click)="exportToExcel()">
+                            <i class="icon-excelnew"></i> Export to Excel
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </kendo-popup> -->
+                </div>
+                <!-- #endregion -->
+              </div>
+            </div>
+            <!-- #region Grid -->
+            <div class="grid-wrap t-sum">
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100 table-responsive">
+                  <th *ngFor="let field of fields">{{field.propertyName}}</th>
+                  <tr *ngFor="let field of skeletonArray">
+                    <td *ngFor="let field of fields">
+                      <kendo-skeleton shape="text" animation="wave" [width]="70" [height]="40">
+                      </kendo-skeleton>
+                    </td>
+                  </tr>
+                </table>
+              </ng-container>
+
+              <kendo-grid *ngIf="gridView" [data]="gridView" class="grid-ui upload-grid" [sortable]="true"
+                [groupable]="true" [group]="groups" (groupChange)="groupChange($event)"
+                (selectionChange)="onSelect($event)" [selectable]="selectableSettings" [resizable]="true"
+                [kendoGridSelectBy]="'stoneId'" [selectedKeys]="mySelection" (cellClick)="cellClickHandler($event)"
+                [reorderable]="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+                (pageChange)="pageChange($event)">
+
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngIf="fields && fields.length > 0">
+                    <ng-container *ngFor="let field of fields">
+                      <ng-container *ngIf="field.isSelected">
+                        <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+                          <ng-template *ngIf="isShowCheckBoxAll && field.title == 'Checkbox'" kendoGridHeaderTemplate>
+                            <input kendoGridSelectAllCheckbox type="checkbox" class="k-checkbox"
+                              (selectAllChange)="selectAllStocks($event)" id="headerCheckbox" />
+                            <label class="k-checkbox-label" for="headerCheckbox"></label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'Checkbox'">
+                            <input *ngIf="!dataItem.isDisabled" type="checkbox" class="k-checkbox"
+                              id="checkbox-{{rowIndex}}" [kendoGridSelectionCheckbox]="rowIndex" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'IsPricingRequest'">
+                            <input type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                              [checked]="dataItem.isPricingRequest" [disabled]="true" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'Hold'">
+                            <input type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                              [checked]="dataItem.isHold" [disabled]="true" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'Memo'">
+                            <input type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                              [checked]="dataItem.isMemo" [disabled]="true" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'Rapnet Hold'">
+                            <input type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                              [checked]="dataItem.isRapnetHold" [disabled]="true" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="field.title == 'IsLabReturn'">
+                            <input type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                              [checked]="dataItem.isLabReturn" [disabled]="true" />
+                            <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                            </label>
+                          </ng-template>
+                        </kendo-grid-column>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+            <!-- #endregion -->
+          </div>
+          <!-- #region summry -->
+          <div class="summary-panel" *ngIf="isSummary">
+            <div class="sr-wrap marketsheet-status pr-2">
+              <div class="sr">
+                <h6>Summary <i class="icon-delete float-right mt-1 mr-1" (click)="closeSummary()"></i>
+                </h6>
+                <div class="summary-panel-grid">
+                  <div class="grid-1">
+                    <button type="button" class="btn t-record">{{invResponse.totalCount}}</button>
+                    <span>Total Records</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn t-weight">{{invResponse.totalWeight}}</button>
+                    <span>Total Weight</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn avg-dis">{{invResponse.avgDiscount}}</button>
+                    <span>Avg Dis</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn avg-ct">{{invResponse.avgPerCarat}}</button>
+                    <span>Avg $/CT</span>
+                  </div>
+                  <div class="grid-1" [ngClass]="{'is-active-summary':stockOnHandCriteria.isRapnetHold}"
+                    (click)="filterRapnetHoldChange()">
+                    <button type="button" class="btn rp-block">{{invResponse.totalRapnetHold}}</button>
+                    <span>On Rapnet Hold</span>
+                  </div>
+                  <div class="grid-1" [ngClass]="{'is-active-summary':stockOnHandCriteria.isHold}"
+                    (click)="filterHoldChange()">
+                    <button type="button" class="btn onhold">{{invResponse.totalHold}}</button>
+                    <span>On Hold</span>
+                  </div>
+                  <div class="grid-1" *ngFor="let item of invResponse.locationTotals"
+                    [ngClass]="{'is-active-summary': stockOnHandCriteria.location.indexOf(item.location)>-1 }"
+                    (click)="filterLocationChange(item.location)">
+                    <button type="button" class="btn onmemo">{{item.totalCount}}</button>
+                    <span>{{item.location}}</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn onhold">{{invResponse.avgDay}}</button>
+                    <span>Avg Day</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn onhold">{{invResponse.avgAvailableDay}}</button>
+                    <span>Avg Available Day</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn onhold">{{invResponse.iAvgDay}}</button>
+                    <span>iAvg Day</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- #endregion summry -->
+          <!-- #region Filter -->
+          <div class="e-right">
+            <div class="sr-wrap stockhand-panel" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter <i class="icon-delete float-right mt-1 mr-1" (click)="filterSidebar()"></i>
+                </h6>
+                <form name="form" #StockSearchForm="ngForm" novalidate>
+                  <div class="i-form">
+                    <div class="row">
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Status</label>
+                        <kendo-multiselect name="status" class="customselect" [data]="listStatus" id="status"
+                          [(ngModel)]="stockOnHandCriteria.status" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listStatus, stockOnHandCriteria.status)"
+                          (open)="filterStatusChk = onOpenDropdown(listStatus,filterStatusChk, stockOnHandCriteria.status)"
+                          (filterChange)="filterStatus = handleFilter($event);listStatus = filterStatusDropdownSearch($event, stockOnHandCriteria.status)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterStatus" id="filterStatus" [(ngModel)]="filterStatus"
+                                placeholder="Search Status">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterStatusChk" id="filterStatusChk"
+                                title="Select All" [(ngModel)]="filterStatusChk"
+                                (change)="stockOnHandCriteria.status = checkAllListItems(listStatus,filterStatusChk, stockOnHandCriteria.status)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.status, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.status)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="dpicker">From</label>
+                        <kendo-datepicker calendarType="classic" name="from" id="from" format="dd/MM/yyyy"
+                          [(ngModel)]="stockOnHandCriteria.from" #from="ngModel">
+                        </kendo-datepicker>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="dpicker">To</label>
+                        <kendo-datepicker calendarType="classic" name="to" id="to" format="dd/MM/yyyy"
+                          [(ngModel)]="stockOnHandCriteria.to" #to="ngModel">
+                        </kendo-datepicker>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="f-name">Stone Id</label>
+                        <input type="text" name="filterStoneId" [(ngModel)]="stockOnHandCriteria.stoneId"
+                          #filterStoneId="ngModel" id="filterStoneId">
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Kapan</label>
+                        <kendo-multiselect name="kapan" class="customselect" [data]="listKapan"
+                          [(ngModel)]="stockOnHandCriteria.kapan" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listKapan, stockOnHandCriteria.kapan)"
+                          (open)="filterKapanChk = onOpenDropdown(listKapan,filterKapanChk, stockOnHandCriteria.kapan)"
+                          (filterChange)="filterKapan = handleFilter($event);listKapan = filterKapanDropdownSearch(allKapan, $event, stockOnHandCriteria.kapan)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterKapan" id="filterKapan" [(ngModel)]="filterKapan"
+                                placeholder="Search Kapan">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterKapanChk" id="filterKapanChk"
+                                title="Select All" [(ngModel)]="filterKapanChk"
+                                (change)="stockOnHandCriteria.kapan = checkAllListItems(listKapan,filterKapanChk, stockOnHandCriteria.kapan)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.kapan, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.kapan)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Weight</label>
+                        <div class="size grid">
+                          <div class="mn-size">
+                            <input type="text" name="filterMinSize" [(ngModel)]="stockOnHandCriteria.minSize"
+                              placeholder="Min Weight" #filterMinSize="ngModel" id="filterMinSize"
+                              (keypress)="utilityService.floatOnly($event)">
+                          </div>
+                          <div class="mx-size">
+                            <input type="text" name="filterMaxSize" [(ngModel)]="stockOnHandCriteria.maxSize"
+                              placeholder="Max Weight" #filterMaxSize="ngModel" id="filterMaxSize"
+                              (keypress)="utilityService.floatOnly($event)">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Shape</label>
+                        <kendo-multiselect name="shape" class="customselect" [data]="listShape" #multiselect
+                          [(ngModel)]="stockOnHandCriteria.shape" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listShape, stockOnHandCriteria.shape)"
+                          (open)="filterShapeChk = onOpenDropdown(listShape,filterShapeChk, stockOnHandCriteria.shape)"
+                          (filterChange)="filterShape = handleFilter($event);listShape = filterDropdownSearch(allTheShapes, $event, stockOnHandCriteria.shape)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterShape" id="filterShape" [(ngModel)]="filterShape"
+                                placeholder="Search Shape">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterShapeChk" id="filterShapeChk"
+                                title="Select All" [(ngModel)]="filterShapeChk"
+                                (change)="stockOnHandCriteria.shape = checkAllListItems(listShape,filterShapeChk, stockOnHandCriteria.shape)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.shape, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.shape)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Color</label>
+                        <kendo-multiselect name="color" class="customselect" [data]="listColor"
+                          [(ngModel)]="stockOnHandCriteria.color" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listColor, stockOnHandCriteria.color)"
+                          (open)="filterColorChk = onOpenDropdown(listColor,filterColorChk, stockOnHandCriteria.color)"
+                          (filterChange)="filterColor = handleFilter($event);listColor = filterDropdownSearch(allColors, $event, stockOnHandCriteria.color)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterColor" id="filterColor" [(ngModel)]="filterColor"
+                                placeholder="Search Color">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterColorChk" id="filterColorChk"
+                                title="Select All" [(ngModel)]="filterColorChk"
+                                (change)="stockOnHandCriteria.color = checkAllListItems(listColor,filterColorChk, stockOnHandCriteria.color)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.color, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.color)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Clarity</label>
+                        <kendo-multiselect name="clarity" class="customselect" [data]="listClarity"
+                          [(ngModel)]="stockOnHandCriteria.clarity" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listClarity, stockOnHandCriteria.clarity)"
+                          (open)="filterClarityChk = onOpenDropdown(listClarity,filterClarityChk, stockOnHandCriteria.clarity)"
+                          (filterChange)="filterClarity = handleFilter($event);listClarity = filterDropdownSearch(allClarities, $event, stockOnHandCriteria.clarity)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterClarity" id="filterClarity" [(ngModel)]="filterClarity"
+                                placeholder="Search Clarity">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterClarityChk"
+                                id="filterClarityChk" title="Select All" [(ngModel)]="filterClarityChk"
+                                (change)="stockOnHandCriteria.clarity = checkAllListItems(listClarity,filterClarityChk, stockOnHandCriteria.clarity)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.clarity, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.clarity)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Cut</label>
+                        <kendo-multiselect name="cut" class="customselect" [data]="listCut"
+                          [(ngModel)]="stockOnHandCriteria.cut" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listCut, stockOnHandCriteria.cut)"
+                          (open)="filterCutChk = onOpenDropdown(listCut,filterCutChk, stockOnHandCriteria.cut)"
+                          (filterChange)="filterCut = handleFilter($event);listCut = filterDropdownSearch(allTheCPS, $event, stockOnHandCriteria.cut)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterCut" id="filterCut" [(ngModel)]="filterCut"
+                                placeholder="Search Cut">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterCutChk" id="filterCutChk"
+                                title="Select All" [(ngModel)]="filterCutChk"
+                                (change)="stockOnHandCriteria.cut = checkAllListItems(listCut,filterCutChk, stockOnHandCriteria.cut)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.cut, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.cut)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Polish</label>
+                        <kendo-multiselect name="polish" class="customselect" [data]="listPolish"
+                          [(ngModel)]="stockOnHandCriteria.polish" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listPolish, stockOnHandCriteria.polish)"
+                          (open)="filterPolishChk = onOpenDropdown(listPolish,filterPolishChk, stockOnHandCriteria.polish)"
+                          (filterChange)="filterPolish = handleFilter($event);listPolish = filterDropdownSearch(allTheCPS, $event, stockOnHandCriteria.polish)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterPolish" id="filterPolish" [(ngModel)]="filterPolish"
+                                placeholder="Search Polish">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterPolishChk" id="filterPolishChk"
+                                title="Select All" [(ngModel)]="filterPolishChk"
+                                (change)="stockOnHandCriteria.polish = checkAllListItems(listPolish,filterPolishChk, stockOnHandCriteria.polish)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.polish, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.polish)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Symmetry</label>
+                        <kendo-multiselect name="symmetry" class="customselect" [data]="listSymm"
+                          [(ngModel)]="stockOnHandCriteria.symmetry" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listSymm, stockOnHandCriteria.symmetry)"
+                          (open)="filterSymmChk = onOpenDropdown(listSymm,filterSymmChk, stockOnHandCriteria.symmetry)"
+                          (filterChange)="filterSymm = handleFilter($event);listSymm = filterDropdownSearch(allTheCPS, $event, stockOnHandCriteria.symmetry)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterSymm" id="filterSymm" [(ngModel)]="filterSymm"
+                                placeholder="Search Symmetry">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterSymmChk" id="filterSymmChk"
+                                title="Select All" [(ngModel)]="filterSymmChk"
+                                (change)="stockOnHandCriteria.symmetry = checkAllListItems(listSymm,filterSymmChk, stockOnHandCriteria.symmetry)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.symmetry, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.symmetry)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data mul-select">
+                        <label>Fluorescence</label>
+                        <kendo-multiselect name="flour" class="customselect" [data]="listFlour"
+                          [(ngModel)]="stockOnHandCriteria.fluorescence" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                          (valueChange)="onMultiSelectChange(listFlour, stockOnHandCriteria.fluorescence)"
+                          (open)="filterFlourChk = onOpenDropdown(listFlour,filterFlourChk, stockOnHandCriteria.fluorescence)"
+                          (filterChange)="filterFlour = handleFilter($event);listFlour = filterDropdownSearch(allTheFluorescences, $event, stockOnHandCriteria.fluorescence)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                              <input type="text" name="filterFlour" id="filterFlour" [(ngModel)]="filterFlour"
+                                placeholder="Search Fluorescence">
+                              <span class="k-icon k-i-search"></span>
+                            </div>
+                            <div class="single k-widget k-header pl-2">
+                              <input type="checkbox" class="k-checkbox mr-1" name="filterFlourChk" id="filterFlourChk"
+                                title="Select All" [(ngModel)]="filterFlourChk"
+                                (change)="stockOnHandCriteria.fluorescence = checkAllListItems(listFlour,filterFlourChk, stockOnHandCriteria.fluorescence)">
+                              <label>Select All</label>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                            <span kendoTooltip position="bottom"
+                              [title]="getCommaSapratedString(stockOnHandCriteria.fluorescence, true)">
+                              {{getCommaSapratedString(stockOnHandCriteria.fluorescence)}}
+                            </span>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data check-box">
+                        <ng2-tri-state-checkbox name="filterIsOnHold" [(ngModel)]="stockOnHandCriteria.isHold"
+                          #filterIsOnHold="ngModel">
+                        </ng2-tri-state-checkbox>
+                        <label for="a-employee">OnHold Packets</label>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data check-box">
+                        <ng2-tri-state-checkbox name="filterIsCertificate"
+                          [(ngModel)]="stockOnHandCriteria.isCertificate" #filterIsOnHold="ngModel">
+                        </ng2-tri-state-checkbox>
+                        <label for="a-employee">CertificateNo Exists</label>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data check-box">
+                        <ng2-tri-state-checkbox name="filterIsLabReturn" [(ngModel)]="stockOnHandCriteria.isLabReturn"
+                          #filterIsOnHold="ngModel">
+                        </ng2-tri-state-checkbox>
+                        <label for="a-employee">Lab Return</label>
+                      </div>
+
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action"
+                          (click)="StockSearchForm.form.valid && onFilterSubmit(StockSearchForm)">
+                          <i class="icon-search"></i>Search</button>
+                        <button (click)="clearFilter(StockSearchForm)" class="btn btn-action"><i
+                            class="icon-clear"></i>Clear</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- #endregion -->
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #region Lab Issue Model-->
+
+<!-- [listStoneItems]="listStoneItems" -->
+<ng-container *ngIf="islabIssue">
+  <app-labissue (toggle)="islabIssue=$event;refreshData()" [inventoryItems]="inventoryItems"
+    [stockOnHandSelectedItems]="selectedInventoryItems">
+  </app-labissue>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Lab Receive Model-->
+<ng-container *ngIf="islabReceive">
+  <app-labreceive (toggle)="islabReceive=$event;refreshData()" [stockOnHandSelectedItems]="selectedInventoryItems">
+  </app-labreceive>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Memo Model-->
+<ng-container *ngIf="isMemo">
+  <app-memo (toggle)="isMemo=$event;refreshData()" [isVisiable]="isVisiable"
+    [stockOnHandSelectedItems]="selectedInventoryItems">
+  </app-memo>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Manual Issue Model-->
+<div class="modal c-modal addemp rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isManualIssue">
+  <form name="form" #ManualIssue="ngForm">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id=""><i class="icon-Manual_Issue_Packet"></i>Manual Issue Packets</h5>
+          <button type="button" class="close" (click)="closeManualIssueDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="i-form ma-issue-top">
+                <div class="grid">
+                  <div class="form-data">
+                    <label for="">Stone ID</label>
+                  </div>
+                  <div class="form-data">
+                    <input type="text" id="barcode" #BarcodeInput name="barcode" class="c-wi" autocomplete="off">
+                  </div>
+                  <!-- <div class="form-data">
+                    <label>Packets</label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listStoneItems" [kendoDropDownFilter]="filterSettings" textField="text"
+                      valueField="value" name="Packets" [(ngModel)]="selectedPacketsItems" #Packets="ngModel">
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <button (click)="onAddPacket()" class="btn btn-primary icon-add"></button>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="i-form ma-issue-midd">
+                <div class="grid">
+                  <div class="form-data">
+                    <label for="">Department<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listDepartmentItems" textField="text" valueField="value" name="dept"
+                      (valueChange)="onDepartmentChange($event)" [(ngModel)]="selectedDeptItems" #dept="ngModel"
+                      required>
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="form-data">
+                    <label for="">Employee<span class="require">*</span></label>
+                  </div>
+                  <div class="form-data">
+                    <kendo-dropdownlist [data]="listEmployeeItems" textField="text" valueField="value" name="emp"
+                      [(ngModel)]="selectedEmpItems" #dept="ngModel" required>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+              </div>
+
+              <div class="i-form ma-pac-midd">
+                <div class="grid">
+                  <div class="form-data">
+                    <span class="t-title">Packets:</span>{{cntMnuStones}}
+                  </div>
+                  <div class="form-data">
+                    <span class="t-title">Weight:</span>{{sumMnuStonesWeight}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="mod-wrap">
+                <div class="grid-wrap">
+                  <ng-container *ngIf="!gridViewIssue">
+                    <div class="k-grouping-header k-grouping-header-flex">
+                      <div class="k-indicator-container">
+                        <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                        </kendo-skeleton>
+                      </div>
+                    </div>
+                    <table *ngIf="fields && fieldsManualIssue.length > 0" class="w-100">
+                      <th *ngFor="let field of fieldsManualIssue">{{field.propertyName}}</th>
+                      <tr *ngFor="let field of skeletonArray">
+                        <td *ngFor="let field of fields">
+                          <kendo-skeleton shape="text" animation="wave" [width]="75" [height]="40">
+                          </kendo-skeleton>
+                        </td>
+                      </tr>
+                    </table>
+                  </ng-container>
+                  <kendo-grid [data]="gridViewIssue" class="grid-ui upload-grid" [sortable]="true" [resizable]="true">
+                    <ng-container *ngIf="fields && fieldsManualIssue.length > 0">
+                      <ng-container *ngFor="let field of fieldsManualIssue">
+                        <ng-container *ngIf="field.isSelected">
+                          <kendo-grid-column [width]="100" [field]="field.propertyName" [title]="field.title">
+                          </kendo-grid-column>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </kendo-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onSavePacket(ManualIssue,false)"
+            [disabled]="!ManualIssue.valid || this.selectedInventoryItems.length == 0">
+            <i class="icon-add"></i>New</button>
+          <button type="button" class="btn btn-primary" (click)="onSavePacket(ManualIssue,true)"
+            [disabled]="!ManualIssue.valid || this.selectedInventoryItems.length == 0">
+            <i class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- #endregion -->
+
+<!-- #region Grid Config -->
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'StockOnHand'" [gridName]="'StockOnHandGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->
+
+<div (document:keydown.esc)="closeManualIssueDialog()"></div>
+<div kendoDialogContainer></div>

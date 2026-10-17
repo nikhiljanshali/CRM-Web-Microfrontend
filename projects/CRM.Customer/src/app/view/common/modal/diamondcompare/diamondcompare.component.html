@@ -1,0 +1,95 @@
+<div class="modal dialog-ui dialog-xl" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+  <form name="searchINVForm" #searchINVForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="main-title m-0 border-0">
+          <button type="button" class="close" (click)="closeDiamondCompareSidebar()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="compare-summary d-flex justify-content-between align-items-center">
+            <div class="left-cn">
+              <span><b>No of Pcs :</b> {{totalCount}}</span>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span><b>Weight :</b> {{totalWeight}}</span>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span><b>Avg Disc%:</b> {{avgDiscount}}%</span>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span><b>Avg $/Ct :</b> $ {{avgPerCarat}}</span>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span><b>Total NetAmt :</b> $ {{totalNetAmount}}</span>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span><b>R NetAmt :</b> $ {{rNetAmount}}</span>
+            </div>
+            <div class="text-right mb-2">
+              <button kendoButton class="dialog-btn mr-2" (click)="removeItems('selected')"><i
+                  class="icon-delete"></i>Remove
+                Selected</button>
+              <button kendoButton class="dialog-btn" (click)="removeItems('all')"><i class="icon-delete"></i>Remove
+                All</button>
+            </div>
+          </div>
+          <div class="compare-grid">
+            <div class="compare-left">
+              <div class="fix-column">
+                <ul>
+                  <li>Seiral No</li>
+                  <li style="height:138px;"></li>
+                  <li>Shape</li>
+                  <li>Size</li>
+                  <li>Color</li>
+                  <li>Clarity</li>
+                  <li>Cut</li>
+                  <li>Polish</li>
+                  <li>Symmetry</li>
+                  <li>Fluoresence</li>
+                  <li>Measurement</li>
+                  <li>Depath(%)</li>
+                  <li>Ratio</li>
+                  <li>Dis(%)</li>
+                  <li>Price($)</li>
+                  <li>Lab</li>
+                  <li class="border-bottom-0" style="height: 70px;"></li>
+                </ul>
+              </div>
+            </div>
+            <div class="compare-right d-flex">
+              <div class="compare-diamond" *ngFor="let item of compareInvItemsData;let i = index">
+                <ul>
+                  <li>{{item.stoneId}} &nbsp;&nbsp;
+                    <input type="checkbox" kendoGridSelectAllCheckbox name="chk" class="k-checkbox"
+                      (click)="selectStone(i, $event)" />
+                    <label class="k-checkbox-label"></label>
+                  </li>
+                  <li style="height:138px;"><img alt="img"
+                      [src]="sanitizeURL((item.imageUrl != null && item.imageUrl.length > 0) ? item.imageUrl : 'commonAssets/images/image-not-found.jpg')" />
+                  </li>
+                  <li>{{item.shape}}</li>
+                  <li>{{item.weight}}</li>
+                  <li>{{item.color}}</li>
+                  <li>{{item.clarity}}</li>
+                  <li>{{item.cut}}</li>
+                  <li>{{item.polish}}</li>
+                  <li>{{item.symmetry}}</li>
+                  <li>{{(item.fluorescence && item.fluorescence.length > 0) ? item.fluorescence : '-'}}</li>
+                  <li>{{item.measurement.length ? item.measurement.length : '0'}} - {{item.measurement.width ? item.measurement.width : '0'}} x
+                    {{item.measurement.height ? item.measurement.height : '0'}}</li>
+                  <li>{{(item.measurement.depth) ? item.measurement.depth : '-'}}</li>
+                  <li>{{(item.measurement.ratio) ? item.measurement.ratio : '-'}}</li>
+                  <li>{{item.price.discount}}%</li>
+                  <li>$ {{item.price.rap}}</li>
+                  <li>{{(item.lab && item.lab.length > 0) ? item.lab : '-'}}</li>
+                  <li class="cmp-btn"><button kendoButton (click)="addToCart(item)"><i class="icon-addtocart"></i>Add To
+                      Cart</button></li>
+                  <li class="cmp-btn"><button kendoButton (click)="addToWatchList(item)"><i class="icon-wishlist"></i>Add To
+                      Watchlist</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

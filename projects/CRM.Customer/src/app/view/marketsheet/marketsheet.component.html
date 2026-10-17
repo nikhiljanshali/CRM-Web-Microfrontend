@@ -1,0 +1,1252 @@
+<title>Market Sheet</title>
+<div class="updateinventory-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100 pr-0">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i> Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Market Sheet</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+                <div class="ci-top-right">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton title="Search" (click)="openSearchDialog()">
+                      <i class="icon-search"></i>
+                    </button>
+                    <button kendoButton #anchor (click)="onExcelToggle()" title="Export Excel"><i
+                        class="icon-excelnew "></i></button>
+                    <button *ngIf="!marketSheetSearchCriteriaObj.isBlockClient"
+                      [disabled]="this.mySelection.length == 0" kendoButton title="Block Stone"
+                      (click)="blockOrUnBlockStone(true)"><i class="icon-block"></i></button>
+                    <button *ngIf="marketSheetSearchCriteriaObj.isBlockClient" [disabled]="this.mySelection.length == 0"
+                      kendoButton title="Unblock Stone" (click)="blockOrUnBlockStone(false)"><i
+                        class="icon-unblock"></i>
+                    </button>
+                    <button kendoButton title="Show Summary" (click)="openSummary()">
+                      <i class="icon-summary"></i>
+                    </button>
+                    <button kendoButton title="Grid Configuration" (click)="openGridConfigDialog()">
+                      <i class="icon-gridconfig"></i>
+                    </button>
+                  </kendo-buttongroup>
+                  <kendo-popup [anchor]="$any(anchor)" (anchorViewportLeave)="showExcelOption = false"
+                    *ngIf="showExcelOption" [anchorAlign]="anchorAlign" [popupAlign]="popupAlign">
+                    <div class="content">
+                      <div class="pt-2 pl-2 pr-2">
+                        <div>
+                          <input type="radio" name="excelOption" value="searched" #searched [(ngModel)]="excelOption"
+                            kendoRadioButton />
+                          <label class="k-label" class="ml-2" [for]="searched">Searched
+                            Stone</label>
+                        </div>
+                        <div>
+                          <input type="radio" name="excelOption" value="selected" #selected [(ngModel)]="excelOption"
+                            kendoRadioButton />
+                          <label class="k-label" class="ml-2" [for]="selected">Selected
+                            Stone</label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="text-center pb-2">
+                          <button class="btn btn-primary" [disabled]="excelOption == null" (click)="exportToExcel()">
+                            <i class="icon-excelnew"></i> Export to Excel
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </kendo-popup>
+                </div>
+              </div>
+            </div>
+            <div class="grid-wrap grid-summury">
+              <!-- Skeleton start -->
+              <ng-container *ngIf="!gridView">
+                <div class="k-grouping-header k-grouping-header-flex">
+                  <div class="k-indicator-container">
+                    <kendo-skeleton shape="text" animation="wave" [width]="400" [height]="40">
+                    </kendo-skeleton>
+                  </div>
+                </div>
+                <table *ngIf="fields && fields.length > 0" class="w-100 table-responsive skeleton-tbl">
+                  <ng-container *ngFor="let field of fields">
+                    <th *ngIf="field.isSelected && field.title !='Checkbox'">
+                      {{field.title}}
+                    </th>
+                    <th *ngIf="field.isSelected && field.title =='Checkbox'">
+                      <input type="checkbox" class="k-checkbox" id="headerSkeletonCheckbox" disabled />
+                    </th>
+                  </ng-container>
+                  <tr *ngFor="let field of skeletonArray">
+                    <ng-container *ngFor="let fieldItem of fields">
+                      <td *ngIf="fieldItem.isSelected">
+                        <kendo-skeleton shape="text" animation="wave" [width]="80" [height]="40">
+                        </kendo-skeleton>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- Skeleton end -->
+              <kendo-grid #invGrid *ngIf="gridView" [data]="gridView" [reorderable]="true" [resizable]="true"
+                [groupable]="true" [sortable]="true" [selectable]="selectableSettings"
+                (selectionChange)="selectedRowChange($event)" [group]="groups" (groupChange)="groupChange($event)"
+                [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+                [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'">
+
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+
+                        <ng-template *ngIf="isShowCheckBoxAll && field.title == 'Checkbox'" kendoGridHeaderTemplate>
+                          <input kendoGridSelectAllCheckbox type="checkbox" class="k-checkbox" id="headerCheckbox" />
+                          <label class="k-checkbox-label" for="headerCheckbox"></label>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                          *ngIf="field.title == 'Checkbox'">
+                          <input *ngIf="!dataItem.isDisabled" type="checkbox" class="k-checkbox"
+                            id="checkbox-{{rowIndex}}" [kendoGridSelectionCheckbox]="rowIndex" />
+                          <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                          </label>
+                        </ng-template>
+
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title == 'Media'">
+                          <span class="gr-icon"
+                            (click)="openMediaDialog('360 Vision View', dataItem.videoUrl, 'iframe')">
+                            <i class="icon-diamond"></i>
+                          </span>
+                          <span class="gr-icon" (click)="openMediaDialog('Image View', dataItem.imageUrl, 'img')">
+                            <i class="icon-camera"></i>
+                          </span>
+                          <span class="gr-icon"
+                            (click)="openMediaDialog('Certificate View', dataItem.certificateUrl, 'cert')">
+                            <i class="icon-cerificate"></i>
+                          </span>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-template kendoGridDetailTemplate let-dataItem>
+                  <app-searchdetail [invItemsSearchResult]="dataItem"></app-searchdetail>
+                  <ng-template kendoGridNoRecordsTemplate>
+                    <span style="text-align: center;display: block">No Records Found</span>
+                  </ng-template>
+                </ng-template>
+              </kendo-grid>
+            </div>
+          </div>
+          <div class="summary-panel" *ngIf="isSummary">
+            <div class="sr-wrap marketsheet-status pr-2">
+              <div class="sr">
+                <h6>Summary <i class="icon-delete float-right mt-1 mr-1" (click)="closeSummary()"></i>
+                </h6>
+                <div class="summary-panel-grid">
+                  <div class="grid-1">
+                    <button type="button" class="btn t-record">{{totalPacket}}</button>
+                    <span>Total Records</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn t-weight">{{totalWeight | number :
+                                            '.2-2'}}</button>
+                    <span>Total Weight</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn avg-dis">{{totalDiscount | number :
+                                            '.2-2'}}</button>
+                    <span>Avg Dis</span>
+                  </div>
+                  <div class="grid-1">
+                    <button type="button" class="btn avg-ct">{{totalAvgDPC | number :
+                                            '.2-2'}}</button>
+                    <span>Avg $/CT</span>
+                  </div>
+                  <div class="grid-1" [ngClass]="{'is-active-summary':marketSheetSearchCriteriaObj.isBlockClient}"
+                    (click)="showBlockedStone()">
+                    <button type="button" class="btn avg-ct">{{totalBlockedStones}}</button>
+                    <span>Blocked Stone</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="f-btn">
+          <ul>
+            <li><button class="open-filter"><i class="icon-filter"></i></button></li>
+            <li><button><i class="icon-search"></i></button></li>
+            <li><button><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Filter Start-->
+<div class="modal c-modal dialog-lg rorgan addemp" tabindex="-1" role="dialog" data-keyboard="false"
+  data-backdrop="static" *ngIf="isSearchFilter">
+  <form name="searchINVForm" #searchINVForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="main-title">
+          <h5>Search Filter</h5>
+          <button type="button" class="close" (click)="closeSearchDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body search-filter">
+          <!-- Input -->
+          <div class="input-search">
+            <div class="form-data">
+              <label>Status</label>
+            </div>
+            <div class="form-data">
+              <kendo-multiselect name="status" class="customselect" [data]="listStatus"
+                [(ngModel)]="marketSheetSearchCriteriaObj.status" [textField]="'name'" [valueField]="'name'"
+                [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false" [tagMapper]="tagMapper"
+                (valueChange)="onMultiSelectChange(listStatus, marketSheetSearchCriteriaObj.status)">
+                <ng-template kendoComboBoxHeaderTemplate>
+                  <div class="dropdown-header single k-widget k-header">
+                    <span class="temp-single">Select Status</span>
+                  </div>
+                </ng-template>
+                <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                  <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                  <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                </ng-template>
+              </kendo-multiselect>
+            </div>
+            <div class="form-data">
+              <label>Stone Id</label>
+            </div>
+            <div class="form-data">
+              <input type="text" class="input-sm form-control text-left" name="stoneId"
+                [(ngModel)]="marketSheetSearchCriteriaObj.stoneId" />
+            </div>
+            <div class="form-data">
+              <label>Certificate No.</label>
+            </div>
+            <div class="form-data">
+              <input type="text" class="input-sm form-control text-left" name="certificateNo"
+                [(ngModel)]="marketSheetSearchCriteriaObj.certificateNo" />
+            </div>
+            <div class="form-data">
+              <label>Location</label>
+            </div>
+            <div class="form-data">
+              <kendo-multiselect name="location" class="customselect" [data]="listLocation"
+                [(ngModel)]="marketSheetSearchCriteriaObj.location" [textField]="'name'" [valueField]="'name'"
+                [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false" [tagMapper]="tagMapper"
+                (valueChange)="onMultiSelectChange(listLocation, marketSheetSearchCriteriaObj.location)">
+                <ng-template kendoComboBoxHeaderTemplate>
+                  <div class="dropdown-header single k-widget k-header">
+                    <span class="temp-single">Select Location</span>
+                  </div>
+                </ng-template>
+                <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                  <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                  <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                </ng-template>
+              </kendo-multiselect>
+            </div>
+            <div class="form-data">
+              <label>From - To</label>
+            </div>
+            <kendo-daterange class="d-flex">
+              <div class="form-data mr-2">
+                <kendo-dateinput kendoDateRangeStartInput [(value)]="marketSheetSearchCriteriaObj.fromDate!"
+                  (valueChange)="marketSheetSearchCriteriaObj.fromDate = $event">
+                </kendo-dateinput>
+              </div>
+              <div class="form-data">
+                <kendo-dateinput kendoDateRangeEndInput [(value)]="marketSheetSearchCriteriaObj.toDate!"
+                  (valueChange)="popup.toggle();marketSheetSearchCriteriaObj.toDate = $event">
+                </kendo-dateinput>
+              </div>
+              <kendo-daterange-popup [animate]="false" #popup></kendo-daterange-popup>
+            </kendo-daterange>
+            <div class="form-data">
+              <label>Ratio</label>
+            </div>
+            <div class="form-data" [ngClass]="{'error': errRation.length > 0 }" *ngIf="inclusionConfig.ktoS">
+              <div class="d-flex">
+                <input type="text" class="mr-2" name="minRation" [(ngModel)]="marketSheetSearchCriteriaObj.fromRatio"
+                  PosDecimal="true" (keypress)="utilityService.floatOnly($event);"
+                  (blur)="errRation = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromRatio, marketSheetSearchCriteriaObj.toRatio)" />
+                <input type="text" (keypress)="utilityService.floatOnly($event);" name="maxRation"
+                  [(ngModel)]="marketSheetSearchCriteriaObj.toRatio" PosDecimal="true"
+                  (blur)="errRation = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromRatio, marketSheetSearchCriteriaObj.toRatio)" />
+              </div>
+              <span class="font-smaller s-error">{{errRation.length > 0 ? '(' + errRation + ')' :
+                                ''}}</span>
+            </div>
+          </div>
+
+          <!-- Shape -->
+          <div class="search-ul mt-2">
+            <div class="grid-1 d-flex align-items-center">
+              <label class="col-form-label"><strong>Shape</strong></label>
+            </div>
+            <div class="grid-1 d-flex flex-wrap" style="grid-column-gap: 8px;">
+              <label class="shape-txt p-0 d-flex justify-content-center align-items-center" for="all"
+                [ngClass]="{'select': marketSheetSearchCriteriaObj.shape.length === 0 }"
+                (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.shape, 'All')">
+                <span>All</span>
+              </label>
+              <label *ngFor="let item of allTheShapes" class="shape-txt {{item.name.toUpperCase()}}"
+                for="{{item.name.toUpperCase()}}"
+                [ngClass]="{'select': marketSheetSearchCriteriaObj.shape.indexOf(item.name)>-1 }"
+                (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.shape, item.name)">
+                {{item.name}}
+              </label>
+            </div>
+          </div>
+
+          <!-- Weight -->
+          <div class="search-ul mt-2">
+            <div class="grid-1 d-flex align-items-center">
+              <label class="col-form-label"><strong>Size</strong></label>
+            </div>
+            <div class="grid-1 d-flex justify-content-center">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="firstCaratFrom"
+                PosDecimal="true" name="minSize1">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="firstCaratTo"
+                PosDecimal="true" name="maxSize1">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="secondCaratFrom"
+                PosDecimal="true" name="minSize2">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="secondCaratTo"
+                PosDecimal="true" name="maxSize2">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="thirdCaratFrom"
+                PosDecimal="true" name="minSize3">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="thirdCaratTo"
+                PosDecimal="true" name="maxSize3">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="fourthCaratFrom"
+                PosDecimal="true" name="minSize4">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="fourthCaratTo"
+                PosDecimal="true" name="maxSize4">
+            </div>
+          </div>
+
+          <div class="inv-cps-grid mt-2">
+            <div class="grid-1">
+              <!-- Color -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Color</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.color.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.color, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allColors" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.color.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.color, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Clarity -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Clarity</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.clarity.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.clarity, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allClarities" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.clarity.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.clarity, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Flour -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Flour</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.flour.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.flour, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheFluorescences" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.flour.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.flour, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Color Shade -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Shade</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.shade.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.shade, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of inclusionData  | typefilter:'Shade'" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.shade.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.shade, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lab -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Lab</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.lab.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.lab, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheLab" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.lab.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.lab, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="grid-1">
+              <div class="cps-btn">
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '3EX' }"
+                  (click)="changeCPSData('3EX')">3EX</button>
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '2EX' }"
+                  (click)="changeCPSData('2EX')">2EX</button>
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '3VG' }"
+                  (click)="changeCPSData('3VG')">3VG+</button>
+                <button kendoButton class="pkg-btn" (click)="changeCPSData('Clear')"><i
+                    class="icon-clear pr-0"></i></button>
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': isBGM }" (click)="changeCPSData('BGM')">NO
+                  BGM</button>
+              </div>
+              <!-- Cut -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Cut</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.cut.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.cut, 'All');checkCPS();">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.cut.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.cut, item.name);checkCPS();">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Polish -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Polish</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.polish.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.polish, 'All');checkCPS();">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.polish.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.polish, item.name);checkCPS();">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Symmetry -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Symm</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.symm.length === 0 && selectedCPS != '2EX' }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.symm, 'All');checkCPS();">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                    [ngClass]="{'select': marketSheetSearchCriteriaObj.symm.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.symm, item.name);checkCPS();">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Stock Filter -->
+          <div class="stock-filter">
+            <h6 class="title">Stock Filter</h6>
+            <div class="stock-search-grid">
+              <div class="form-data">
+                <label>Organization</label>
+              </div>
+              <div class="form-data">
+                <kendo-dropdownlist [data]="listOrganizationDNormItems" textField="text" valueField="value" name="org"
+                  [(ngModel)]="selectedOrganizationDNormItems" #org="ngModel" required
+                  (valueChange)="onOrganizationDNormChange($event);">
+                </kendo-dropdownlist>
+              </div>
+              <div class="form-data">
+                <label>Branch</label>
+              </div>
+              <div class="form-data">
+                <kendo-dropdownlist [data]="listBranchDNormItems" textField="text" valueField="value" name="branch"
+                  (valueChange)="onBranchDNormChange($event)" [(ngModel)]="selectedBranchDNormItems" #branch="ngModel"
+                  required>
+                </kendo-dropdownlist>
+              </div>
+              <div class="form-data">
+                <label>Department</label>
+              </div>
+              <div class="form-data">
+                <kendo-dropdownlist [data]="listDepartmentItems" textField="text" valueField="value" name="dept"
+                  (valueChange)="onDepartmentChange($event)" [(ngModel)]="selectedDeptItems" #dept="ngModel" required>
+                </kendo-dropdownlist>
+              </div>
+              <div class="form-data">
+                <label>Employee</label>
+              </div>
+              <div class="form-data">
+                <kendo-dropdownlist [data]="listEmpItems" textField="text" valueField="value" name="emp"
+                  (valueChange)="onEmployeeChange($event)" [(ngModel)]="selectedEmpItems" #emp="ngModel" required>
+                </kendo-dropdownlist>
+              </div>
+              <div class="form-data">
+              </div>
+              <div class="form-data">
+                <div class="grid-2">
+                  <kendo-switch class="k-widget k-switch-off mr-1" #isHold="ngModel" name="isHold" id="m-chk"
+                    [(ngModel)]="marketSheetSearchCriteriaObj.isHold"></kendo-switch>
+                  <label class="k-checkbox-label">OnHold</label>
+                  <kendo-switch class="k-widget k-switch-off mr-1 ml-4" #isRapnetHold="ngModel" name="isRapnetHold"
+                    id="m-chk" [(ngModel)]="marketSheetSearchCriteriaObj.isRapnetHold"></kendo-switch>
+                  <label class="k-checkbox-label">Rapnet Hold</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <kendo-panelbar class="body-panelbar custompanelbar mt-3">
+            <kendo-panelbar-item [title]="'Advance Search'">
+              <ng-template kendoPanelBarContent>
+                <div class="panel-item">
+                  <div class="adv-filter">
+
+                    <!-- Price and Comments -->
+                    <h6 class="title">Price and Comments</h6>
+                    <div class="pc-grid">
+                      <div class="form-data" *ngIf="inclusionConfig.ktoS">
+                        <label>Key To Symbol</label>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.ktoS">
+                        <kendo-multiselect name="status" class="customselect" [data]="listKToS"
+                          [(ngModel)]="marketSheetSearchCriteriaObj.kToS" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [tagMapper]="tagMapper"
+                          (valueChange)="onMultiSelectChange(listKToS, marketSheetSearchCriteriaObj.kToS)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="dropdown-header single k-widget k-header">
+                              <span class="temp-single">Select Key to Symbol</span>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.culet">
+                        <label>Culet</label>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.culet">
+                        <kendo-multiselect name="status" class="customselect" [data]="listCulet"
+                          [(ngModel)]="marketSheetSearchCriteriaObj.culet" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [tagMapper]="tagMapper"
+                          (valueChange)="onMultiSelectChange(listCulet, marketSheetSearchCriteriaObj.culet)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="dropdown-header single k-widget k-header">
+                              <span class="temp-single">Select Culet</span>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                    </div>
+
+                    <!-- Measurement -->
+                    <h6 class="title mt-2">Measurement</h6>
+                    <div class="measurement-grid">
+                      <div class="form-data" *ngIf="measurementConfig.depth">
+                        <label>Depth%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errTotalDepth.length > 0 }"
+                        *ngIf="measurementConfig.depth">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minDepth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTotalDepth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromDepth, marketSheetSearchCriteriaObj.toDepth)" />
+                          <input type="text" class="input-sm form-control" name="maxDepth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTotalDepth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromDepth, marketSheetSearchCriteriaObj.toDepth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errTotalDepth.length > 0 ? '(' +
+                                                    errTotalDepth + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.table">
+                        <label>Table%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errTable.length > 0 }"
+                        *ngIf="measurementConfig.table">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minTable"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromTable" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTable = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromTable, marketSheetSearchCriteriaObj.toTable)" />
+                          <input type="text" class="input-sm form-control" name="maxTable"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toTable" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTable = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromTable, marketSheetSearchCriteriaObj.toTable)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errTable.length > 0 ? '(' +
+                                                    errTable + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.girdlePer">
+                        <label>Girdle%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errGirdle.length > 0 }"
+                        *ngIf="measurementConfig.girdlePer">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minGirdlePer"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromGirdlePer" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errGirdle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromGirdlePer, marketSheetSearchCriteriaObj.toGirdlePer)" />
+                          <input type="text" class="input-sm form-control" name="maxGirdlePer"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toGirdlePer" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errGirdle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromGirdlePer, marketSheetSearchCriteriaObj.toGirdlePer)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errGirdle.length > 0 ? '(' +
+                                                    errGirdle + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.pavillionAngle">
+                        <label>Pav.Ang</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errPavAngle.length > 0 }"
+                        *ngIf="measurementConfig.pavillionAngle">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPavilionAngle"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromPavilionAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavAngle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPavilionAngle, marketSheetSearchCriteriaObj.toPavilionAngle)" />
+                          <input type="text" class="input-sm form-control" name="maxPavilionAngle"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toPavilionAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavAngle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPavilionAngle, marketSheetSearchCriteriaObj.toPavilionAngle)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errPavAngle.length > 0 ? '(' +
+                                                    errPavAngle + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.pavillionDepth">
+                        <label>Pav.Dep</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errPavDepth.length > 0 }"
+                        *ngIf="measurementConfig.pavillionDepth">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPavilionDepth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromPavilionDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavDepth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPavilionDepth, marketSheetSearchCriteriaObj.toPavilionDepth)" />
+                          <input type="text" class="input-sm form-control" name="maxPavilionDepth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toPavilionDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavDepth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPavilionDepth, marketSheetSearchCriteriaObj.toPavilionDepth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errPavDepth.length > 0 ? '(' +
+                                                    errPavDepth + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.crownAngle">
+                        <label>Crw.Ang</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errCrnAngle.length > 0 }"
+                        *ngIf="measurementConfig.crownAngle">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minCrownAngle"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromCrownAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnAngle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromCrownAngle, marketSheetSearchCriteriaObj.toCrownAngle)" />
+                          <input type="text" class="input-sm form-control" name="maxCrownAngle"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toCrownAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnAngle = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromCrownAngle, marketSheetSearchCriteriaObj.toCrownAngle)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errCrnAngle.length > 0 ? '(' +
+                                                    errCrnAngle + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.crownHeight">
+                        <label>Crw.Height</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errCrnHeight.length > 0 }"
+                        *ngIf="measurementConfig.crownHeight">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minCrownHeight"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromCrownHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnHeight = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromCrownHeight, marketSheetSearchCriteriaObj.toCrownHeight)" />
+                          <input type="text" class="input-sm form-control" name="maxCrownHeight"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toCrownHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnHeight = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromCrownHeight, marketSheetSearchCriteriaObj.toCrownHeight)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errCrnHeight.length > 0 ? '(' +
+                                                    errCrnHeight + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.length">
+                        <label>Length</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errLength.length > 0 }"
+                        *ngIf="measurementConfig.length">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minLength"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromLength" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errLength = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromLength, marketSheetSearchCriteriaObj.toLength)" />
+                          <input type="text" class="input-sm form-control" name="maxLength"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toLength" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errLength = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromLength, marketSheetSearchCriteriaObj.toLength)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errLength.length > 0 ? '(' +
+                                                    errLength + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.width">
+                        <label>Width</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errWidth.length > 0 }"
+                        *ngIf="measurementConfig.width">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minWidth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromWidth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errWidth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromWidth, marketSheetSearchCriteriaObj.toWidth)" />
+                          <input type="text" class="input-sm form-control" name="maxWidth"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toWidth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errWidth = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromWidth, marketSheetSearchCriteriaObj.toWidth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errWidth.length > 0 ? '(' +
+                                                    errWidth + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.height">
+                        <label>Height</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errHeight.length > 0 }"
+                        *ngIf="measurementConfig.height">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minHeight"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errHeight = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromHeight, marketSheetSearchCriteriaObj.toHeight)" />
+                          <input type="text" class="input-sm form-control" name="maxHeight"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errHeight = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromHeight, marketSheetSearchCriteriaObj.toHeight)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errHeight.length > 0 ? '(' +
+                                                    errHeight + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data">
+                        <label>$/Ct</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errDollarPerCt.length > 0 }">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPerCarat"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromPerCarat" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errDollarPerCt = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPerCarat, marketSheetSearchCriteriaObj.toPerCarat)" />
+                          <input type="text" class="input-sm form-control" name="maxPerCarat"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toPerCarat" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errDollarPerCt = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromPerCarat, marketSheetSearchCriteriaObj.toPerCarat)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errDollarPerCt.length > 0 ? '(' +
+                                                    errDollarPerCt + ')' :
+                                                    ''}}</span>
+                      </div>
+                      <div class="form-data">
+                        <label>Net Amount</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errNetAmount.length > 0 }">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minNetAmt"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.fromNetAmt" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errNetAmount = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromNetAmt, marketSheetSearchCriteriaObj.toNetAmt)" />
+                          <input type="text" class="input-sm form-control" name="maxNetAmt"
+                            [(ngModel)]="marketSheetSearchCriteriaObj.toNetAmt" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errNetAmount = checkMinMaxValidation(marketSheetSearchCriteriaObj.fromNetAmt, marketSheetSearchCriteriaObj.toNetAmt)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errNetAmount.length > 0 ? '(' +
+                                                    errNetAmount + ')' :
+                                                    ''}}</span>
+                      </div>
+                    </div>
+
+                    <!-- Inclusion -->
+                    <h6 class="title mt-2">Inclusion</h6>
+                    <div class="inclusion-grid">
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.sideBlack">
+                        <label>Blk Table</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.sideBlack.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.sideBlack, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'SideBlack'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.sideBlack.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.sideBlack, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.centerBlack">
+                        <label>Blk Crown</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.centerBlack.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.centerBlack, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'CenterBlack'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.centerBlack.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.centerBlack, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.sideWhite">
+                        <label>White Table</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.sideWhite.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.sideWhite, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'SideWhite'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.sideWhite.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.sideWhite, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.centerWhite">
+                        <label>White Crw</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.centerWhite.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.centerWhite, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'CenterWhite'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.centerWhite.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.centerWhite, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.milky">
+                        <label>Milky</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.milky.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.milky, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Milky'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.milky.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.milky, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.brown">
+                        <label>Brown</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.brown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.brown, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Brown'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.brown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.brown, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.green">
+                        <label>Green</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.green.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.green, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Green'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.green.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.green, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openTable">
+                        <label>Open Tbl</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openTable.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openTable, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenTable'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openTable.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openTable, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openCrown">
+                        <label>Open Crw</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openCrown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openCrown, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenCrown'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openCrown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openCrown, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openPavilion">
+                        <label>Open Pav</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openPavilion.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openPavilion, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenPavilion'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openPavilion.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openPavilion, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openGirdle">
+                        <label>Open Girdle</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openGirdle.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openGirdle, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenGirdle'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.openGirdle.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.openGirdle, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnPavilion">
+                        <label>NOP</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnPavillion.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnPavillion, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnPavilion'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnPavillion.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnPavillion, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnCrown">
+                        <label>NOC</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnCrown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnCrown, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnCrown'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnCrown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnCrown, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnGirdle">
+                        <label>NOG</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnGirdle.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnGirdle, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnGirdle'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnGirdle.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnGirdle, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnTable">
+                        <label>NOT</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnTable.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnTable, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnTable'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.naturalOnTable.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.naturalOnTable, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.eyeClean">
+                        <label>Eye Clean</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eyeClean.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eyeClean, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EyeClean'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eyeClean.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eyeClean, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.hna">
+                        <label>HNA</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.hNA.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.hNA, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'HNA'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.hNA.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.hNA, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efoc">
+                        <label>EFOC</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOC.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOC, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOC'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOC.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOC, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efop">
+                        <label>EFOP</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOP.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOP, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOP'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOP.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOP, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efot">
+                        <label>EFOT</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOT.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOT, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOT'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOT.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOT, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efog">
+                        <label>EFOG</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOG.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOG, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOG'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.eFOG.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.eFOG, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.girdleCondition">
+                        <label>Gdl.Cond</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.girdleCondition.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.girdleCondition, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'GirdleCondition'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.girdleCondition.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.girdleCondition, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.luster">
+                        <label>Luster</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.luster.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.luster, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Luster'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.luster.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.luster, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.bowtie">
+                        <label>Bowtie</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.bowtie.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.bowtie, 'All')">
+                            All
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Bowtie'" class="pkg-btn"
+                            [ngClass]="{'select': marketSheetSearchCriteriaObj.bowtie.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(marketSheetSearchCriteriaObj.bowtie, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+          </kendo-panelbar>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="filterBySearch()"><i class="icon-search"></i>Search</button>
+          <button class="btn btn-primary" (click)="clearSearchCriteria(searchINVForm)"><i
+              class="icon-clear"></i>Reset</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Search Filter End-->
+
+<!-- Media Modal Start-->
+<ng-container *ngIf="isShowMedia">
+  <app-media [mediaTitle]="mediaTitle" [mediaSrc]="mediaSrc" [mediaType]="mediaType"
+    (closeDialog)="closeMediaDialog($event)"></app-media>
+</ng-container>
+<!-- Media Modal End-->
+
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'MarketSheetCustomer'" [gridName]="'MarketSheetCustomerGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+
+<div (document:keydown.esc)="closeSearchDialog()"></div>
+
+<div kendoDialogContainer></div>

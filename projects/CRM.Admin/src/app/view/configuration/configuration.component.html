@@ -1,0 +1,51 @@
+<title>Origin Configuration</title>
+<div class="congiguration-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid config-d">
+            <div class="middle-content p-0 d-shadow">
+                <div class="company-info">
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+                        <div class="ci-top-left">
+                            <ul>
+                                <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i> Home</li>
+                                <li class="breadcrumb-item active" aria-current="page">OriginConfiguration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-sm-5 col-xs-12 role">
+                        <div class="role-list ro-list middle-wrap a-config">
+                            <div class="flex in-block">
+                                <div class="o-title">
+                                    <h6 class="title">Role Wise Configuration</h6>
+                                </div>
+                                <div class="o-edit">
+                                </div>
+                            </div>
+                            <ul class="s-company">
+                                <ng-container *ngFor="let item of originItems; let i=index">
+                                    <li>
+                                        {{item}}
+                                        <i class="icon-setting" (click)="rolePermissionDialog(item)"
+                                            title="Role Permission"></i>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-7 col-sm-7 col-xs-12">
+                        <app-gridmasterconfiguration></app-gridmasterconfiguration>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div kendoDialogContainer></div>
+
+<ng-container *ngIf="isPermission">
+    <app-userpermission [title]="selectedOrigin" [selectedOrigin]="selectedOrigin"
+        [pageComeFromPermission]="pageComeFromPermission" (toggle)="isPermission=$event"></app-userpermission>
+</ng-container>

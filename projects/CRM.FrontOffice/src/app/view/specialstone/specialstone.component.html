@@ -1,0 +1,707 @@
+<title>Special Stone</title>
+<div class="edetails-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i> Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Special Stone</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right pr-0">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openCriteria()" title="Add Special Stone"><i
+                        class="icon-add"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+            <div class="grid-wrap o-details e-details">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="special-stone">
+                    <div class="en-form mb-2">
+                      <div class="row e-details-n" *ngIf="specialStoneCriteriaData.length > 0">
+                        <div class="col-xl-3 col-lg-3 col-sm-4 col-xs-12 mb-3"
+                          [ngClass]="{ 'pr-0': !lastDivNumber.includes(i)}"
+                          *ngFor="let criteria of specialStoneCriteriaData; let i = index;">
+                          <div class="info-block border b-des bg-white">
+                            <div class="flex in-block" [ngClass]="{ 'bg-secondary': criteria.isHighlight}">
+                              <div class="o-title">
+                                <h6 class="b-title" [ngClass]="{ 'bg-secondary text-white': criteria.isHighlight}">
+                                  {{criteria.minWeight}} - {{criteria.maxWeight}}</h6>
+                              </div>
+                              <div class="o-edit">
+                                <kendo-buttongroup kendoTooltip position="bottom">
+                                  <button kendoButton title="Copy Criteria" (click)="editCriteria(criteria, true)"><i
+                                      class="icon-copy"></i></button>
+                                  <button kendoButton title="Edit Criteria" (click)="editCriteria(criteria);"><i
+                                      class="icon-edit"></i></button>
+                                  <button kendoButton title="Delete Criteria" (click)="openDeleteDialog(criteria.id)"><i
+                                      class="icon-trash"></i></button>
+                                </kendo-buttongroup>
+                              </div>
+                            </div>
+                            <div class="li-wrap">
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Shape : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.shape; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Lab : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.lab; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Color : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.color; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Clarity : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.clarity; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Cut : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.cut; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Polish : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.polish; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Symmentry : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.symmetry; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>Fluor : </span>
+                                  <i class="p-0" *ngFor="let item of criteria.fluorescence; let isLast=last">
+                                    {{item}}{{isLast ? '' : ','}}
+                                  </i>
+                                </h6>
+                              </li>
+                              <li class="w-100 mb-1">
+                                <h6 class="c-name"><span>D. Limit : </span>
+                                  {{criteria.fromLimit}} - {{criteria.toLimit}}
+                                </h6>
+                              </li>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing Criteria Modal Start -->
+<div class="modal addemp c-modal rorgan" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isAddCriteria">
+  <form name="criteriaForm" #criteriaForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-pricingcriteria"></i>{{insertFlag ? 'Add'
+            : 'Edit'}} Special Stone Criteria
+          </h5>
+          <button type="button" class="close" (click)="closeAddCriteria()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body pb-3">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="pricing-special-grid">
+                <div class="form-data">
+                  <label for="">Shape<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': shape.invalid && (shape.dirty || shape.touched)}">
+                  <kendo-multiselect name="shape" class="customselect" [data]="allTheShapes"
+                    [(ngModel)]="specialStoneCriteriaObj.shape" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false" required
+                    [kendoMultiSelectSummaryTag]="0" #shape="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheShapes, specialStoneCriteriaObj.shape);showRationValidation();"
+                    (open)="filterShapeChk = utilityService.onOpenDropdown(allTheShapes,filterShapeChk, specialStoneCriteriaObj.shape)"
+                    (filterChange)="filterShape = utilityService.handleFilter($event);allTheShapes = utilityService.filterDropdownSearch(ShapesList, $event, specialStoneCriteriaObj.shape)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterShape" id="filterShape" [(ngModel)]="filterShape"
+                          placeholder="Search Shape">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterShapeChk" id="filterShapeChk"
+                          title="Select all" [(ngModel)]="filterShapeChk"
+                          (change)="specialStoneCriteriaObj.shape = utilityService.checkAllListItems(allTheShapes, filterShapeChk, specialStoneCriteriaObj.shape);showRationValidation();">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.shape, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.shape)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Lab<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select" [ngClass]="{ 'error': lab.invalid && (lab.dirty || lab.touched) }">
+                  <kendo-multiselect name="lab" class="customselect" [data]="allTheLab" required #lab="ngModel"
+                    [(ngModel)]="specialStoneCriteriaObj.lab" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheLab, specialStoneCriteriaObj.lab)"
+                    (open)="filterLabChk = utilityService.onOpenDropdown(allTheLab,filterLabChk, specialStoneCriteriaObj.lab)"
+                    (filterChange)="filterLab = utilityService.handleFilter($event);allTheLab = utilityService.filterDropdownSearch(LabList, $event, specialStoneCriteriaObj.lab)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterLab" id="filterLab" [(ngModel)]="filterLab"
+                          placeholder="Search Lab">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterLabChk" id="filterLabChk"
+                          title="Select all" [(ngModel)]="filterLabChk"
+                          (change)="specialStoneCriteriaObj.lab = utilityService.checkAllListItems(allTheLab,filterLabChk, specialStoneCriteriaObj.lab)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.lab, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.lab)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Weight<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errWeight.length > 0 || minWeight.invalid || maxWeight.invalid) && 
+                  (minWeight.touched && maxWeight.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="minWeight" placeholder="Min" required #minWeight="ngModel"
+                      id="minWeight"
+                      (blur)="errWeight = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.minWeight, specialStoneCriteriaObj.maxWeight)"
+                      [(ngModel)]="specialStoneCriteriaObj.minWeight" (keypress)="utilityService.floatOnly($event);" />
+                    <input type="text" placeholder="Max" required name="maxWeight" #maxWeight="ngModel" id="maxWeight"
+                      [(ngModel)]="specialStoneCriteriaObj.maxWeight" (keypress)="utilityService.floatOnly($event);"
+                      (blur)="errWeight = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.minWeight, specialStoneCriteriaObj.maxWeight)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errWeight.length > 0 ? '(' + errWeight + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Color<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': color.invalid && (color.dirty || color.touched) }">
+                  <kendo-multiselect name="color" class="customselect" [data]="allColors" required #color="ngModel"
+                    [(ngModel)]="specialStoneCriteriaObj.color" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allColors, specialStoneCriteriaObj.color)"
+                    (open)="filterColorChk = utilityService.onOpenDropdown(allColors,filterColorChk, specialStoneCriteriaObj.color)"
+                    (filterChange)="filterColor = utilityService.handleFilter($event);allColors = utilityService.filterDropdownSearch(ColorList, $event, specialStoneCriteriaObj.color)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterColor" id="filterColor" [(ngModel)]="filterColor"
+                          placeholder="Search Color">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterColorChk" id="filterColorChk"
+                          title="Select all" [(ngModel)]="filterColorChk"
+                          (change)="specialStoneCriteriaObj.color = utilityService.checkAllListItems(allColors,filterColorChk, specialStoneCriteriaObj.color)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.color, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.color)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Clarity<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': clarity.invalid && (clarity.dirty || clarity.touched) }">
+                  <kendo-multiselect name="clarity" class="customselect" [data]="allClarities" required
+                    [(ngModel)]="specialStoneCriteriaObj.clarity" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #clarity="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allClarities, specialStoneCriteriaObj.clarity)"
+                    (open)="filterClarityChk = utilityService.onOpenDropdown(allClarities,filterClarityChk, specialStoneCriteriaObj.clarity)"
+                    (filterChange)="filterClarity = utilityService.handleFilter($event);allClarities = utilityService.filterDropdownSearch(ClarityList, $event, specialStoneCriteriaObj.clarity)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterClarity" id="filterClarity" [(ngModel)]="filterClarity"
+                          placeholder="Search Clarity">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterClarityChk" id="filterClarityChk"
+                          title="Select all" [(ngModel)]="filterClarityChk"
+                          (change)="specialStoneCriteriaObj.clarity = utilityService.checkAllListItems(allClarities,filterClarityChk, specialStoneCriteriaObj.clarity)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.clarity, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.clarity)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Cut<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select" [ngClass]="{ 'error': cut.invalid && (cut.dirty || cut.touched) }">
+                  <kendo-multiselect name="cut" class="customselect" [data]="allTheCut" required #cut="ngModel"
+                    [(ngModel)]="specialStoneCriteriaObj.cut" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheCut, specialStoneCriteriaObj.cut)"
+                    (open)="filterCutChk = utilityService.onOpenDropdown(allTheCut,filterCutChk, specialStoneCriteriaObj.cut)"
+                    (filterChange)="filterCut = utilityService.handleFilter($event);allTheCut = utilityService.filterDropdownSearch(CPSList, $event, specialStoneCriteriaObj.cut)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterCut" id="filterCut" [(ngModel)]="filterCut"
+                          placeholder="Search Cut">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterCutChk" id="filterCutChk"
+                          title="Select all" [(ngModel)]="filterCutChk"
+                          (change)="specialStoneCriteriaObj.cut = utilityService.checkAllListItems(allTheCut,filterCutChk, specialStoneCriteriaObj.cut)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.cut, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.cut)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Polish<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': polish.invalid && (polish.dirty || polish.touched) }">
+                  <kendo-multiselect name="polish" class="customselect" [data]="allThePolish" required
+                    [(ngModel)]="specialStoneCriteriaObj.polish" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #polish="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allThePolish, specialStoneCriteriaObj.polish)"
+                    (open)="filterPolishChk = utilityService.onOpenDropdown(allThePolish,filterPolishChk, specialStoneCriteriaObj.polish)"
+                    (filterChange)="filterPolish = utilityService.handleFilter($event);allThePolish = utilityService.filterDropdownSearch(CPSList, $event, specialStoneCriteriaObj.polish)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterPolish" id="filterPolish" [(ngModel)]="filterPolish"
+                          placeholder="Search Polish">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterPolishChk" id="filterPolishChk"
+                          title="Select all" [(ngModel)]="filterPolishChk"
+                          (change)="specialStoneCriteriaObj.polish = utilityService.checkAllListItems(allThePolish,filterPolishChk, specialStoneCriteriaObj.polish)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.polish, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.polish)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Symm<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': symmetry.invalid && (symmetry.dirty || symmetry.touched) }">
+                  <kendo-multiselect name="symmetry" class="customselect" [data]="allTheSymm" required
+                    [(ngModel)]="specialStoneCriteriaObj.symmetry" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" #symmetry="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheSymm, specialStoneCriteriaObj.symmetry)"
+                    (open)="filterSymmChk = utilityService.onOpenDropdown(allTheSymm,filterSymmChk, specialStoneCriteriaObj.symmetry)"
+                    (filterChange)="filterSymm = utilityService.handleFilter($event);allTheSymm = utilityService.filterDropdownSearch(CPSList, $event, specialStoneCriteriaObj.symmetry)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterSymm" id="filterSymm" [(ngModel)]="filterSymm"
+                          placeholder="Search Symm">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterSymmChk" id="filterSymmChk"
+                          title="Select all" [(ngModel)]="filterSymmChk"
+                          (change)="specialStoneCriteriaObj.symmetry = utilityService.checkAllListItems(allTheSymm,filterSymmChk, specialStoneCriteriaObj.symmetry)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.symmetry, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.symmetry)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Fluor<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': fluorescence.invalid && (fluorescence.dirty || fluorescence.touched) }">
+                  <kendo-multiselect name="fluorescence" class="customselect" [data]="allTheFluorescences"
+                    [(ngModel)]="specialStoneCriteriaObj.fluorescence" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" required #fluorescence="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheFluorescences, specialStoneCriteriaObj.fluorescence)"
+                    (open)="filterFlourChk = utilityService.onOpenDropdown(allTheFluorescences,filterFlourChk, specialStoneCriteriaObj.fluorescence)"
+                    (filterChange)="filterFlour = utilityService.handleFilter($event);allTheFluorescences = utilityService.filterDropdownSearch(FluorList, $event, specialStoneCriteriaObj.fluorescence)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterFlour" id="filterFlour" [(ngModel)]="filterFlour"
+                          placeholder="Search Fluor">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterFlourChk" id="filterFlourChk"
+                          title="Select all" [(ngModel)]="filterFlourChk"
+                          (change)="specialStoneCriteriaObj.fluorescence = utilityService.checkAllListItems(allTheFluorescences,filterFlourChk, specialStoneCriteriaObj.fluorescence)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.fluorescence, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.fluorescence)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Brown<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': brown.invalid && (brown.dirty || brown.touched) }">
+                  <kendo-multiselect name="brown" class="customselect" [data]="allTheBrown"
+                    [(ngModel)]="specialStoneCriteriaObj.inclusion.brown" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" required #brown="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheBrown, specialStoneCriteriaObj.inclusion.brown)"
+                    (open)="filterBrownChk = utilityService.onOpenDropdown(allTheBrown,filterBrownChk, specialStoneCriteriaObj.inclusion.brown)"
+                    (filterChange)="filterBrown = utilityService.handleFilter($event);allTheBrown = utilityService.filterDropdownSearch(BrownList, $event, specialStoneCriteriaObj.inclusion.brown)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterBrown" id="filterBrown" [(ngModel)]="filterBrown"
+                          placeholder="Search Fluor">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterBrownChk" id="filterBrownChk"
+                          title="Select all" [(ngModel)]="filterBrownChk"
+                          (change)="specialStoneCriteriaObj.inclusion.brown = utilityService.checkAllListItems(allTheBrown,filterFlourChk, specialStoneCriteriaObj.inclusion.brown)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.brown, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.brown)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Green<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': green.invalid && (green.dirty || green.touched) }">
+                  <kendo-multiselect name="green" class="customselect" [data]="allTheGreen"
+                    [(ngModel)]="specialStoneCriteriaObj.inclusion.green" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" required #green="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheGreen, specialStoneCriteriaObj.inclusion.green)"
+                    (open)="filterGreenChk = utilityService.onOpenDropdown(allTheGreen,filterGreenChk, specialStoneCriteriaObj.inclusion.green)"
+                    (filterChange)="filterGreen = utilityService.handleFilter($event);allTheGreen = utilityService.filterDropdownSearch(GreenList, $event, specialStoneCriteriaObj.inclusion.green)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterGreen" id="filterGreen" [(ngModel)]="filterGreen"
+                          placeholder="Search Green">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterGreenChk" id="filterGreenChk"
+                          title="Select all" [(ngModel)]="filterGreenChk"
+                          (change)="specialStoneCriteriaObj.inclusion.green = utilityService.checkAllListItems(allTheGreen,filterGreenChk, specialStoneCriteriaObj.inclusion.green)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.green, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.green)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Milky<span class="require">*</span></label>
+                </div>
+                <div class="form-data mul-select"
+                  [ngClass]="{ 'error': milky.invalid && (milky.dirty || milky.touched) }">
+                  <kendo-multiselect name="milky" class="customselect" [data]="allTheMilky"
+                    [(ngModel)]="specialStoneCriteriaObj.inclusion.milky" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [kendoMultiSelectSummaryTag]="0" required #milky="ngModel" [filterable]="true"
+                    (valueChange)="utilityService.onMultiSelectChange(allTheMilky, specialStoneCriteriaObj.inclusion.milky)"
+                    (open)="filterMilkyChk = utilityService.onOpenDropdown(allTheMilky,filterMilkyChk, specialStoneCriteriaObj.inclusion.milky)"
+                    (filterChange)="filterMilky = utilityService.handleFilter($event);allTheMilky = utilityService.filterDropdownSearch(MilkyList, $event, specialStoneCriteriaObj.inclusion.milky)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="single k-widget k-header form-data mb-0 p-2 position-relative c-fil">
+                        <input type="text" name="filterMilky" id="filterMilky" [(ngModel)]="filterMilky"
+                          placeholder="Search Milky">
+                        <span class="k-icon k-i-search"></span>
+                      </div>
+                      <div class="single k-widget k-header pl-2">
+                        <input type="checkbox" class="k-checkbox mr-1" name="filterMilkyChk" id="filterMilkyChk"
+                          title="Select all" [(ngModel)]="filterMilkyChk"
+                          (change)="specialStoneCriteriaObj.inclusion.milky = utilityService.checkAllListItems(allTheMilky,filterMilkyChk, specialStoneCriteriaObj.inclusion.milky)">
+                        <label>Select all</label>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+                      <span kendoTooltip position="bottom"
+                        [title]="utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.milky, true)">
+                        {{utilityService.getCommaSapratedString(specialStoneCriteriaObj.inclusion.milky)}}
+                      </span>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label for="">Length<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errLength.length > 0 || fromLength.invalid || toLength.invalid) && 
+                  (fromLength.touched && toLength.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromLength" placeholder="Min" required #fromLength="ngModel"
+                      (blur)="errLength = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromLength, specialStoneCriteriaObj.measurement.toLength)"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.fromLength"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toLength" #toLength="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.toLength"
+                      (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errLength = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromLength, specialStoneCriteriaObj.measurement.toLength)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errLength.length > 0 ? '(' + errLength + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Width<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errWidth.length > 0 || fromWidth.invalid || toWidth.invalid) && 
+                  (fromWidth.touched && toWidth.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromWidth" placeholder="Min" required #fromWidth="ngModel"
+                      (blur)="errWidth = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromWidth, specialStoneCriteriaObj.measurement.toWidth)"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.fromWidth"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toWidth" #toWidth="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.toWidth"
+                      (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errWidth = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromWidth, specialStoneCriteriaObj.measurement.toWidth)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errWidth.length > 0 ? '(' + errWidth + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Depth<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errDepth.length > 0 || fromDepth.invalid || toDepth.invalid) && 
+                  (fromDepth.touched && toDepth.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromDepth" placeholder="Min" required #fromDepth="ngModel"
+                      (blur)="errDepth = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromDepth, specialStoneCriteriaObj.measurement.toDepth)"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.fromDepth"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toDepth" #toDepth="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.toDepth"
+                      (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errDepth = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromDepth, specialStoneCriteriaObj.measurement.toDepth)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errDepth.length > 0 ? '(' + errDepth + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Table<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errTable.length > 0 || fromTable.invalid || toTable.invalid) && 
+                  (fromTable.touched && toTable.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromTable" placeholder="Min" required #fromTable="ngModel"
+                      (blur)="errTable = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromTable, specialStoneCriteriaObj.measurement.toTable)"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.fromTable"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toTable" #toTable="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.toTable"
+                      (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errTable = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromTable, specialStoneCriteriaObj.measurement.toTable)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errTable.length > 0 ? '(' + errTable + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">Discount</label>
+                </div>
+                <div class="form-data"
+                  [ngClass]="{'error': (errLimit.length > 0 || discount.invalid) && discount.touched }">
+                  <div class="d-flex">
+                    <input type="text" name="discount" placeholder="Discount" #discount="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.discount"
+                      (keypress)="utilityService.discountfloat($event);" />
+                  </div>
+                </div>
+                <div class="form-data">
+                  <label for="">D. Limit<span class="require">*</span></label>
+                </div>
+                <div class="form-data" [ngClass]="{'error': (errLimit.length > 0 || fromLimit.invalid || toLimit.invalid) && 
+                  (fromLimit.touched && toLimit.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromLimit" placeholder="Min" required #fromLimit="ngModel"
+                      (blur)="errLimit = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.fromLimit, specialStoneCriteriaObj.toLimit)"
+                      [(ngModel)]="specialStoneCriteriaObj.fromLimit"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toLimit" #toLimit="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.toLimit" (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errLimit = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.fromLimit, specialStoneCriteriaObj.toLimit)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errLimit.length > 0 ? '(' + errLimit + ')' : ''}}</span>
+                </div>
+                <div class="form-data" *ngIf="showRatio">
+                  <label for="">Ratio<span class="require">*</span></label>
+                </div>
+                <div class="form-data" *ngIf="showRatio" [ngClass]="{'error': (errRatio.length > 0 || fromRatio.invalid || toRatio.invalid) && 
+                  (fromRatio.touched && toRatio.touched) }">
+                  <div class="d-flex">
+                    <input type="text" class="mr-2" name="fromRatio" placeholder="Min" required #fromRatio="ngModel"
+                      (blur)="errRatio = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromRatio, specialStoneCriteriaObj.measurement.toRatio)"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.fromRatio"
+                      (keypress)="utilityService.discountfloat($event);" />
+                    <input type="text" placeholder="Max" required name="toRatio" #toRatio="ngModel"
+                      [(ngModel)]="specialStoneCriteriaObj.measurement.toRatio"
+                      (keypress)="utilityService.discountfloat($event);"
+                      (blur)="errRatio = utilityService.checkMinMaxValidation(specialStoneCriteriaObj.measurement.fromRatio, specialStoneCriteriaObj.measurement.toRatio)" />
+                  </div>
+                  <span class="font-smaller s-error">{{errRatio.length > 0 ? '(' + errRatio + ')' : ''}}</span>
+                </div>
+                <div class="form-data">
+                  <label for="">HighLight</label>
+                </div>
+                <div class="form-data">
+                  <div class="d-flex">
+                    <kendo-switch class="k-widget k-switch-off mr-1 mt-1" #isHighlight="ngModel" name="isHighlight"
+                      id="m-chk" [(ngModel)]="specialStoneCriteriaObj.isHighlight"></kendo-switch>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onCriteriaSubmit(criteriaForm, false)" [disabled]="!criteriaForm.valid"
+            class="btn btn-primary"><i class="icon-add"></i>New</button>
+          <button class="btn btn-primary" (click)="onCriteriaSubmit(criteriaForm, true)"
+            [disabled]="!criteriaForm.valid">
+            <i class="icon-save"></i>Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Pricing Criteria Modal End -->
+<div (document:keydown.esc)="closeAddCriteria()"></div>
+<div kendoDialogContainer></div>

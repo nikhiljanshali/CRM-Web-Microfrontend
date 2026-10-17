@@ -1,0 +1,120 @@
+<title>Order</title>
+<div class="wrap-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Order</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right pr-0">
+                  <kendo-buttongroup kendoTooltip position="bottom">
+                    <button kendoButton (click)="openGridConfigDialog()" title="Grid Configuration"><i
+                        class="icon-gridconfig"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+            <div class="grid-wrap">
+              <kendo-grid [data]="gridView" [groupable]="true" [resizable]="true" [sortable]="true" [group]="groups"
+                (groupChange)="groupChange($event)" [selectedKeys]="mySelection" [selectable]="selectableSettings"
+                (selectionChange)="selectedRowChange($event)" [kendoGridSelectBy]="'id'"
+                (pageChange)="pageChange($event)">
+                <ng-container *ngIf="fields && fields.length > 0">
+                  <ng-container *ngFor="let field of fields">
+                    <ng-container *ngIf="field.isSelected">
+                      <ng-template *ngIf="field.title == 'Checkbox'" kendoGridHeaderTemplate>
+                        <input kendoGridSelectAllCheckbox type="checkbox" class="k-checkbox" id="headerCheckbox"
+                          (selectAllChange)="selectAllOrders($event)" />
+                        <label class="k-checkbox-label" for="headerCheckbox"></label>
+                      </ng-template>
+                      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                        *ngIf="field.title == 'Checkbox'">
+                        <input *ngIf="!dataItem.isDisabled" type="checkbox" class="k-checkbox"
+                          id="checkbox-{{rowIndex}}" [kendoGridSelectionCheckbox]="rowIndex" />
+                        <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                        </label>
+                      </ng-template>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </kendo-grid>
+            </div>
+          </div>
+          <!--#region Filter -->
+          <form class="e-right" name="filterForm" #orderSearchForm="ngForm" novalidate>
+            <div class="sr-wrap active" [ngClass]="{'active': filterFlag}">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <div class="i-form">
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                      <label for="f-name">Stone Id</label>
+                      <input type="text" name="filterStoneId" [(ngModel)]="orderSearchCriteria.stoneId"
+                        #filterStoneId="ngModel" id="filterStoneId" autocomplete="off">
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                      <label for="f-name">Broker</label>
+                      <kendo-autocomplete class="w-100" [data]="listBrokerItems" [filterable]="true"
+                        (filterChange)="handleBrokerFilter($event)" [kendoDropDownFilter]="filterSettings" name="Broker"
+                        [(ngModel)]="selectedBroker" (valueChange)="orderSearchCriteria.brokerId == $event"
+                        [popupSettings]="{width: 'auto'}" #Broker="ngModel" valueField="value">
+                        <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                          <span>{{dataItem.text}}</span>
+                        </ng-template>
+                      </kendo-autocomplete>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                      <label for="f-name">Party</label>
+                      <kendo-autocomplete class="w-100" [data]="listPartyItems" [filterable]="true"
+                        (filterChange)="handlePartyFilter($event)" [kendoDropDownFilter]="filterSettings" name="Party"
+                        [(ngModel)]="selectedParty" (valueChange)="orderSearchCriteria.partyId == $event"
+                        [popupSettings]="{width: 'auto'}" #Party="ngModel" valueField="value">
+                        <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                          <span>{{dataItem.text}}</span>
+                        </ng-template>
+                      </kendo-autocomplete>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                      <label for="f-name">Seller</label>
+                      <kendo-dropdownlist [data]="listSellerItems" textField="text" valueField="value" name="Seller"
+                        [(ngModel)]="selectedSeller" #Seller="ngModel"
+                        (valueChange)="orderSearchCriteria.sellerId == $event">
+                      </kendo-dropdownlist>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                      <button class="btn btn-action"
+                        (click)="orderSearchForm.form.valid && onFilterSubmit(orderSearchForm)">
+                        <i class="icon-search"></i>Search
+                      </button>
+                      <button (click)="clearFilter(orderSearchForm);" class="btn btn-action">
+                        <i class="icon-clear"></i>Clear
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!--#endregion -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid Configuration -->
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'Order'" [gridName]="'OrderGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+
+<div kendoDialogContainer></div>

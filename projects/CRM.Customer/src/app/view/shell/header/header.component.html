@@ -1,0 +1,73 @@
+<!-- Top Bar Start -->
+<div class="top-bar">
+  <div class="top-left">
+    <span><i class="icon-icon_email"></i>info@glowstardiam.com</span>
+    <span><i class="icon-phone"></i>+91-9913153000</span>
+  </div>
+  <div class="top-right">
+    <span *ngIf="!isLogin">
+      <a href="javascript:void(0);" (click)="logOut()">Login</a>
+      &nbsp;|&nbsp;
+      <a href="javascript:void(0);">Register</a>
+      &nbsp;|&nbsp;
+    </span>
+    <a routerLink="/watchlist">Watchlist</a> &nbsp;|&nbsp;
+    <a href="javascript:void(0);" routerLink="/mycart">My Cart</a> &nbsp;|&nbsp;
+    <span *ngIf="isLogin">
+      <a href="javascript:void(0);" (click)="logoutClick()">Logout</a>
+    </span>
+  </div>
+</div>
+<!-- Top Bar End -->
+
+<!-- Header Start -->
+<div class="header-top">
+  <div class="col-xl-12 col-lg-12 col-xs-12 col-sm-12">
+    <nav class="navbar navbar-expand-lg navbar-light p-0">
+      <div class="container-fluid p-0">
+        <a class="navbar-brand" href="javascript:void(0);"><img alt="img"
+            src="../../../../assets/images/Glowstar.png"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ml-auto">
+            <a class="nav-link active" aria-current="page" href="javascript:void(0);">Home</a>
+            <a class="nav-link" href="javascript:void(0);">About Us</a>
+            <a class="nav-link" href="javascript:void(0);" routerLink="/searchresult">Search</a>
+            <a class="nav-link" href="javascript:void(0);">Contact Us</a>
+            <div class="hamburger-menu" (click)="navpanelSidebar()">
+              <div class="menu-bar1"></div>
+              <div class="menu-bar2"></div>
+              <div class="menu-bar3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- Navigation Menu start -->
+<div class="nav-left">
+  <div class="nav-sidebar" [ngClass]="{'active': navpanelFlag}">
+    <i class="icon-delete float-right m-3" (click)="navpanelSidebar()"></i>
+    <ul>
+      <li><a href="javascript:viod()"><i class="icon-home"></i>Home</a></li>
+      <li><a href="javascript:viod()" routerLink="/searchresult"><i class="icon-search"></i>Search Result</a></li>
+      <li><a href="javascript:viod()" routerLink="/mycart"><i class="icon-mycart"></i>My Cart</a></li>
+      <li><a href="javascript:viod()" routerLink="/myorder"><i class="icon-order"></i>My Order</a></li>
+      <li><a href="javascript:viod()" routerLink="/watchlist"><i class="icon-wishlist"></i>Watchlist</a></li>
+      <li><a href="javascript:void()"><i class="icon-news"></i>News & Events</a></li>
+      <li><a href="javascript:void(0)" (click)="showSuggestionDialog();"><i class="icon-suggestion"></i>Suggestion</a></li>
+      <li><a href="javascript:void()" routerLink="/myappointment"><i class="icon-appointment"></i>My Appointment</a>
+      </li>
+      <li><a href="javascript:void()"><i class="icon-news"></i>News&Events</a></li>
+      <li><a href="javascript:void()" (click)="navigateToPage('customerprofile');"><i class="icon-mainuser"></i>My Profile</a></li>
+    </ul>
+  </div>  
+</div>
+<!-- Navigation Menu start -->
+
+<!-- Header Start -->

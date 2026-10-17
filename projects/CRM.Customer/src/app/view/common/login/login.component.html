@@ -1,0 +1,94 @@
+<title>Login</title>
+<div class="form-wrap login">
+  <div class="c-flex">
+    <div class="c-left">
+      <div class="f-side">
+        <div class="left-wrap">
+          <div class="img-box">
+            <img src="../assets/images/login_Component.png" alt="login-page">
+          </div>
+          <div class="banner-text">
+            <h3>Excellence In Diamonds</h3>
+            <div class="pattern-title">
+              <img src="../assets/images/svg/diamond.svg" alt="diamond">
+            </div>
+            <p>"GlowStar" is an identity in the world of Diamond Manufacturers since 1995. The Company
+              well-known in
+              India for providing employment opportunities in Diamond industry, with tons of skilled
+              craftsmen
+              and
+              professionals under its umbrella, adding value to the diamond it creates. With a massive
+              production
+              of polished diamonds.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c-right">
+      <div class="right-wrap">
+        <div class="logo">
+          <a routerLink="/login"><img src="../assets/images/Glowstar.png" alt="logo"></a>
+        </div>
+        <h6 class="text-center"></h6>
+        <div class="ri-form-wrap">
+          <form #LoginForm="ngForm">
+            <div class="war-wrap">
+              <div class="alert alert-primary war-alert d-none" role="alert">
+                <span>Warning : 3 attempts remaining.</span>
+              </div>
+              <div class="alert alert-primary sus-alert d-none" role="alert">
+                <span>Your account has been locked due to 3 failed attempts. It will be unlocked after
+                  30 minutes.
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                <label for="email">Email<span class="require">*</span></label>
+                <input type="text" id="email" name="username" [(ngModel)]="loginModelObj.user_id" #username required>
+                <span class="s-error">Invalid your email id</span>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                <label for="password">Password<span class="require">*</span></label>
+                <input type="password" id="password" name="pwd" [(ngModel)]="loginModelObj.password" #Pass>
+                <span class="s-error">Invalid your password</span>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data check-box">
+                <input type="checkbox" id="checkbox" class="k-checkbox">
+                <label for="checkbox">Remember Me</label>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data sub-btn">
+                <button class="c-btn" (click)="login(LoginForm)"
+                  [disabled]="!LoginForm.valid || loginLoading">Login</button>
+              </div>
+              <span class="s-error" *ngIf="loginError">{{errorMsg}}</span>
+            </div>
+          </form>
+        </div>
+        <div class="r-bottom">
+          <div class="row">
+            <div class="form-data" (click)="forgotClick()">
+              <span><i class="icon-icon_email"></i></span>
+              <a href="javascript:void(0)">Forgot Password ?</a>
+            </div>
+            <div class="form-data" (click)="registerClick()">
+              <span><i class="icon-admin_owner"></i></span>
+              <a href="javascript:void(0)">Register Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="version text-center">
+          <span>Version - 1.0.0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff"
+  template="<img src='commonAssets/images/gl.gif' style='width:80px;' />" [fullScreen]="true">
+  <!-- <p style="color: white"> Loading... </p> -->
+</ngx-spinner>
+
+<div kendoDialogContainer></div>

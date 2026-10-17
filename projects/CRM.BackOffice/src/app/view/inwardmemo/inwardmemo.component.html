@@ -1,0 +1,284 @@
+<title>Transactions</title>
+<div class="party-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left">
+                  <ul>
+                    <li class="breadcrumb-item">
+                      <a href="#"></a><i class="icon-home"></i>Home
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Inward Memo</li>
+                  </ul>
+                </div>
+                <div class="ci-top-right">
+                  <kendo-buttongroup>
+
+                    <button kendoButton kendoTooltip position="bottom" title="Add Inward Memo"
+                      (click)="openInwardmemoDialog()">
+                      <i class="icon-add"></i></button>
+                    <button kendoButton kendoTooltip position="bottom" title="Edit Inward Memo"><i
+                        class="icon-edit"></i></button>
+                    <button kendoButton kendoTooltip position="bottom" title="Delete Inward Memo"><i
+                        class="icon-trash"></i></button>
+                  </kendo-buttongroup>
+                </div>
+              </div>
+            </div>
+
+            <!-- Page content here -->
+            <div class="grid-wrap">
+              <kendo-grid class="grid-ui" [data]="griddata" [resizable]="true" [groupable]="true" [sortable]="true">
+                <kendo-grid-column field="chk" title="" [width]="30">
+                  <ng-template kendoGridHeaderTemplate>
+                    <input kendoGridSelectAllCheckbox type="checkbox" class="k-checkbox" id="headerCheckbox" />
+                    <label class="k-checkbox-label" for="headerCheckbox"></label>
+                  </ng-template>
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <input type="checkbox" class="k-checkbox" id="checkbox" />
+                    <label class="k-checkbox-label" for="checkbox">
+                    </label>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="memono" title="MemoNo" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="party" title="Party" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="broker" title="Broker" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="courierName" title="CourierName" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="employee" title="Employee" [width]="120">
+                </kendo-grid-column>
+                <kendo-grid-column field="expirydays" title="ExpiryDays" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="createddate" title="CreatedDate" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="expirydate" title="ExpiryDate" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="isreturned" title="IsReturned" [width]="90">
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <input type="checkbox" class="k-checkbox" [checked]="true" [disabled]="true" />
+                    <label class="k-checkbox-label" for="">
+                    </label>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="returndate" title="ReturnDate" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="totalpcs" title="Total Pcs" [width]="70">
+                </kendo-grid-column>
+                <kendo-grid-column field="weight" title="Weight" [width]="60">
+                </kendo-grid-column>
+                <kendo-grid-column field="amount" title="Amount" [width]="90">
+                </kendo-grid-column>
+              </kendo-grid>
+            </div>
+            <!-- Page content here -->
+
+          </div>
+
+          <!-- Search start -->
+          <div class="e-right">
+            <div class="sr-wrap">
+              <div class="sr">
+                <h6>Search By Filter</h6>
+                <form name="form">
+                  <div class="i-form">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label class="lbl">From Date</label>
+                        <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label class="lbl">To Date</label>
+                        <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Memo No</label>
+                        <input type="text">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Party</label>
+                        <kendo-dropdownlist>
+                        </kendo-dropdownlist>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label>Broker</label>
+                        <kendo-dropdownlist>
+                        </kendo-dropdownlist>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                        <label for="">Stone Id</label>
+                        <input type="text">
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                        <button class="btn btn-action">
+                          <i class="icon-search"></i>Search
+                        </button>
+                        <button class="btn btn-action">
+                          <i class="icon-clear"></i>Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Search End -->
+        </div>
+        <div class="f-btn">
+          <ul>
+            <li><button class="open-filter"><i class="icon-filter"></i></button></li>
+            <li><button><i class="icon-search"></i></button></li>
+            <li><button><i class="icon-clear"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Receipt & Journal -->
+<div class="modal c-modal addemp dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isInwardmemo">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content" name="InWardForm" #InWardForm="ngForm" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="icon-memoissue"></i>Add Inward Memo</h5>
+        <button type="button" class="close" (click)="closeInwardmemoDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="d-flex justify-content-between title">
+          <span>
+            <i class="icon-memoissue"></i>Inward Memo Information <span class="ml-1">
+            </span>
+          </span>
+          <span class="text-right">Inward <span class="ml-1">
+              <kendo-switch class="k-widget k-switch-off mr-1"></kendo-switch>
+            </span>Outward
+          </span>
+        </h6>
+        <div class="inward-grid">
+          <div class="form-data">
+            <label>Memo No<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <input type="text" name="memono" [(ngModel)]="inWardObj.memoNo" #memono="ngModel" required>
+          </div>
+          <div class="form-data">
+            <label>Expiry Date<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <kendo-datepicker calendarType="classic" name="eDate" #eDate="ngModel" format="dd/MM/yyyy"
+              [(ngModel)]="inWardObj.expiryDate" required></kendo-datepicker>
+          </div>
+          <div class="form-data">
+            <label>Party<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <kendo-autocomplete class="w-100" [data]="listPartyItems" [filterable]="true"
+              (filterChange)="handlePartyFilter($event)" [kendoDropDownFilter]="filterSettings" name="Party"
+              [(ngModel)]="selectedParty" (valueChange)="onPartyChange($event)" [popupSettings]="{width: 'auto'}"
+              #Party="ngModel" valueField="value" required>
+              <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                <span>{{dataItem.text}}</span>
+              </ng-template>
+            </kendo-autocomplete>
+          </div>
+          <div class="form-data">
+            <label>Broker<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <kendo-autocomplete class="w-100" [data]="listBrokerItems" [filterable]="true"
+              (filterChange)="handleBrokerFilter($event)" [kendoDropDownFilter]="filterSettings" name="Broker"
+              [(ngModel)]="selectedBroker" (valueChange)="onBrokerChange($event)" [popupSettings]="{width: 'auto'}"
+              #Broker="ngModel" valueField="value" required>
+              <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                <span>{{dataItem.text}}</span>
+              </ng-template>
+            </kendo-autocomplete>
+          </div>
+          <div class="form-data">
+            <label>Logistic<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <kendo-autocomplete class="w-100" [data]="listLogisticItems" [filterable]="true"
+              (filterChange)="handleLogisticFilter($event)" [kendoDropDownFilter]="filterSettings" name="Logistic"
+              [(ngModel)]="selectedLogistic" (valueChange)="onLogisticChange($event)" [popupSettings]="{width: 'auto'}"
+              #Logistic="ngModel" valueField="value" required>
+              <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                <span>{{dataItem.text}}</span>
+              </ng-template>
+            </kendo-autocomplete>
+          </div>
+          <div class="form-data">
+            <label>Import Excel<span class="require">*</span></label>
+          </div>
+          <div class="form-data">
+            <input #file type="file" (click)="file.value=''" (change)="onSelectExcelFile($event)"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+          </div>
+        </div>
+        <div class="grid-wrap mt-2">
+          <kendo-grid [resizable]="true" [data]="inventoryExcelItems" [height]="320">
+            <kendo-grid-checkbox-column [width]="40">
+              <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <div class="i-hov" *ngIf="dataItem.isDisabled">
+                  <i class="icon-info" *ngIf="dataItem.isPriceAvailable"></i>
+                  <i class="icon-edit" *ngIf="!dataItem.isPriceAvailable"></i>
+                  <div class="em-box" *ngIf="fetchError(dataItem?.stoneId)">
+                    <h6 class="title">stoneId:
+                      {{fetchError(dataItem?.stoneId)?.stoneId}}
+                    </h6>
+                    <span>Reasons:
+                      <div class="e-msg" *ngFor="let message of fetchError(dataItem?.stoneId)?.messageList">
+                        <span>{{message}}</span>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-grid-checkbox-column>
+            <kendo-grid-column field="stoneId" title="Stone Id" [width]="80">
+            </kendo-grid-column>
+            <kendo-grid-column field="certificateNo" title="Certicate No" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="shape" title="Shape" [width]="80">
+            </kendo-grid-column>
+            <kendo-grid-column field="weight" title="Ct" [width]="40">
+            </kendo-grid-column>
+            <kendo-grid-column field="color" title="Color" [width]="50">
+            </kendo-grid-column>
+            <kendo-grid-column field="clarity" title="Clarity" [width]="70">
+            </kendo-grid-column>
+            <kendo-grid-column field="cut" title="Cut" [width]="50"></kendo-grid-column>
+            <kendo-grid-column field="polish" title="Polish" [width]="60">
+            </kendo-grid-column>
+            <kendo-grid-column field="symmetry" title="Symmetry" [width]="70">
+            </kendo-grid-column>
+            <kendo-grid-column field="fluorescence" title="Fluorescence" [width]="70">
+            </kendo-grid-column>
+            <kendo-grid-column field="rap" title="Rap" [width]="70"></kendo-grid-column>
+            <kendo-grid-column field="perCarat" title="$/Ct" [width]="60">
+            </kendo-grid-column>
+            <kendo-grid-column field="discount" title="Dis %" [width]="60">
+            </kendo-grid-column>
+            <kendo-grid-column field="netAmount" title="Net Amount"></kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="AddinwardMemoFile(InWardForm)">
+          <i class="icon-save"></i>Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

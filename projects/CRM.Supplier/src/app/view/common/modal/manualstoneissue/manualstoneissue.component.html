@@ -1,0 +1,83 @@
+<div class="modal dialog-lg c-modal addemp logi-modal l-issue rorgan" tabindex="-1" role="dialog" data-keyboard="false"
+    data-backdrop="static">
+    <form>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id=""><i class="icon-labrecive"></i>Manual Stone Issue List</h5>
+                    <button type="button" class="close" (click)="closeManualIssueDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- #region LAB Receive CRUD -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <!-- #region Grid -->
+                            <div class="mod-wrap">
+                                <div class="grid-wrap">
+                                    <ng-container *ngIf="!gridViewInventory">
+                                        <div class="k-grouping-header k-grouping-header-flex">
+                                            <div class="k-indicator-container">
+                                                <kendo-skeleton shape="text" animation="wave" [width]="400"
+                                                    [height]="40">
+                                                </kendo-skeleton>
+                                            </div>
+                                        </div>
+                                        <table *ngIf="fields && fields.length > 0"
+                                            class="w-100 table-responsive skeleton-tbl">
+                                            <th *ngFor="let field of fields">{{field.propertyName}}</th>
+                                            <tr *ngFor="let field of skeletonArray">
+                                                <td *ngFor="let field of fields">
+                                                    <kendo-skeleton shape="text" animation="wave" [width]="75"
+                                                        [height]="40">
+                                                    </kendo-skeleton>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </ng-container>
+                                    <kendo-grid *ngIf="gridViewInventory" [data]="gridViewInventory"
+                                        class="grid-ui upload-grid" [sortable]="true" [resizable]="true"
+                                        style="height: calc(100vh - 600px);">
+                                        <ng-container *ngIf="fields && fields.length > 0">
+                                            <ng-container *ngFor="let field of fields">
+                                                <ng-container *ngIf="field.isSelected">
+                                                    <kendo-grid-column [width]="field.width"
+                                                        [field]="field.propertyName" [title]="field.title">
+                                                     
+                                                    </kendo-grid-column>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </kendo-grid>
+                                </div>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                        [disabled]="inventoryItems[0].identity.id == fxCredential.id || inventoryItems[0].hasTask ==false"
+                        class="btn btn-primary" (click)="acceptOrRejectResponse('Accept')">
+                        <i class="icon-check"></i>Accept</button>
+                    <button type="button"
+                        [disabled]="inventoryItems[0].identity.id == fxCredential.id || inventoryItems[0].hasTask ==false"
+                        class="btn btn-primary" (click)="acceptOrRejectResponse('Reject')">
+                        <i class="icon-delete"></i>Reject</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div (document:keydown.esc)="closeManualIssueDialog()"></div>
+
+<!-- #region Grid Config -->
+<ng-container *ngIf="isGridConfig">
+    <app-gridconfiguration [fields]="fields" [pageName]="'ManualIssue'" [gridName]="'ManualIssueGrid'"
+        [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+        (ChildEvent)="setNewGridConfig($event)">
+    </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->

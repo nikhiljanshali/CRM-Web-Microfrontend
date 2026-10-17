@@ -1,0 +1,160 @@
+<!-- Users Rights Modal Start -->
+<div class="modal c-modal addemp dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="icon-addtocart"></i>Purchase</h5>
+                <button type="button" class="close" (click)="closPurchaseDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="purchase-grid">
+                    <div class="form-data">
+                        <label>Purchase</label>
+                    </div>
+                    <div class="form-data">
+                        <kendo-dropdownlist required>
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="form-data">
+                        <label>Party</label>
+                    </div>
+                    <div class="form-data">
+                        <kendo-dropdownlist required>
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="form-data">
+                        <label>Transactions No</label>
+                    </div>
+                    <div class="form-data">
+                        <input type="text">
+                    </div>
+                    <div class="form-data">
+                        <label>Invoice No</label>
+                    </div>
+                    <div class="form-data">
+                        <input type="text">
+                    </div>
+                    <div class="form-data">
+                        <label>Date</label>
+                    </div>
+                    <div class="form-data">
+                        <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                    </div>
+                    <div class="form-data">
+                        <label>Invoice Date</label>
+                    </div>
+                    <div class="form-data">
+                        <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                    </div>
+                </div>
+                <div class="input-grid d-flex border-top pt-2 mt-2">
+                    <div class="form-data">
+                        <input type="text" placeholder="Search Item">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="MRP">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="Qty">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="Rate">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="Dis%">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="SGST%">
+                    </div>
+                    <div class="form-data">
+                        <input type="text" placeholder="CGST%">
+                    </div>
+                    <button kendoButton title="Add" kendoTooltip position="bottom">
+                        <i class="icon-add p-0"></i>
+                    </button>
+                    <button kendoButton title="Delete" kendoTooltip position="bottom">
+                        <i class="icon-trash p-0"></i>
+                    </button>
+                </div>
+                <div class="grid-wrap mt-2">
+                    <kendo-grid [resizable]="true" [sortable]="true" [pageSize]="20" [pageable]="true" [sortable]="true"
+                        [height]="320">
+                        <kendo-grid-column field="name" title="Name" [width]="120">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="companayname" title="Companay Name" [width]="140"></kendo-grid-column>
+                        <kendo-grid-column field="unit" title="Unit" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="mrp" title="MRP" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="qty" title="Qty" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="rate" title="Rate" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="dis" title="Dis(%)" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="sgst" title="SGST" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="cgst" title="CGST" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="amount" title="Amount" [width]="100"></kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="grid-total d-flex p-2 border">
+                    <div class="grid-left-total">
+                        <div class="form-data">
+                            <label>Amount</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Discount</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Tax</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Remark</label>
+                            <textarea cols="4" type="text" placeholder="Remark">
+                          </textarea>
+                        </div>
+                    </div>
+                    <div class="grid-right-total">
+                        <div class="form-data">
+                            <label>Total Amt</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Add Amt</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Net Amt</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                        <div class="form-data">
+                            <label>Paid Amt</label>
+                        </div>
+                        <div class="form-data">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">
+                    <i class="icon-add"></i>New</button>
+                <button type="button" class="btn btn-primary">
+                    <i class="icon-save"></i>Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Users Rights Modal End -->

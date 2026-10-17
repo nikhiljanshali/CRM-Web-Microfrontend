@@ -1,0 +1,148 @@
+<title>Supplier Details</title>
+<div class="edetails-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item"><a href="#"></a><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item"><a routerLink="/supplier">Suppliers</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Supplier Details</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-wrap o-details e-details">
+              <div class="row">                
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="i-form ed-top">
+                    <h6 class="title">Supplier Information</h6>
+                    <div class="row" *ngIf="supplierData">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form">
+                          <div class="p-flex">
+                            <div class="row e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3">
+                                  <li>
+                                    <h6 class="c-name"><span>Name :
+                                      </span>{{supplierData?.name}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Registration No
+                                        :</span>{{supplierData?.registrationNo}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>IncomeTax No :
+                                      </span>{{supplierData?.incomeTaxNo}}
+                                    </h6>
+                                  </li>                                  
+                                  <li>
+                                    <h6 class="c-name"><span>Membership
+                                        :</span>{{supplierData?.membership}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Website
+                                        :</span>{{supplierData?.website}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Person
+                                        :</span>{{supplierData?.person}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Country
+                                        :</span>{{supplierData?.address?.country}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Email
+                                        :</span>{{supplierData?.email}}</h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Mobile No
+                                        :</span>{{supplierData.mobileNo |
+                                      numberfilter:'mobile'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Phone
+                                        :</span>{{supplierData.phoneNo |
+                                      numberfilter:'phone'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Fax No
+                                        :</span>{{supplierData.faxNo |
+                                      numberfilter:'fax'}}</h6>
+                                  </li>
+                                </div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>Address Note :</span>
+                                      {{supplierData?.address?.line1}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>API Path :</span>
+                                      {{supplierData?.apiPath}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="en-form b-des">
+                          <h6 class="b-title">Tax Information</h6>
+                          <div class="e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Tax No :
+                                    </span>{{supplierData?.taxNo}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>      
+                      </div>
+                    </div>
+                  </div>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #region user permission -->
+<!-- <ng-container *ngIf="isPermission">
+  <app-userpermission [title]="modalTitle" [deptPermi]="deptPermi" [pageComeFromPermission]="pageComeFromPermission"
+    (toggle)="isPermission=$event"></app-userpermission>
+</ng-container> -->
+<!--- #endregion user permission -->
+
+<div kendoDialogContainer></div>

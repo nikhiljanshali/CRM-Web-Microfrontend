@@ -1,0 +1,165 @@
+<div class="wrapper-full">
+
+    <!-- #region Button action panel start-->
+    <div class="button-panel">
+        <div class="left-cn">
+            <span><i class="icon-back mr-1"></i><a href="javascript:void(0)"><b>Back To Search</b></a></span>
+        </div>
+        <div class="right-cn text-right">
+            <button kendoButton kendoTooltip position="bottom" title="Edit Appointment"
+                (click)="openAppointmentDialog()">
+                <i class="icon-edit"></i>
+            </button>
+            <button kendoButton kendoTooltip position="bottom" title="Delete Appointment">
+                <i class="icon-trash "></i>
+            </button>
+            <button kendoButton kendoTooltip position="bottom" title="Filter" (click)="filterSidebar()">
+                <i class="icon-filter"></i>
+            </button>
+        </div>
+    </div>
+    <!-- #endregion -->
+    <div class="grid-setting mt-3">
+        <div class="col-xl-12 col-lg-12 col-xs-12 col-sm-12">
+            <kendo-grid [resizable]="true" [groupable]="true" [sortable]="true">
+                <kendo-grid-column field="status" title="Status" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="createddate" title="Create Date" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="appointmentdate" title="Appointment Date & Time" [width]="90">
+                </kendo-grid-column>
+                <kendo-grid-column field="demand" title="Demand" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="totalitem" title="Total No Of Item" [width]="90"></kendo-grid-column>
+                <kendo-grid-column field="purpose" title="Purpose" [width]="90">
+                </kendo-grid-column>
+                <ng-template kendoGridDetailTemplate let-dataItem>
+                    <kendo-grid [resizable]="true" class="subgrid">
+                        <kendo-grid-column field="location" title="Location" [width]="140"></kendo-grid-column>
+                        <kendo-grid-column field="stoneId" title="Stone Id" [width]="80"></kendo-grid-column>
+                        <kendo-grid-column field="certificateNo" title="Certicate No" [width]="120"></kendo-grid-column>
+                        <kendo-grid-column field="shape" title="Shape" [width]="80"></kendo-grid-column>
+                        <kendo-grid-column field="weight" title="Ct" [width]="60"> </kendo-grid-column>
+                        <kendo-grid-column field="color" title="Color" [width]="50"></kendo-grid-column>
+                        <kendo-grid-column field="clarity" title="Clarity" [width]="70"></kendo-grid-column>
+                        <kendo-grid-column field="cut" title="Cut" [width]="50"></kendo-grid-column>
+                        <kendo-grid-column field="polish" title="Polish" [width]="60"></kendo-grid-column>
+                        <kendo-grid-column field="symmetry" title="Symmetry" [width]="80"></kendo-grid-column>
+                        <kendo-grid-column field="fluorescence" title="Fluorescence" [width]="100"></kendo-grid-column>
+                        <kendo-grid-column field="rap" title="Rap" [width]="80"></kendo-grid-column>
+                        <kendo-grid-column field="perCarat" title="$/Ct" [width]="80"></kendo-grid-column>
+                        <kendo-grid-column field="discount" title="Dis %" [width]="60"></kendo-grid-column>
+                        <kendo-grid-column field="netAmount" title="Net Amount"></kendo-grid-column>
+                    </kendo-grid>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+
+    <!-- #region Filter -->
+    <div class="c-right">
+        <div class="sr-wrap customer-panel" [ngClass]="{'active': filterFlag}">
+            <div class="sr">
+                <h6>Search By Filter <i class="icon-delete float-right mr-1" (click)="filterSidebar()"></i>
+                </h6>
+                <div class="form-data">
+                    <label class="lbl">Stone Id</label>
+                    <input type="text" placeholder="Search by stone id" autocomplete="off" maxlength="10">
+                </div>
+                <div class="form-data">
+                    <label class="lbl">Certificate No</label>
+                    <input type="text" placeholder="Search by certificate no" autocomplete="off">
+                </div>
+                <h6>Created Date</h6>
+                <div class="form-data">
+                    <label class="lbl">From Date</label>
+                    <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                </div>
+                <div class="form-data">
+                    <label class="lbl">To Date</label>
+                    <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                </div>
+                <h6>Approved Date</h6>
+                <div class="form-data">
+                    <label class="lbl">From Date</label>
+                    <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                </div>
+                <div class="form-data">
+                    <label class="lbl">To Date</label>
+                    <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 mt-3 form-data customer-search">
+                    <button class="btn-action" type="submit">
+                        <i class="icon-search"></i>Search</button>
+                    <button class="btn-action"><i class="icon-clear"></i>Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion -->
+</div>
+
+
+<!-- #region My Appointment -->
+<div class="modal c-modal dialog-ui dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isAppointment">
+    <form>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="icon-appointment"></i>My Appointment</h5>
+                    <button type="button" class="close" (click)="closeAppointmentDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="i-form">
+                        <div class="appointment-grid">
+                            <div class="form-data">
+                                <label>First Name <span class="require">*</span></label>
+                                <input type="text" name="subject" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Last Name<span class="require">*</span></label>
+                                <input type="text" name="sendTo" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Email Address<span class="require">*</span></label>
+                                <input type="text" name="sendTo" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Company Name</label>
+                                <input type="text" name="sendTo" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Mobile<span class="require">*</span></label>
+                                <input type="text" name="sendTo" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Address<span class="require">*</span></label>
+                                <input type="text" name="sendTo" class="k-input" required>
+                            </div>
+                            <div class="form-data">
+                                <label>Select Date<span class="require">*</span></label>
+                                <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                            </div>
+                            <div class="form-data">
+                                <label>Select Time<span class="require">*</span></label>
+                                <kendo-timepicker></kendo-timepicker>
+                            </div>
+                            <div class="form-data">
+                                <label>Purpose<span class="require">*</span></label>
+                                <textarea name="cc" class="k-textarea w-100 bg-white" cols="4" rows="4" resizable="auto"
+                                    style="height: 40px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn"><i class="icon-appointment"></i>Update</button>
+                    <button class="btn"><i class="icon-clear"></i>Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div (document:keydown.esc)="closeAppointmentDialog()"></div>
+    </form>
+</div>
+<!-- #endregion-->

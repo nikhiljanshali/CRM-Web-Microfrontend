@@ -1,0 +1,9 @@
+.employee-modal .ro-grid .grid {
+      grid-template-columns: 75px 1fr 95px 1fr 92px 1fr;
+}
+.employee-modal .i-form.om-add .grid {
+      grid-template-columns: 52px 1fr 35px 1fr 34px 1fr;
+}
+.employee-modal .ot-grid .grid {
+      grid-template-columns: 95px 1fr 85px 1fr 90px 1fr;
+}

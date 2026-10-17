@@ -1,0 +1,523 @@
+<title>Account config</title>
+<div id="wrapper">
+    <div class="row container-fluid ac-config">
+        <div class="middle-content p-0 d-shadow">
+            <div class="breadcrumb">
+                <ul>
+                    <li class="breadcrumb-item"> <a href="#"></a><i class="icon-home"></i> Home </li>
+                    <li class="breadcrumb-item active" aria-current="page">Account Config</li>
+                </ul>
+            </div>
+            <div class="grid-wrap o-details e-details">
+                <div class="row">
+                    <!-- #region Organization Information -->
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="i-form ed-top">
+                            <h6 class="title">Account Config Information</h6>
+                            <div class="row">
+
+                                <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="last-inv d-flex mb-2 align-items-baseline">
+                                        <label>Last Invoice Number :</label>
+                                        <div *ngIf="!changeInvoiceNumflag">
+                                            <span class="ml-1 mr-2">{{accountingConfigData.lastInvoiceNum}}</span>
+                                            <button kendoButton title="change" (click)="changeInvoiceNum()"><i
+                                                    class=" icon-edit"></i></button>
+                                        </div>
+                                        <div *ngIf="changeInvoiceNumflag" class="form-data ml-2">
+                                            <input type="text" name="lastInvoiceNum"
+                                                [(ngModel)]="accountingConfigData.lastInvoiceNum"
+                                                #lastInvoiceNum="ngModel" id="lastInvoiceNum" class="mr-2">
+                                            <kendo-buttongroup kendoTooltip position="bottom">
+                                                <button kendoButton title="Update"
+                                                    (click)="updateInvoiceNumber(accountingConfigData.lastInvoiceNum)"><i
+                                                        class="icon-save"></i></button>
+                                                <button kendoButton title="Edit" (click)="closeInvoiceNum()">
+                                                    <i class=" icon-delete"></i></button>
+                                            </kendo-buttongroup>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                    <div class="d-prop-wrap">
+                                        <div class="flex in-block">
+                                            <div class="o-title">
+                                                <h6 class="title">{{groupTitle[3]}}</h6>
+                                            </div>
+                                            <div kendotooltip position="bottom" class="o-edit">
+                                                <button kendoButton title="Edit" (click)="changeSalesLedger()"
+                                                    *ngIf="!changeSalesLedgerflag">
+                                                    <i class=" icon-edit"></i></button>
+                                                <button kendoButton title="Edit"
+                                                    (click)="updateSalesLedger(accountingConfigData.salesLedger)"
+                                                    *ngIf="changeSalesLedgerflag">
+                                                    <i class=" icon-save"></i></button>
+                                                <button kendoButton title="Edit" (click)="closeSalesLedgerUpdate()"
+                                                    *ngIf="changeSalesLedgerflag">
+                                                    <i class=" icon-delete"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="e-details-n">
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <div class="info-block we-3">
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Name :
+                                                                    <span
+                                                                        *ngIf="!changeSalesLedgerflag">{{accountingConfigData.salesLedger.name}}</span>
+
+                                                                    <input type="text" name="salesLedgerName"
+                                                                        *ngIf="changeSalesLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.salesLedger.name"
+                                                                        #salesLedgerName="ngModel" id="salesLedgerName">
+
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Group :
+                                                                    <span
+                                                                        *ngIf="!changeSalesLedgerflag">{{accountingConfigData.salesLedger.group}}</span>
+
+                                                                    <input type="text" name="salesLedgerGroup"
+                                                                        *ngIf="changeSalesLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.salesLedger.group"
+                                                                        #salesLedgerGroup="ngModel"
+                                                                        id="salesLedgerGroup">
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Mobile No :
+                                                                    <span
+                                                                        *ngIf="!changeSalesLedgerflag">{{accountingConfigData.salesLedger.mobileNo}}</span>
+
+                                                                    <input type="text" name="salesLedgerMobileNo"
+                                                                        *ngIf="changeSalesLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.salesLedger.mobileNo"
+                                                                        #salesLedgerMobileNo="ngModel"
+                                                                        id="salesLedgerMobileNo">
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                    <div class="d-prop-wrap">
+                                        <div class="flex in-block">
+                                            <div class="o-title">
+                                                <h6 class="title">{{groupTitle[4]}}</h6>
+                                            </div>
+                                            <div kendotooltip position="bottom" class="o-edit">
+                                                <button kendoButton title="Edit" (click)="changePurchaseLedger()"
+                                                    *ngIf="!changePurchaseLedgerflag">
+                                                    <i class=" icon-edit"></i></button>
+                                                <button kendoButton title="Edit"
+                                                    (click)="updatePurchaseLedger(accountingConfigData.purchaseLedger)"
+                                                    *ngIf="changePurchaseLedgerflag">
+                                                    <i class=" icon-save"></i></button>
+                                                <button kendoButton title="Edit" (click)="closePurchaseLedgerUpdate()"
+                                                    *ngIf="changePurchaseLedgerflag">
+                                                    <i class=" icon-delete"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="e-details-n">
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <div class="info-block we-3">
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Name :
+                                                                    <span
+                                                                        *ngIf="!changePurchaseLedgerflag">{{accountingConfigData.purchaseLedger.name}}</span>
+                                                                    <input type="text" name="purchaseLedgerName"
+                                                                        *ngIf="changePurchaseLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.purchaseLedger.name"
+                                                                        #purchaseLedgerName="ngModel"
+                                                                        id="purchaseLedgerName">
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Group :
+                                                                    <span
+                                                                        *ngIf="!changePurchaseLedgerflag">{{accountingConfigData.purchaseLedger.group}}</span>
+                                                                    <input type="text" name="purchaseLedgerGroup"
+                                                                        *ngIf="changePurchaseLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.purchaseLedger.group"
+                                                                        #purchaseLedgerGroup="ngModel"
+                                                                        id="purchaseLedgerGroup">
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                    <li>
+                                                        <h6 class="c-name">
+                                                            <div class="form-data">
+                                                                <span>Mobile No :
+                                                                    <span
+                                                                        *ngIf="!changePurchaseLedgerflag">{{accountingConfigData.purchaseLedger.mobileNo}}</span>
+                                                                    <input type="text" name="purchaseLedgerMobileNo"
+                                                                        *ngIf="changePurchaseLedgerflag"
+                                                                        [(ngModel)]="accountingConfigData.purchaseLedger.mobileNo"
+                                                                        #purchaseLedgerMobileNo="ngModel"
+                                                                        id="purchaseLedgerMobileNo">
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                    <div class="border p-2">
+                                        <div class="flex">
+                                            <div class="o-title">
+                                                <h6 class="title">{{groupTitle[0]}}</h6>
+                                            </div>
+                                            <div class="o-edit">
+                                                <kendo-buttongroup kendoTooltip position="bottom">
+                                                    <button kendoButton title="Add {{groupTitle[0]}}"
+                                                        (click)="openAddPopup(accConfigEnum.LedgerGroup)"><i
+                                                            class="icon-add"></i></button>
+                                                </kendo-buttongroup>
+                                            </div>
+                                        </div>
+                                        <div class="d-prop">
+                                            <ul *ngFor="let ledgerGroup of accountingConfigData?.ledgerGroups">
+                                                <li>
+                                                    <div class="flex">
+                                                        <div class="o-title">
+                                                            <span class="mr-2 title"><b>Name :</b>
+                                                                {{ledgerGroup.name}}</span>
+                                                            <span class="mr-2 title"><b>Nature :</b>
+                                                                {{ledgerGroup.nature}}</span>
+                                                            <span class="mr-2 title"><b>Parent :</b>
+                                                                {{ledgerGroup.parent}}</span>
+                                                            <span class="mr-2 title"><b>Bank Ledger :</b>
+                                                                {{ledgerGroup.isBankLedger}}</span>
+                                                        </div>
+                                                        <div class="o-edit">
+                                                            <button class="btn"><i title="Edit" class="icon-edit"
+                                                                    (click)="editExisting(accConfigEnum.LedgerGroup, ledgerGroup);"></i></button>
+                                                            <button class="btn"><i title="Delete" class="icon-delete"
+                                                                    (click)="deleteExisting(accConfigEnum.LedgerGroup, ledgerGroup);"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                    <div class="border p-2">
+                                        <div class="flex">
+                                            <div class="o-title">
+                                                <h6 class="title">{{groupTitle[1]}}</h6>
+                                            </div>
+                                            <div class="o-edit">
+                                                <kendo-buttongroup kendoTooltip position="bottom">
+                                                    <button kendoButton title="Add {{groupTitle[1]}}"
+                                                        (click)="openAddPopup(accConfigEnum.TaxType)"><i
+                                                            class="icon-add"></i></button>
+                                                </kendo-buttongroup>
+                                            </div>
+                                        </div>
+                                        <div class="d-prop">
+                                            <ul *ngFor="let taxType of accountingConfigData?.taxTypes">
+                                                <li>
+                                                    <div class="flex">
+                                                        <div class="o-title">
+                                                            <span class="mr-2 title"><b>Name :</b>
+                                                                {{taxType.name}}</span>
+                                                            <span class="mr-2 title"><b>Rate :</b>
+                                                                {{taxType.rate}}</span>
+                                                            <span class="mr-2 title"><b>Type :</b>
+                                                                {{taxType?.type}}</span>
+                                                            <span class="mr-2 title"><b>Rouding :</b>
+                                                                {{taxType.isRounding}}</span>
+                                                        </div>
+                                                        <div class="o-edit">
+                                                            <button class="btn"><i title="Edit" class="icon-edit"
+                                                                    (click)="editExisting(accConfigEnum.TaxType, taxType);"></i></button>
+                                                            <button class="btn"><i title="Delete" class="icon-delete"
+                                                                    (click)="deleteExisting(accConfigEnum.TaxType, taxType);"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                                    <div class="border p-2">
+                                        <div class="flex">
+                                            <div class="o-title">
+                                                <h6 class="title">{{groupTitle[2]}}</h6>
+                                            </div>
+                                            <div class="o-edit">
+                                                <kendo-buttongroup kendoTooltip position="bottom">
+                                                    <button kendoButton title="Add {{groupTitle[2]}}"
+                                                        (click)="openAddPopup(accConfigEnum.TransactGroup)"><i
+                                                            class="icon-add"></i></button>
+                                                </kendo-buttongroup>
+                                            </div>
+                                        </div>
+                                        <div class="d-prop">
+                                            <ul
+                                                *ngFor="let transactItemGroup of accountingConfigData?.transactItemGroups">
+                                                <li>
+                                                    <div class="flex">
+                                                        <div class="o-title">
+                                                            <span class="mr-2 title"><b>Name :</b>
+                                                                {{transactItemGroup.name}}</span>
+                                                            <span class="mr-2 title"><b>Parent :</b>
+                                                                {{transactItemGroup.parent}}</span>
+                                                            <span class="mr-2 title"><b>Description :</b>
+                                                                {{transactItemGroup.description}}</span>
+                                                        </div>
+                                                        <div class="o-edit">
+                                                            <button class="btn"><i title="Edit" class="icon-edit"
+                                                                    (click)="editExisting(accConfigEnum.TransactGroup, transactItemGroup);"></i></button>
+                                                            <button class="btn"><i title="Delete" class="icon-delete"
+                                                                    (click)="deleteExisting(accConfigEnum.TransactGroup, transactItemGroup);"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add  Modal Start -->
+<div class="modal c-modal addemp msconfig rorgan" tabindex="-1" role="dialog" *ngIf="showPopup">
+    <form name="form" #labDNormForm="ngForm">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Ledger Group -->
+            <div class="modal-content" *ngIf="isAddLedgerGroup">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span *ngIf="!editMode">Add</span>
+                        <span *ngIf="editMode">Edit</span>
+                        &nbsp;
+                        {{groupTitle[0]}}
+                    </h5>
+                    <button type="button" class="close" (click)="closePopup(accConfigEnum.LedgerGroup)"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="i-form add-ledger">
+                                <div class="grid">
+                                    <div class="form-data">
+                                        <label for="">Name <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="name" [(ngModel)]="ledgerGroupObj.name" #name="ngModel"
+                                            id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Nature <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="displayName" [(ngModel)]="ledgerGroupObj.nature"
+                                            #displayName="ngModel" id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Parent <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="displayName" [(ngModel)]="ledgerGroupObj.parent"
+                                            #displayName="ngModel" id="" required>
+                                    </div>
+                                    <div class="form-data"></div>
+                                    <div class="permission_body--item">
+                                        <input type="checkbox" name="isActive" [(ngModel)]="ledgerGroupObj.isBankLedger"
+                                            class="k-checkbox">
+                                        <label class="k-checkbox-label" for="">Is Bank Ledger</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" modal-footer ">
+                    <button class="btn btn-primary" *ngIf="!editMode"
+                        (click)="addNew(accConfigEnum.LedgerGroup, true)"><i class="icon-add"></i>New</button>
+                    <button class="btn btn-primary" *ngIf="!editMode"
+                        (click)="addNew(accConfigEnum.LedgerGroup, false)"><i class="icon-save"></i>Save</button>
+                    <button class="btn btn-primary" *ngIf="editMode"
+                        (click)="updateSelected(accConfigEnum.LedgerGroup, ledgerGroupObj)"><i
+                            class="icon-save"></i>Save</button>
+                </div>
+            </div>
+
+            <!-- Text Type -->
+            <div class="modal-content" *ngIf="isAddTaxType">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span *ngIf="!editMode">Add</span>
+                        <span *ngIf="editMode">Edit</span>
+                        &nbsp;
+                        {{groupTitle[1]}}
+                    </h5>
+                    <button type="button" class="close" (click)="closePopup(accConfigEnum.TaxType)" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="i-form add-ledger">
+                                <div class="grid">
+                                    <div class="form-data">
+                                        <label for="">Name <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="name" [(ngModel)]="taxTypeObj.name" #name="ngModel"
+                                            id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Rate <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="number" name="rate" [(ngModel)]="taxTypeObj.rate" #rate="ngModel"
+                                            id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Type <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="type" [(ngModel)]="taxTypeObj.type" #type="ngModel"
+                                            id="" required>
+                                    </div>
+                                    <div class="form-data"></div>
+                                    <div class="permission_body--item">
+                                        <input type="checkbox" name="isActive" [(ngModel)]="taxTypeObj.isRounding"
+                                            class="k-checkbox">
+                                        <label class="k-checkbox-label" for="">Is Rouding</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" modal-footer ">
+                    <button class="btn btn-primary" *ngIf="!editMode" (click)="addNew(accConfigEnum.TaxType, true)"><i
+                            class="icon-add"></i>New</button>
+                    <button class="btn btn-primary" *ngIf="!editMode" (click)="addNew(accConfigEnum.TaxType, false)"><i
+                            class="icon-save"></i>Save</button>
+                    <button class="btn btn-primary" *ngIf="editMode"
+                        (click)="updateSelected(accConfigEnum.TaxType, taxTypeObj)"><i
+                            class="icon-save"></i>Save</button>
+                </div>
+            </div>
+
+            <!-- Transact Item Groups -->
+            <div class="modal-content" *ngIf="isAddTransactionItemGroup">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span *ngIf="!editMode">Add</span>
+                        <span *ngIf="editMode">Edit</span>
+                        &nbsp;
+                        {{groupTitle[2]}}
+                    </h5>
+                    <button type="button" class="close" (click)="closePopup(accConfigEnum.TransactGroup)"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="i-form ad-shape">
+                                <div class="grid">
+                                    <div class="form-data">
+                                        <label for="">Name <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="name" [(ngModel)]="transactItemGroupObj.name"
+                                            #name="ngModel" id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Parent <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="Parent" [(ngModel)]="transactItemGroupObj.parent"
+                                            #displayName="ngModel" id="" required>
+                                    </div>
+
+                                    <div class="form-data">
+                                        <label for="">Description <span class="require">*</span></label>
+                                    </div>
+                                    <div class="form-data">
+                                        <input type="text" name="Description"
+                                            [(ngModel)]="transactItemGroupObj.description" #displayName="ngModel" id=""
+                                            required>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" modal-footer ">
+                    <button class="btn btn-primary" *ngIf="!editMode"
+                        (click)="addNew(accConfigEnum.TransactGroup, true)"><i class="icon-add"></i>New</button>
+                    <button class="btn btn-primary" *ngIf="!editMode"
+                        (click)="addNew(accConfigEnum.TransactGroup, false)"><i class="icon-save"></i>Save</button>
+                    <button class="btn btn-primary" *ngIf="editMode"
+                        (click)="updateSelected(accConfigEnum.TransactGroup, transactItemGroupObj)"><i
+                            class="icon-save"></i>Save</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div (document:keydown.esc)="closePopupOnEsc()"></div>
+    </form>
+</div>
+
+<div kendoDialogContainer></div>
+
+<!-- Add Modal End -->

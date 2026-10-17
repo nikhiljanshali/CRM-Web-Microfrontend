@@ -1,0 +1,160 @@
+<title>Transactions</title>
+<div class="party-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="middle-wrap row wb">
+                    <div class="e-left">
+                        <div class="company-info">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                <div class="ci-top-left">
+                                    <ul>
+                                        <li class="breadcrumb-item">
+                                            <a href="#"></a><i class="icon-home"></i>Home
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Transactions</li>
+                                    </ul>
+                                </div>
+                                <div class="ci-top-right">
+                                    <kendo-buttongroup>
+                                        <button kendoButton kendoTooltip position="bottom" title="Add Purchase"
+                                            (click)="openPurchaseDialog()"><i class="icon-addtocart"></i></button>
+                                        <button kendoButton kendoTooltip position="bottom" title="Add Sales"
+                                            (click)="openSalesDialog()">
+                                            <i class="icon-graph"></i></button>
+                                        <button kendoButton kendoTooltip position="bottom"
+                                            title="Receipt&Journal History" (click)="openReceiptDialog()">
+                                            <i class="icon-receipt"></i></button>
+                                        <button kendoButton kendoTooltip position="bottom" title="Payment History"
+                                            (click)="openPaymentDialog()">
+                                            <i class="icon-payment"></i></button>
+                                        <button kendoButton kendoTooltip position="bottom" title="Delete"><i
+                                                class="icon-trash"></i></button>
+                                    </kendo-buttongroup>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Page content here -->
+                        <!-- Page content here -->
+
+                    </div>
+
+                    <!-- Search start -->
+                    <div class="e-right">
+                        <div class="sr-wrap">
+                            <div class="sr">
+                                <h6>Search By Filter</h6>
+                                <form name="form">
+                                    <div class="i-form">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label class="lbl">From Date</label>
+                                                <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label class="lbl">To Date</label>
+                                                <kendo-datepicker format="dd/MM/yyyy"></kendo-datepicker>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label for="">Invoice No</label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label>Type</label>
+                                                <kendo-dropdownlist>
+                                                </kendo-dropdownlist>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data">
+                                                <label>Supplier</label>
+                                                <kendo-dropdownlist>
+                                                </kendo-dropdownlist>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 form-data social">
+                                                <button class="btn btn-action">
+                                                    <i class="icon-search"></i>Search
+                                                </button>
+                                                <button class="btn btn-action">
+                                                    <i class="icon-clear"></i>Clear
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search End -->
+                </div>
+                <div class="f-btn">
+                    <ul>
+                        <li><button class="open-filter"><i class="icon-filter"></i></button></li>
+                        <li><button><i class="icon-search"></i></button></li>
+                        <li><button><i class="icon-clear"></i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Purchase Dialog -->
+<ng-container *ngIf="isPurchase">
+    <app-purchase (toggle)="isPurchase=$event"></app-purchase>
+</ng-container>
+
+<!-- Sales Dialog -->
+<ng-container *ngIf="isSales">
+    <app-sales (toggle)="isSales=$event"></app-sales>
+</ng-container>
+
+<!-- Receipt & Journal -->
+<div class="modal c-modal addemp dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isReceiptDialog">
+    <form name="form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-receipt"></i>Receipt & Journal
+                    </h5>
+                    <button type="button" class="close" (click)="closeReceiptDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            Receipt
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Payment -->
+<div class="modal c-modal addemp dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isPaymentDialog">
+    <form name="form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-payment"></i>Payment
+                    </h5>
+                    <button type="button" class="close" (click)="closePaymentDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            Payment
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,180 @@
+<title>User Profile</title>
+<!-- #region Profile -->
+<div class="profile-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="middle-wrap row wb">
+          <div class="e-left w-100">
+            <!-- #region Header -->
+            <div class="company-info">
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                <div class="ci-top-left bread-size">
+                  <ul>
+                    <li class="breadcrumb-item"><i class="icon-home"></i>Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!--#endregion -->
+            <div class="grid-wrap o-details e-details">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="i-form ed-top">
+                    <div class="row">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <!-- #region Personal Info -->
+                        <div class="en-form">
+                          <h6 class="title">Personal Information</h6>
+                          <div class="p-flex">
+                            <div class="p-left c-profile">
+                              <div class="i-box">
+                                <img src="commonAssets/images/profile.png" alt="profile-photo">
+                                <span class="ed-profile c-badge">
+                                  <i class="icon-edit"></i>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="row p-right e-details-n">
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                                <div class="info-block">
+                                  <li>
+                                    <h6 class="c-name"><span>Full Name : </span>
+                                      {{employeeObj.fullName}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="info-block we-3">
+                                  <li>
+                                    <h6 class="c-name"><span>Oraganization : </span>
+                                      {{employeeObj.organization.name}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Branch :</span>
+                                      {{employeeObj.branch.name}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Department :</span>
+                                      {{employeeObj.department}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Origin :</span>
+                                      {{employeeObj.origin}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Date of Join :</span>
+                                      {{employeeObj.joiningDate | date: 'dd/MM/yyyy'}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Enrollment No :</span>
+                                      {{employeeObj.enrollmentNumber}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Email :</span>
+                                      {{employeeObj.email}}
+                                    </h6>
+                                  </li>
+                                  <li>
+                                    <h6 class="c-name"><span>Mobile No. :</span>
+                                      {{employeeObj.mobile}}
+                                    </h6>
+                                  </li>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--#endregion -->
+                        <!-- #region Additional Info -->
+                        <div class="en-form mt-2">
+                          <h6 class="title">More Information</h6>
+                          <div class="row e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>Manager :</span>
+                                    <kendo-switch class="k-widget k-switch-off" [disabled]="true"
+                                      [checked]="employeeObj.isManager">
+                                    </kendo-switch>
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Active :</span>
+                                    <kendo-switch class="k-widget k-switch-off" [disabled]="true"
+                                      [checked]="employeeObj.isActive">
+                                    </kendo-switch>
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Available :</span>
+                                    <kendo-switch class="k-widget k-switch-off" [disabled]="true"
+                                      [checked]="employeeObj.isAvailable">
+                                    </kendo-switch>
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--#endregion -->
+                      </div>
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <!-- #region Address -->
+                        <div class="en-form">
+                          <h6 class="title">Address</h6>
+                          <div class="row e-details-n">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 f-12">
+                              <div class="info-block">
+                                <li>
+                                  <h6 class="c-name"><span>Address :</span>
+                                    {{employeeObj.address.line1}}{{(employeeObj.address.line2 && employeeObj.address.line2.length > 0 ? (', ' + employeeObj.address.line2) : '')}}{{(employeeObj.address.zipCode && employeeObj.address.zipCode.length > 0 ? (', ' + employeeObj.address.zipCode) : '')}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                              <div class="info-block we-3">
+                                <li>
+                                  <h6 class="c-name"><span>City :</span>
+                                    {{employeeObj.address.city}}
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>State :</span>
+                                    {{employeeObj.address.state}}
+                                  </h6>
+                                </li>
+                                <li>
+                                  <h6 class="c-name"><span>Country :</span>
+                                    {{employeeObj.address.country}}
+                                  </h6>
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--#endregion -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--#endregion -->
+
+<div kendoDialogContainer></div>

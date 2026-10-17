@@ -1,0 +1,489 @@
+<div class="addemp c-modal modal mo-he-fix" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <form name="Leadform" #Lead="ngForm">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id=""><i class="icon-lead"></i>{{!isEditLead?"Add Lead":"Lead Information"}}
+                    </h5>
+                    <button type="button" class="close" (click)="closeLeadDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div *ngIf="leadTitle"
+                                class="status-btn mb-2 p-2 d-flex justify-content-between align-items-center">
+                                <span><strong>Status :</strong> {{leadTitle | uppercase}}</span>
+                                <button *ngIf="leadTitle=='Proposal' || leadTitle=='Order'"
+                                    [disabled]="this.mySelection.length == 0" kendoButton title="Memo Issue"
+                                    (click)="openQcReasonDialog()"><i class="icon-memoissue pr-0"></i>Memo
+                                    Issue</button>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12"
+                            [ngClass]="{'lead-info-grid':(!brokerObj.id && !isEditLead) || (brokerObj.id && isEditLead) || (brokerObj.id && !isEditLead)}">
+                            <div class="en-form f-12">
+                                <div class="align-items-center d-flex justify-content-between p-wrap">
+                                    <h6 class="title m-0"><i class="icon-party"></i>Customer Information</h6>
+                                </div>
+                                <div class="e-details-n mt-2">
+                                    <div *ngIf="!isEditLead" class="d-flex">
+                                        <div class="form-data">
+                                            <label>Customer :<span class="require">*</span></label>
+                                        </div>
+                                        <div class="form-data w-100 mr-3"
+                                            [ngClass]="{ 'error': customer.invalid && (customer.dirty || customer.touched)}">
+                                            <kendo-autocomplete class="w-100" [data]="listCustomerItems" name="customer"
+                                                [(ngModel)]="selectedCustomerItem"
+                                                (valueChange)="customerChange($event)" #customer="ngModel"
+                                                [filterable]="true" (filterChange)="handleCustomerFilter($event)"
+                                                [kendoDropDownFilter]="filterSettings" [popupSettings]="{width: 'auto'}"
+                                                valueField="value" required>
+                                                <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                                                    <span><b>{{dataItem.companyName}}</b>-{{dataItem.text}}</span>
+                                                </ng-template>
+                                            </kendo-autocomplete>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="e-details-n mt-2">
+                                    <div class="info-block"
+                                        [ngClass]="{'we-2':((leadItem && leadItem.broker.id)&& !leadTitle),'we-4':((!leadItem || !leadItem?.broker?.id)&& leadTitle)}">
+                                        <li [ngClass]="{'w-100':!(!brokerObj.id && isEditLead)}">
+                                            <h6 class="c-name"><span>CompanyName:</span>{{customerObj?.companyName}}
+                                            </h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Name:</span>{{customerObj?.fullName}}</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Email:</span>{{customerObj?.email}}</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Mobile No.:</span>{{customerObj?.mobile1}}
+                                            </h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Phone No.:</span>{{customerObj?.phoneNo}}
+                                            </h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Fax No.:</span>{{customerObj?.faxNo}}</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>IncomeTax
+                                                    No.:</span>{{customerObj?.incomeTaxNo}}</h6>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="en-form f-12">
+                                <h6 class="title"
+                                    *ngIf="(!brokerObj.id && !isEditLead) || (brokerObj.id && isEditLead) || (brokerObj.id && !isEditLead)">
+                                    <i class="icon-broker"></i>Broker Information
+                                </h6>
+                                <div class="i-form co-inv-pa">
+                                    <div *ngIf="!isEditLead" class="grid">
+                                        <div class="form-data">
+                                            <label>Broker :</label>
+                                        </div>
+                                        <div class="form-data">
+                                            <kendo-dropdownlist [data]="listBrokerItems" textField="text"
+                                                valueField="value" name="Broker" [(ngModel)]="selectedBrokerItem"
+                                                (valueChange)="brokerChange()" #Broker="ngModel"></kendo-dropdownlist>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="e-details-n"
+                                    *ngIf="(!brokerObj.id && !isEditLead) || (brokerObj.id && isEditLead)|| (brokerObj.id && !isEditLead)">
+                                    <div class="info-block we-2">
+                                        <li>
+                                            <h6 class="c-name"><span>Name:</span>{{brokerObj?.name}}</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Email:</span>{{brokerObj?.email}}</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Mobile No.:</span>{{brokerObj?.mobileNo}}
+                                            </h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="c-name"><span>Through (%):</span>{{brokerObj?.through}}</h6>
+                                        </li>
+                                        <li class="d-flex align-items-center w-100">
+                                            <h6 class="c-name"><span>Brokrage (%):</span><span
+                                                    *ngIf="!isEditableBrokerage">{{brokerObj?.brokrage}}</span>
+                                            </h6>
+                                            <div class="form-data">
+                                                <input id="brokeragetxt" autocomplete="off" name="brokeragetxt"
+                                                    [(ngModel)]="brokerageValue" class="w-50 mr-2"
+                                                    *ngIf="isEditableBrokerage"
+                                                    (keypress)="utilityService.floatOnly($event)">
+
+                                                <kendo-buttongroup kendoTooltip position="bottom"
+                                                    *ngIf="brokerObj?.brokrage">
+                                                    <button kendoButton title="Edit Brokerage" class="border"
+                                                        [disabled]="(leadObj.leadStatus == 'rejected' || leadObj.leadStatus == 'approved'|| leadObj.leadStatus == 'delivered')"
+                                                        *ngIf="!isEditableBrokerage" (click)="toggleEditBrokerage()"><i
+                                                            class="icon-edit pr-0"></i></button>
+                                                    <button kendoButton title="Edit" class="border"
+                                                        *ngIf="isEditableBrokerage" [disabled]="!brokerageValue"
+                                                        (click)="changeBrokerage()"><i
+                                                            class="icon-check pr-0"></i></button>
+                                                    <button kendoButton title="Cancel" class="border"
+                                                        *ngIf="isEditableBrokerage" (click)="toggleEditBrokerage()"><i
+                                                            class="icon-delete pr-0"></i></button>
+                                                </kendo-buttongroup>
+                                            </div>
+                                        </li>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-wrap mt-2">
+                        <kendo-tabstrip>
+                            <kendo-tabstrip-tab title="" [selected]="true">
+                                <ng-template kendoTabTitle>
+                                    <i class="icon-info" title="Details"></i>&nbsp;
+                                </ng-template>
+                                <ng-template kendoTabContent>
+                                    <div class="tab-data le-details">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <div class="en-form f-12" *ngIf="editCardStatus!='approved'">
+                                                    <div class="i-form ad-le-top "
+                                                        [ngClass]="{'isneg':isNegotiateFlag}">
+                                                        <div class="grid">
+                                                            <div class="form-data" *ngIf="!isNegotiateFlag">
+                                                                <label>Stone ID :</label>
+                                                            </div>
+                                                            <div class="form-data" *ngIf="!isNegotiateFlag">
+                                                                <input [disabled]="disabledFlag" autocomplete="off"
+                                                                    type="text" id="stoneTxt" #StoneTxtInput
+                                                                    name="stoneTxt" class="c-wi">
+                                                            </div>
+                                                            <div class="form-data" *ngIf="!isNegotiateFlag">
+                                                                <label>Certficate ID :</label>
+                                                            </div>
+                                                            <div class="form-data" *ngIf="!isNegotiateFlag">
+                                                                <input id="cerid" [disabled]="disabledFlag"
+                                                                    autocomplete="off" #CertificateTxtInput name="cerid"
+                                                                    class="c-wi">
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="en-form f-12">
+                                                    <div class="i-form lab-iss-mod a-lead m-0">
+                                                        <div class="ci-top-right">
+                                                            <div *ngIf="isNegotiateFlag && !leadObj.isEcom"
+                                                                class="d-flex  mr-2">
+                                                                <div class="form-data mr-2">
+                                                                    <label>Negotiation :</label>
+                                                                </div>
+                                                                <div class="form-data">
+                                                                    <input autocomplete="off" [disabled]="disabledFlag"
+                                                                        type="text" id="negotiationMain"
+                                                                        #PlaceOrderTxtInput name="negotiationMain"
+                                                                        (keypress)="utilityService.numberAddMinusOnly($event)"
+                                                                        [(ngModel)]="reqDisMain" class="c-wi">
+                                                                </div>
+                                                            </div>
+                                                            <kendo-buttongroup kendoTooltip position="bottom">
+                                                                <button
+                                                                    [disabled]="disabledFlag || mySelection.length == 0"
+                                                                    kendoButton title="Delete Inventory"
+                                                                    *ngIf="editCardStatus!='approved'"
+                                                                    (click)="openDeleteDialog()"><i
+                                                                        class="icon-trash"></i></button>
+                                                                <button [disabled]="disabledFlag" kendoButton
+                                                                    (click)="openGridConfigDialog()"
+                                                                    title="Grid Configuration">
+                                                                    <i class="icon-gridconfig pr-0"></i>
+                                                                </button>
+                                                            </kendo-buttongroup>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mod-wrap mt-2">
+                                                    <div class="grid-wrap">
+                                                        <kendo-grid [data]="gridViewLeadInventory"
+                                                            class="grid-ui upload-grid" [sortable]="true"
+                                                            [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+                                                            [resizable]="true" (pageChange)="pageChange($event)"
+                                                            [selectable]="selectableSettings"
+                                                            [selectedKeys]="mySelection" [kendoGridSelectBy]="'id'"
+                                                            [groupable]="true" [group]="groups"
+                                                            (groupChange)="groupChange($event)">
+                                                            <ng-container *ngIf="fields && fields.length > 0">
+                                                                <ng-container *ngFor="let field of fields;let i= index">
+                                                                    <ng-container *ngIf="field.isSelected">
+                                                                        <kendo-grid-column [width]="field.width"
+                                                                            [field]="field.propertyName"
+                                                                            [title]="field.title">
+                                                                            <ng-template kendoGridGroupHeaderTemplate
+                                                                                let-group="group" let-value="value"
+                                                                                let-field="field"
+                                                                                let-aggregates="aggregates">
+                                                                                <span class="pl-1">{{getTitle(field)}} :
+                                                                                </span>
+                                                                                <b class="pl-1">{{value}}</b>&nbsp;
+                                                                                &nbsp;
+                                                                                <span class="pl-1">Total Carat :
+                                                                                </span>
+                                                                                <b
+                                                                                    class="pl-1">{{aggregates.weight.sum.toFixed(2)}}</b>&nbsp;
+                                                                                &nbsp;
+                                                                                <span class="pl-1">Total Amount ($):
+                                                                                </span>
+                                                                                <b
+                                                                                    class="pl-1">{{aggregates.netAmount.sum.toFixed(2)}}</b>&nbsp;
+                                                                                &nbsp;
+                                                                            </ng-template>
+                                                                            <ng-template
+                                                                                *ngIf="isShowCheckBoxAll && field.title == 'Checkbox'"
+                                                                                kendoGridHeaderTemplate>
+                                                                                <input kendoGridSelectAllCheckbox
+                                                                                    [disabled]="disabledFlag"
+                                                                                    type="checkbox" class="k-checkbox"
+                                                                                    id="headerCheckbox"
+                                                                                    (selectAllChange)="selectAllInventories($event)" />
+                                                                                <label class="k-checkbox-label"
+                                                                                    for="headerCheckbox"></label>
+                                                                            </ng-template>
+                                                                            <ng-template kendoGridCellTemplate
+                                                                                let-dataItem let-rowIndex="rowIndex"
+                                                                                *ngIf="field.title == 'Checkbox'">
+                                                                                <input type="checkbox"
+                                                                                    class="k-checkbox"
+                                                                                    [disabled]="disabledFlag"
+                                                                                    id="checkbox-{{rowIndex}}"
+                                                                                    [kendoGridSelectionCheckbox]="rowIndex" />
+                                                                                <label class="k-checkbox-label"
+                                                                                    for="checkbox-{{rowIndex}}">
+                                                                                </label>
+                                                                            </ng-template>
+                                                                            <ng-template kendoGridCellTemplate
+                                                                                let-dataItem
+                                                                                *ngIf="field.propertyName=='isLead'">
+                                                                                <span
+                                                                                    *ngIf="dataItem.isLead">Accepted</span>
+                                                                                <span
+                                                                                    *ngIf="dataItem.isLead == false">Rejected</span>
+                                                                                <span
+                                                                                    *ngIf="dataItem.isLead== null">Pending</span>
+                                                                            </ng-template>
+
+                                                                            <ng-template kendoGridCellTemplate
+                                                                                let-dataItem
+                                                                                *ngIf="field.propertyName=='reqDis'">
+                                                                                <div class="form-data">
+                                                                                    <input type="text"
+                                                                                        [disabled]="disabledFlag"
+                                                                                        autocomplete="off"
+                                                                                        id="reqDisName{{dataItem.id}}"
+                                                                                        name="reqDisName{{dataItem.id}}"
+                                                                                        [(ngModel)]="dataItem.reqDis"
+                                                                                        #reqDisName="ngModel"
+                                                                                        (keyup)="calIndiDis(dataItem)"
+                                                                                        (keypress)="utilityService.numberAddMinusOnly($event)"
+                                                                                        class="w-100" disabled>
+                                                                                </div>
+                                                                            </ng-template>
+                                                                        </kendo-grid-column>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </kendo-grid>
+                                                    </div>
+                                                    <div class="cart-info">
+                                                        <table class="position-relative mr-4">
+                                                            <tr>
+                                                                <td>TOTAL PCS : </td>
+                                                                <td>{{gridDetailSummary?.totalPcs}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TOTAL CARAT : </td>
+                                                                <td>{{gridDetailSummary?.totalCarat| number:'0.2-2'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AVG. DISC. (%) :</td>
+                                                                <td>{{gridDetailSummary?.avgDiscPer| number:'0.2-2'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PER CARAT ($) : </td>
+                                                                <td>{{gridDetailSummary?.perCarat| number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TOTAL AMOUNT ($) : </td>
+                                                                <td>{{gridDetailSummary?.totalAmount| number:'0.2-2'}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <table>
+                                                            <tr>
+                                                                <td>AVG. RAP ($) : </td>
+                                                                <td>{{gridDetailSummary?.avgRap| number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>V.O.W. DISC. (%) : </td>
+                                                                <td>{{gridDetailSummary?.totalVOWDiscPer|
+                                                                    number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>V.O.W. DISC. ($) : </td>
+                                                                <td>{{gridDetailSummary?.totalVOWDiscAmount|
+                                                                    number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>DISC. (%) : </td>
+                                                                <td>{{gridDetailSummary?.discPer|
+                                                                    number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PRICE PER CARAT ($) : </td>
+                                                                <td>{{gridDetailSummary?.pricePerCarat|
+                                                                    number:'0.2-2'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TOTAL PAYABLE AMOUNT ($) : </td>
+                                                                <td>{{gridDetailSummary?.totalPayableAmount|
+                                                                    number:'0.2-2'}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab title="">
+                                <ng-template kendoTabTitle>
+                                    <i class="icon-history" title="History"></i>&nbsp;
+                                </ng-template>
+                                <ng-template kendoTabContent>
+                                    <div class="tab-data le-history">
+                                        History Details
+                                    </div>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab title="">
+                                <ng-template kendoTabTitle>
+                                    <i class="icon-wechat" title="Chat"></i>&nbsp;
+                                </ng-template>
+                                <ng-template kendoTabContent>
+                                    <div class="tab-data le-link">
+                                        Chat Details
+                                    </div>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab title="">
+                                <ng-template kendoTabTitle>
+                                    <i class="icon-attachament" title="Attachment"></i>&nbsp;
+                                </ng-template>
+                                <ng-template kendoTabContent>
+                                    <div class="tab-data le-file">
+                                        Attachment Details
+                                    </div>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                        </kendo-tabstrip>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" *ngIf="!isEditLead" [disabled]="!Lead.valid || listInventoryItems.length == 0"
+                        class="btn btn-primary" (click)="submitLead(Lead,false)"><i class="icon-add"></i>New</button>
+                    <button type="button"
+                        [disabled]="!Lead.valid || listInventoryItems.length == 0 || editCardStatus == 'proposal'|| leadObj.isEcom"
+                        class="btn btn-primary" (click)="submitLead(Lead,true)"><i class="icon-save"></i>Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- #region QC Reason Model-->
+<div class="modal c-modal addemp rorgan dialog-ex-xs " tabindex="-1" role="dialog" data-keyboard="false"
+    data-backdrop="static" *ngIf="isQcReason">
+    <form name="form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id=""><i class="icon-info"></i>Memo Information</h5>
+                    <button type="button" class="close" (click)="openQcReasonDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-data mb-1">
+                        <label>QC Reason<span class="require">*</span></label>
+                    </div>
+                    <div class="form-data mb-3"
+                        [ngClass]="{ 'error': qcReason.invalid && (qcReason.dirty || qcReason.touched)}">
+                        <kendo-dropdownlist [data]="listQCReasonItems" name="qcReason" #qcReason="ngModel"
+                            [valuePrimitive]="true" [(ngModel)]="qcReasonModel" required>
+                        </kendo-dropdownlist>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" [disabled]="!qcReasonModel"
+                        (click)="submitQCReason()">
+                        <i class="icon-save"></i>Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- #endregion -->
+
+<!-- #region Remove Reason Model-->
+<div class="modal c-modal addemp rorgan dialog-ex-xs " tabindex="-1" role="dialog" data-keyboard="false"
+    data-backdrop="static" *ngIf="isRMReason">
+    <form name="form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id=""><i class="icon-info"></i>Remove Reason Information</h5>
+                    <button type="button" class="close" (click)="openRMReasonDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-data mb-1">
+                        <label>Reason To Remove<span class="require">*</span></label>
+                    </div>
+                    <div class="form-data mb-3"
+                        [ngClass]="{ 'error': removeReason.invalid && (removeReason.dirty || removeReason.touched)}">
+                        <kendo-dropdownlist [data]="listRemoveReasonItems" name="removeReason" #removeReason="ngModel"
+                            [valuePrimitive]="true" [(ngModel)]="removeReasonModel" required>
+                        </kendo-dropdownlist>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" [disabled]="!removeReasonModel"
+                        (click)="submitReason()">
+                        <i class="icon-save"></i>Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- #endregion -->
+
+<!-- #region Grid Config -->
+<ng-container *ngIf="isGridConfig">
+    <app-gridconfiguration [fields]="fields" [pageName]="'LeadInventory'" [gridName]="gridName"
+        [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+        (ChildEvent)="setNewGridConfig($event)">
+    </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->

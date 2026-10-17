@@ -1,0 +1,254 @@
+<title>RFID StockTally</title>
+<div class="updateinventory-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="middle-wrap row wb">
+                    <div class="e-left w-100 pr-0">
+                        <div class="company-info">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                                <div class="ci-top-left">
+                                    <ul>
+                                        <li class="breadcrumb-item">
+                                            <a href="#"></a><i class="icon-home"></i> Home
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            RFID StockTally</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- #region Top buttons-->
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title">
+                                <div class="ci-top-left machine-status">
+                                    <span class="text-light bg-danger">Not Ready</span>
+                                    <button class="btn btn-primary icon-clear" title="Refresh Device"></button>
+                                </div>
+                                <div class="ci-top-right pr-0">
+                                    <kendo-buttongroup kendoTooltip position="bottom">
+                                        <button kendoButton title="Add Stock" (click)="toggleRFIDScanDialog()">
+                                            <i class="icon-stock"></i>
+                                        </button>
+                                        <button title="Stock Tally" kendoButton (click)="toggleStockTallyLoadDialog()">
+                                            <i class="icon-stocktally"></i>
+                                        </button>
+                                        <button kendoButton title="Remaining Stock" (click)="exportToExcel()">
+                                            <i class="icon-remainingstock"></i>
+                                        </button>
+                                    </kendo-buttongroup>
+                                </div>
+                            </div>
+                            <!-- #endregion Top buttons-->
+                        </div>
+                        <!-- #region RFID Grid-->
+                        <div class="grid-wrap stocktally">
+                            <kendo-grid [data]="stockTallyList" scrollable="scrollable" [resizable]="true"
+                                [reorderable]="true">
+                                <kendo-grid-column field="kapan" title="Kapan" [width]="50">
+                                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                                        Total
+                                    </ng-template>
+                                </kendo-grid-column>
+
+                                <!-- #region Total -->
+                                <kendo-grid-column-group title="Total" [width]="300">
+
+                                    <!-- #region Final -->
+                                    <kendo-grid-column-group title="Final" [width]="300">
+                                        <kendo-grid-column field="count" title="Pcs" [width]="150">
+
+                                            <ng-template kendoGridFooterTemplate let-column
+                                                let-columnIndex="columnIndex">
+                                                {{totalPics}}
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="weight" title="Weight" [width]="150">
+                                            <ng-template kendoGridFooterTemplate let-column
+                                                let-columnIndex="columnIndex">
+                                                {{totalWeight == 0? 0 : totalWeight.toFixed(2)}}
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                    </kendo-grid-column-group>
+                                    <!-- #endregion -->
+
+                                    <!-- #region calculated -->
+                                    <kendo-grid-column-group title="Calculated" [width]="300">
+                                        <kendo-grid-column-group title="OnMemo" [width]="300">
+                                            <kendo-grid-column field="memoCount" title="Pcs" [width]="150">
+                                                <ng-template kendoGridFooterTemplate let-column
+                                                    let-columnIndex="columnIndex">
+                                                    {{totalMemoPics}}
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="memoWeight" title="Weight" [width]="150">
+                                                <ng-template kendoGridFooterTemplate let-column
+                                                    let-columnIndex="columnIndex">
+                                                    {{ totalMemoWeight == 0? 0 :totalMemoWeight.toFixed(2)}}
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                        </kendo-grid-column-group>
+
+                                        <kendo-grid-column-group title="OnHand" [width]="300">
+                                            <kendo-grid-column field="stockTallyCount" title="Pcs" [width]="150">
+                                                <ng-template kendoGridFooterTemplate let-column
+                                                    let-columnIndex="columnIndex">
+                                                    {{totalStockTallyPics}}
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="stockTallyWeight" title="Weight" [width]="150">
+                                                <ng-template kendoGridFooterTemplate let-column
+                                                    let-columnIndex="columnIndex">
+                                                    {{totalStockTallyWeight == 0? 0 :totalStockTallyWeight.toFixed(2)}}
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                        </kendo-grid-column-group>
+                                    </kendo-grid-column-group>
+                                    <!-- #endregion -->
+
+                                    <!-- #region Diffrence -->
+                                    <kendo-grid-column-group title="Difference" [width]="300">
+                                        <kendo-grid-column field="stockOnHandCount" title="Pcs" [width]="150">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <span class="tallydone"
+                                                    [ngClass]="{'red':dataItem.stockOnHandCount>0}">{{dataItem.stockOnHandCount}}</span>
+                                            </ng-template>
+                                            <ng-template kendoGridFooterTemplate let-column
+                                                let-columnIndex="columnIndex">
+                                                <span class="tallydone" [ngClass]="{'red':totalWeight>0}">
+                                                    {{totalStokOnHandPics}}</span>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="stockOnHandWeight" title="Weight" [width]="150">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <span class="tallydone"
+                                                    [ngClass]="{'red':dataItem.stockOnHandWeight>0}">{{
+                                                    dataItem.stockOnHandWeight== 0? 0
+                                                    :dataItem.stockOnHandWeight.toFixed(2)}}</span>
+                                            </ng-template>
+                                            <ng-template kendoGridFooterTemplate let-column
+                                                let-columnIndex="columnIndex">
+                                                <span class="tallydone" [ngClass]="{'red':totalStockOnHandWeight>0}">{{
+                                                    totalStockOnHandWeight== 0? 0
+                                                    :totalStockOnHandWeight.toFixed(2)}}</span>
+                                            </ng-template>
+                                        </kendo-grid-column>
+
+                                    </kendo-grid-column-group>
+                                    <!-- #endregion -->
+
+                                </kendo-grid-column-group>
+                                <!-- #endregion -->
+
+
+                            </kendo-grid>
+                        </div>
+                        <!-- #endregion RFID Grid-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #region RFID machine popup -->
+<div class="modal c-modal addemp dialog-sm" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+    *ngIf="isViewRFIDModal">
+    <form name="form" #RFIDScanForm="ngForm">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">
+                        <i class="icon-rfid"></i>
+                        Stock Tally
+                    </h5>
+                    <button type="button" class="close" (click)="toggleRFIDScanDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="rfid-status">
+                                <!-- #region RFID Scan machine buttons -->
+                                <div class="form-data">
+                                    <button class="btn btn-primary" title="StartScan"
+                                        (click)="startScan()">StartScan</button>
+                                </div>
+                                <div class="form-data">
+                                    <button class="btn btn-primary icon-clear" (click)="refreshDevice()"
+                                        title="Refresh Device"></button>
+                                </div>
+                                <div class="form-data">
+                                    <span class="text-light" [ngClass]="statusTextBgClass">{{statusText}}</span>
+                                </div>
+                                <!-- #endregion -->
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-xl-6 col-lg-6 col-xs-6 col-sm-6 rfid-tbl grid-wrap mb-3">
+                                    <h6 class="d-flex justify-content-between">Found Stones
+                                        <button *ngIf="foundTags.length>0"
+                                            class="btn btn-primary float-right icon-light"
+                                            [ngClass]="{'icon-light-active':isAllFoundLighting}"
+                                            (click)="startAllLighting('found')"></button>
+                                    </h6>
+                                    <div class="clearfix"></div>
+                                    <!-- #region Found Stone list by RFID -->
+                                    <kendo-grid [data]="filterFoundTags" [pageSize]="rfIdGridPageSize"
+                                        [skip]="foundSkip" [pageable]="true"
+                                        (pageChange)="filterFoundTags = rfIdGridPageChange($event, foundTags);foundSkip = $event.skip;">
+                                        <kendo-grid-column [width]=" 80" field="stoneId" title="Stone ID">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="65" field="rfid" title="RFID">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="30" field="action" title="">
+                                            <ng-template kendoGridCellTemplate let-dataItem="dataItem"
+                                                let-rowIndex="rowIndex">
+                                                <button class="btn btn-primary float-right icon-light"
+                                                    [ngClass]="{'icon-light-active':dataItem.isLighting}"
+                                                    (click)="startLighting(dataItem,rowIndex,'found')"></button>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                    <!-- #endregion -->
+                                </div>
+                                <!-- #region Not allocated RFID Section -->
+                                <!-- <div class="col-xl-6 col-lg-6 col-xs-6 col-sm-6 rfid-tbl grid-wrap">
+                                    <h6 class="d-flex justify-content-between">Not Allocated RFID
+                                        <button *ngIf="notAllocatedTags.length>0"
+                                            class="btn btn-primary float-right icon-light"
+                                            [ngClass]="{'icon-light-active':isAllNotAllocatedLighting}"
+                                            (click)="startAllLighting('notallocated')"></button>
+                                    </h6>
+                                    <div class="clearfix"></div>
+                                    <kendo-grid *ngIf="isScanCompleted" [data]="filterNotAllocatedTags"
+                                        [pageSize]="rfIdGridPageSize" [pageable]="true" [skip]="notAllocatedSkip"
+                                        (pageChange)="filterNotAllocatedTags = rfIdGridPageChange($event, notAllocatedTags);notAllocatedSkip = $event.skip;">
+                                        <kendo-grid-column [width]="80" field="rfid" title="RFID">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="30" field="action" title="">
+                                            <ng-template kendoGridCellTemplate let-dataItem="dataItem"
+                                                let-rowIndex="rowIndex">
+                                                <button class="btn btn-primary float-right icon-light"
+                                                    [ngClass]="{'icon-light-active':dataItem.isLighting}"
+                                                    (click)="startLighting(dataItem,rowIndex,'notallocated')"></button>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                </div> -->
+                                <!-- #endregion -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" [disabled]="!isScanCompleted" (click)="onRFIDStockTallySubmit()"><i
+                            class="icon-save"></i>Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div (document:keydown.esc)="toggleRFIDScanDialog()"></div>
+    </form>
+</div>
+<!-- #endregion -->
+
+<div kendoDialogContainer></div>

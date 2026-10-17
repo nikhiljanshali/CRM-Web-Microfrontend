@@ -1,0 +1,702 @@
+<title>Lead</title>
+<div class="Lead-wrap">
+    <div id="wrapper">
+        <div class="row container-fluid">
+            <div class="middle-content p-0 d-shadow">
+                <div class="e-left w-100">
+                    <div class="company-info border-bottom">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0 ci-title ci-top">
+                            <div class="ci-top-left bread-size">
+                                <ul>
+                                    <li class="breadcrumb-item k-cursor-pointer" routerLink="/"><i
+                                            class="icon-home"></i>Home</li>
+                                    <li class="breadcrumb-item k-cursor-pointer" routerLink="/lead">Lead</li>
+                                </ul>
+                            </div>
+                            <div class="ci-top-right pr-0">
+                                <span class="mr-3"><i class="icon-status-rd mr-1"
+                                        style="color: #f49898;vertical-align: middle;"></i>Offline</span>
+                                <span class="mr-3"><i class="icon-status-rd mr-1"
+                                        style="color: #7c91db;vertical-align: middle;"></i>Online</span>
+                                <kendo-buttongroup kendoTooltip position="bottom">
+                                    <input #file type="file" (click)="file.value=''"
+                                        (change)="onSelectExcelFile($event)" hidden
+                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+                                    <button kendoButton #anchor (click)="file.click();" title="Import Excel"
+                                        [disabled]="disabledFlag || !sellerObj"><i class="icon-excelnew "></i></button>
+                                    <button kendoButton title="Add Lead" [disabled]="disabledFlag || !sellerObj"
+                                        (click)="toggleAddLeadDialog()"><i class="icon-add"></i></button>
+                                </kendo-buttongroup>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <div class="row">
+                                <div id="contentpanel" class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="clear-both"></div>
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12">
+                                            <div class="pane pane--table1 mt-2">
+                                                <div class="pane-hScroll">
+                                                    <div class="pane-vScroll">
+                                                        <div class="kanban-content-top">
+                                                            <div class="kanban-content">
+                                                                <!-- #region Qualification -->
+                                                                <div [ngClass]="{'c-width':collapeQualification}"
+                                                                    class="cus-wid-2">
+                                                                    <div class="c-info">
+                                                                        <span
+                                                                            class="header-left h-ver">Qualification</span>
+                                                                        <div class="top">
+                                                                            <span
+                                                                                class="current">{{tasksQualificationList.length}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="c-head"
+                                                                        [ngClass]="{'c-width': collapeQualification}">
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div *ngIf="!collapeQualification" class="">
+                                                                                <span
+                                                                                    class="header-left">Qualification</span>
+                                                                            </div>
+                                                                            <div class="">
+                                                                                <span *ngIf="!collapeQualification"
+                                                                                    class="current">{{tasksQualificationList.length}}</span>
+                                                                                <span class="c-click"
+                                                                                    (click)="visiableQualification()"><i
+                                                                                        class="icon-left-new"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [dragula]="dragBoard"
+                                                                        [(dragulaModel)]="tasksQualificationList"
+                                                                        class="kanban-content-child" id="qualification">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksQualificationList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Qualification')">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1 mt-1">
+                                                                                    <div class="board-timer">
+                                                                                        <span>{{item.daysLeft > 1 ?
+                                                                                            item.daysLeft + ' days Left'
+                                                                                            : item.daysLeft + ' day
+                                                                                            Left'}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region Proposal -->
+                                                                <div class="cus-wid-2">
+                                                                    <div>
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="float-left">
+                                                                                <span
+                                                                                    class="header-left">Proposal</span>
+                                                                            </div>
+                                                                            <div class="float-right">
+                                                                                <span
+                                                                                    class="current">{{tasksProposalList.length}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [dragula]="dragBoard"
+                                                                        [(dragulaModel)]="tasksProposalList"
+                                                                        class="kanban-content-child" id="proposal">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksProposalList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Proposal')">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1 mt-1">
+                                                                                    <div class="board-timer">
+                                                                                        <span>{{item.daysLeft > 1 ?
+                                                                                            item.daysLeft + ' days Left'
+                                                                                            : item.daysLeft + ' day
+                                                                                            Left'}}</span>
+
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region Cart -->
+                                                                <div class="cus-wid-2"
+                                                                    [ngClass]="{'c-width':collapeCart}">
+                                                                    <div class="c-info">
+                                                                        <span class="header-left h-ver">Cart</span>
+                                                                        <div class="top">
+                                                                            <span
+                                                                                class="current">{{tasksCartList.length}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [ngClass]="{'c-width': collapeCart}">
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="" *ngIf="!collapeCart">
+                                                                                <span class="header-left">Cart</span>
+                                                                            </div>
+                                                                            <div class="">
+                                                                                <span *ngIf="!collapeCart"
+                                                                                    class="current">{{tasksCartList.length}}</span>
+                                                                                <!-- <span class="c-click"
+                                                                                    (click)="visiableCart()"><i
+                                                                                        class="icon-left-new"></i></span> -->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- [dragula]="dragBoard"
+                                                                    [(dragulaModel)]="tasksCartList" -->
+                                                                    <div class="kanban-content-child" id="Cart">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksCartList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div class="align-items-center d-flex justify-content-between status-content"
+                                                                                        (click)="viewCart(item)">
+                                                                                        <div class="im-pro">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.name}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1">
+                                                                                    <div class="board-timer">
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item.totalCarat}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item.totalAmount}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region  Order-->
+                                                                <div class="cus-wid-2">
+                                                                    <div>
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="float-left">
+                                                                                <span class="header-left">
+                                                                                    Order</span>
+                                                                            </div>
+                                                                            <div class="float-right">
+                                                                                <span
+                                                                                    class="current">{{tasksOrderList.length}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [dragula]="dragBoard"
+                                                                        [(dragulaModel)]="tasksOrderList"
+                                                                        class="kanban-content-child" id="order">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksOrderList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Order',true)">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1 mt-1">
+                                                                                    <div class="board-timer">
+                                                                                        <span>{{item.daysLeft > 1 ?
+                                                                                            item.daysLeft + ' days Left'
+                                                                                            : item.daysLeft + ' day
+                                                                                            Left'}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region Approved -->
+                                                                <div class="cus-wid-2">
+                                                                    <div>
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="float-left">
+                                                                                <span
+                                                                                    class="header-left">Approved</span>
+                                                                            </div>
+                                                                            <div class="float-right">
+                                                                                <span
+                                                                                    class="current">{{tasksApprovedList.length}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [dragula]="dragBoard"
+                                                                        [(dragulaModel)]="tasksApprovedList"
+                                                                        class="kanban-content-child" id="approved">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksApprovedList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Approved')">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1 mt-1">
+                                                                                    <div class="board-timer">
+                                                                                        <span>{{item.daysLeft > 1 ?
+                                                                                            item.daysLeft + ' days Left'
+                                                                                            : item.daysLeft + ' day
+                                                                                            Left'}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region Delivered -->
+                                                                <div class="cus-wid-2">
+                                                                    <div>
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="float-left">
+                                                                                <span
+                                                                                    class="header-left">Delivered</span>
+                                                                            </div>
+                                                                            <div class="float-right">
+                                                                                <span
+                                                                                    class="current">{{tasksDeliveredList.length}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="kanban-content-child" id="delivered">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksDeliveredList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Delivered')">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex justify-content-between sta-bottom mt-1 mt-1">
+                                                                                    <div class="board-timer">
+                                                                                        <span>{{item.daysLeft > 1 ?
+                                                                                            item.daysLeft + ' days Left'
+                                                                                            : item.daysLeft + ' day
+                                                                                            Left'}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}<span
+                                                                                                class="p-unit">CT</span></span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+
+                                                                <!-- #region Rejected -->
+                                                                <div class="cus-wid-2"
+                                                                    [ngClass]="{'c-width':collapeRejected}">
+                                                                    <div class="c-info">
+                                                                        <span class="header-left h-ver">Rejected
+                                                                        </span>
+                                                                        <div class="top">
+                                                                            <span
+                                                                                class="current">{{tasksRejectedList.length}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [ngClass]="{'c-width': collapeRejected}">
+                                                                        <div
+                                                                            class="align-content-center cell-items d-flex justify-content-between">
+                                                                            <div class="" *ngIf="!collapeRejected">
+                                                                                <span class="header-left">Rejected
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="">
+                                                                                <span *ngIf="!collapeRejected"
+                                                                                    class="current">{{tasksRejectedList.length}}</span>
+                                                                                <span class="c-click"
+                                                                                    (click)="visiableRejected()"><i
+                                                                                        class="icon-left-new"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [dragula]="dragBoard"
+                                                                        [(dragulaModel)]="tasksRejectedList"
+                                                                        class="kanban-content-child" id="rejected">
+                                                                        <div class="board-content"
+                                                                            [ngClass]="{'ecom-dash':item.platform=='online'}"
+                                                                            *ngFor="let item of tasksRejectedList">
+                                                                            <div class="board-tag-content">
+                                                                                <div class="sta-top">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+
+                                                                                        <div class="im-pro"
+                                                                                            (click)="editLead(item,true,'Rejected')">
+                                                                                            <img
+                                                                                                src="commonAssets/images/buyer.png">
+                                                                                            <span class="na-info">
+                                                                                                <p class="mb-0">
+                                                                                                    <b>{{item.customer.companyName}}</b>
+                                                                                                </p>
+                                                                                                {{item.customer.fullName}}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span
+                                                                                            class="task-info">{{item.leadNo}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-end sta-bottom">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex justify-content-between status-content">
+                                                                                        <img
+                                                                                            src="commonAssets/images/seller_avtar_new.png">
+                                                                                        <span
+                                                                                            class="na-info">{{item.seller.name}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="board-profile-content">
+                                                                                <div
+                                                                                    class="align-content-center d-flex justify-content-between profile-left">
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-diamond"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalPcs}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-weightscale"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalCarat.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="align-items-center d-flex">
+                                                                                        <i class="icon-pricing"></i>
+                                                                                        <span
+                                                                                            class="profile-left-content">{{item?.leadSummary?.totalAmount.toFixed(2)}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- #endregion -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #region Add Lead Modal Start -->
+<ng-container *ngIf="isAddLead">
+    <app-leadmodal [leadListInvInput]="leadListInvInput" [leadTitle]="leadTitle" [leadItem]="leadItem"
+        [isEditLead]="isEditLead" [isAddLead]="isAddLead" [seller]="sellerObj" [allLeads]="allLeads"
+        (toggle)="toggleAddLeadDialog($event)"></app-leadmodal>
+</ng-container>
+<!-- #endregion Add Lead Modal End -->
+
+<!-- #region Add Lead Modal Start -->
+<ng-container *ngIf="isViewCart">
+    <app-cartmodal [leadCartItem]="leadCartItem" (toggle)="isViewCart=$event"></app-cartmodal>
+</ng-container>
+<!-- #endregion Add Lead Modal End -->
+
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,1299 @@
+<div class="wrapper-full">
+  <!-- #region Button action panel start -->
+  <div class="button-panel">
+    <div class="left-cn">
+      <span><b>No of Pcs :</b> {{totalCount}}</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span><b>Weight :</b> {{totalWeight}}</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span><b>Avg Disc%:</b> {{avgDiscount}}%</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span><b>Avg $/Ct :</b> $ {{avgPerCarat}}</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span><b>Total NetAmt :</b> $ {{totalNetAmount}}</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span><b>R NetAmt :</b> $ {{rNetAmount}}</span>
+    </div>
+    <div class="right-cn text-right">
+      <button kendoButton kendoTooltip position="bottom" title="Modified Search" (click)="openSearchDialog()">
+        <i class="icon-search"></i>
+      </button>
+      <button kendoButton kendoTooltip position="bottom" title="Show Selected"
+        (click)="showSelected=!showSelected;showSelectedInventories()" [disabled]="mySelection.length == 0">
+        <i class="icon-showselected"></i>
+      </button>
+      <button kendoButton kendoTooltip position="bottom" title="Compare" (click)="openCompareDialog()"
+        [disabled]="mySelection.length == 0">
+        <i class="icon-weightscale "></i></button>
+      <button kendoButton kendoTooltip position="bottom" title="Download Excel" (click)="openExcelDialog()"
+        [disabled]="filterInventoryItems.length == 0">
+        <i class="icon-excelnew"></i>
+      </button>
+      <button kendoButton kendoTooltip position="bottom" title="Add To Cart" (click)="addToCartData()"
+        [disabled]="mySelection.length == 0">
+        <i class="icon-addtocart"></i>
+      </button>
+      <button kendoButton kendoTooltip position="bottom" title="Add To Order" (click)="openCheckoutDialog()"
+        [disabled]="mySelection.length == 0">
+        <i class="icon-order"></i>
+      </button>
+      <button kendoButton kendoTooltip position="bottom" title="Add To Watchlist" (click)="addWatchlistData()"
+        [disabled]="mySelection.length == 0">
+        <i class="icon-wishlist"></i></button>
+      <button kendoButton kendoTooltip position="bottom" title="Send Mail" (click)="openSendMailDialog()"
+        [disabled]="filterInventoryItems.length == 0">
+        <i class="icon-icon_email "></i></button>
+      <button kendoButton kendoTooltip position="bottom" title="Grid Configruation" (click)="openGridConfigDialog()">
+        <i class="icon-setting"></i>
+      </button>
+    </div>
+  </div>
+  <!-- #endregion -->
+  <!-- #region Grid Data -->
+  <div class="grid-setting mt-3">
+    <div class="col-xl-12 col-lg-12 col-xs-12 col-sm-12 d-flex justify-content-between align-items-center">
+      <div class="status-icon mb-2">
+        <span><i class="icon-available-status mr-1"></i>Available</span>
+        <span><i class="icon-hold mr-1"></i>Hold</span>
+        <span><i class="icon-bid-status mr-1"></i>BidNBuy</span>
+        <span><i class="icon-new-status mr-1"></i>New</span>
+      </div>
+      <div class="saved-search-grid">
+        <div class="form-data">
+          <label>Saved Searches</label>
+        </div>
+        <div class="form-data">
+          <kendo-dropdownlist class="custome-drp" [data]="saveSearchData" textField="name"
+            valueField="name" name="filterSaveSearch" [valuePrimitive]="true" (valueChange)="onSaveSearchChange($event)"
+            [(value)]="filterSaveSearch">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span style="flex-basis: 90%;">{{ dataItem.name }}</span>&nbsp;<i class="icon-delete"
+                (click)="isRemovingSaveSearch=true;removeSaveSearch(dataItem.name)"></i>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-12 col-lg-12 col-xs-12 col-sm-12">
+      <kendo-grid #invGrid [data]="gridView!" [reorderable]="true" [resizable]="true" [groupable]="true"
+        [sortable]="true" [selectable]="selectableSettings" (selectionChange)="selectedRowChange($event)"
+        [group]="groups" (groupChange)="groupChange($event)" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+        (pageChange)="pageChange($event)" [selectedKeys]="mySelection" [kendoGridSelectBy]="'stoneId'"
+        style="height: calc(100vh - 218px);">
+
+        <ng-container *ngIf="fields && fields.length > 0">
+          <ng-container *ngFor="let field of fields">
+            <ng-container *ngIf="field.isSelected">
+              <kendo-grid-column [width]="field.width" [field]="field.propertyName" [title]="field.title">
+
+                <ng-template *ngIf="isShowCheckBoxAll && field.title == 'Checkbox'" kendoGridHeaderTemplate>
+                  <input kendoGridSelectAllCheckbox type="checkbox" class="k-checkbox" id="headerCheckbox"
+                    (click)="selectAll($event)" />
+                  <label class="k-checkbox-label" for="headerCheckbox"></label>
+                </ng-template>
+                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                  *ngIf="field.title == 'Checkbox'">
+                  <input *ngIf="!dataItem.isDisabled" type="checkbox" class="k-checkbox" id="checkbox-{{rowIndex}}"
+                    [kendoGridSelectionCheckbox]="rowIndex" />
+                  <label class="k-checkbox-label" for="checkbox-{{rowIndex}}">
+                  </label>
+                </ng-template>
+                <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title == 'Status'">
+                  <span *ngIf="!dataItem.isHold"><i class="icon-available-status mr-1"></i></span>
+                  <span *ngIf="dataItem.isHold"><i class="icon-hold mr-1"></i></span>
+                  <!-- <span><i class="icon-bid-status mr-1"></i></span> -->
+                  <span *ngIf="calculateDateDiff(dataItem.createdDate)"><i class="icon-new-status mr-1"></i></span>
+                </ng-template>
+                <ng-template kendoGridCellTemplate let-dataItem *ngIf="field.title == 'Media'">
+                  <span class="gr-icon" (click)="openDiamonddetailSidebar(dataItem)"><i class="icon-view"></i></span>
+                  <span *ngIf="(dataItem.videoUrl != null && dataItem.videoUrl.length > 0) || 
+                    (dataItem.imageUrl != null && dataItem.imageUrl.length > 0) || 
+                    (dataItem.certificateUrl != null && dataItem.certificateUrl.length > 0)">
+                    <span class="gr-icon" *ngIf="dataItem.videoUrl != null && dataItem.videoUrl.length > 0"
+                      (click)="openMediaDialog(dataItem.videoUrl, 'iframe')">
+                      <i class="icon-diamond"></i>
+                    </span>
+                    <span class="gr-icon" *ngIf="dataItem.imageUrl != null && dataItem.imageUrl.length > 0"
+                      (click)="openMediaDialog(dataItem.imageUrl, 'img')">
+                      <i class="icon-camera"></i>
+                    </span>
+                    <span class="gr-icon" *ngIf="dataItem.certificateUrl != null && dataItem.certificateUrl.length > 0"
+                      (click)="openMediaDialog(dataItem.certificateUrl, 'cert')">
+                      <i class="icon-cerificate"></i>
+                    </span>
+                  </span>
+                </ng-template>
+              </kendo-grid-column>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </kendo-grid>
+    </div>
+  </div>
+  <!-- #endregion -->
+</div>
+
+<!-- #region Search Filter Start-->
+<div class="modal dialog-ui dialog-xl-l" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isSearchFilter">
+  <form name="searchINVForm" #searchINVForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="main-title">
+          <h5>Search Filter</h5>
+          <button type="button" class="close" (click)="closeSearchDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body search-filter">
+          <!-- Shape -->
+          <div class="search-ul mt-2">
+            <div class="grid-1 d-flex align-items-center">
+              <label class="col-form-label"><strong>Shape</strong></label>
+            </div>
+            <div class="grid-1 d-flex flex-wrap" style="grid-column-gap: 8px;">
+              <label class="shape-txt p-0 d-flex justify-content-center align-items-center" for="all"
+                [ngClass]="{'select': invSearchCriteriaObj.shape.length === 0 }"
+                (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.shape, 'All')">
+                <span>All</span>
+              </label>
+              <label *ngFor="let item of allTheShapes" class="shape-txt {{item.name.toUpperCase()}}"
+                for="{{item.name.toUpperCase()}}"
+                [ngClass]="{'select': invSearchCriteriaObj.shape.indexOf(item.name)>-1 }"
+                (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.shape, item.name)">
+                {{item.name}}
+              </label>
+            </div>
+          </div>
+
+          <!-- Weight -->
+          <div class="search-ul mt-2">
+            <div class="grid-1 d-flex align-items-center">
+              <label class="col-form-label"><strong>Size</strong></label>
+            </div>
+            <div class="grid-1 d-flex justify-content-center">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="firstCaratFrom"
+                PosDecimal="true" name="minSize1">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="firstCaratTo"
+                PosDecimal="true" name="maxSize1">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="secondCaratFrom"
+                PosDecimal="true" name="minSize2">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="secondCaratTo"
+                PosDecimal="true" name="maxSize2">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="thirdCaratFrom"
+                PosDecimal="true" name="minSize3">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="thirdCaratTo"
+                PosDecimal="true" name="maxSize3">
+              <input class="mr-1 input-sm form-control" placeholder="Min Size" [(ngModel)]="fourthCaratFrom"
+                PosDecimal="true" name="minSize4">
+              <input type="text" class="mr-2 input-sm form-control" placeholder="Max Size" [(ngModel)]="fourthCaratTo"
+                PosDecimal="true" name="maxSize4">
+            </div>
+          </div>
+
+          <div class="inv-cps-grid mt-2">
+            <div class="grid-1">
+              <!-- Color -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Color</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.color.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.color, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allColors" class="pkg-btn"
+                    [ngClass]="{'select': invSearchCriteriaObj.color.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.color, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Clarity -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Clarity</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.clarity.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.clarity, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allClarities" class="pkg-btn"
+                    [ngClass]="{'select': invSearchCriteriaObj.clarity.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.clarity, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Flour -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Flour</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.flour.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.flour, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheFluorescences" class="pkg-btn"
+                    [ngClass]="{'select': invSearchCriteriaObj.flour.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.flour, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lab -->
+              <div class="search-ul mt-2">
+                <div class="grid-1 d-flex align-items-center">
+                  <label class="col-form-label"><strong>Lab</strong></label>
+                </div>
+                <div class="grid-1 d-flex">
+                  <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.lab.length === 0 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.lab, 'All')">
+                    <span>All</span>
+                  </button>
+                  <button kendoButton *ngFor="let item of allTheLab" class="pkg-btn"
+                    [ngClass]="{'select': invSearchCriteriaObj.lab.indexOf(item.name)>-1 }"
+                    (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.lab, item.name)">
+                    {{item.name}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="grid-1">
+              <!-- Input -->
+              <div class="input-search">
+                <div class="form-data">
+                  <label>Stone Id</label>
+                </div>
+                <div class="form-data">
+                  <input type="text" class="input-sm form-control text-left" name="stoneId"
+                    [(ngModel)]="invSearchCriteriaObj.stoneId" />
+                </div>
+                <div class="form-data">
+                  <label>Certificate No.</label>
+                </div>
+                <div class="form-data">
+                  <input type="text" class="input-sm form-control text-left" name="certificateNo"
+                    [(ngModel)]="invSearchCriteriaObj.certificateNo" />
+                </div>
+                <div class="form-data">
+                  <label>Status</label>
+                </div>
+                <div class="form-data">
+                  <kendo-multiselect name="status" class="customselect" [data]="listStatus"
+                    [(ngModel)]="invSearchCriteriaObj.status" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [tagMapper]="tagMapper"
+                    (valueChange)="onMultiSelectChange(listStatus, invSearchCriteriaObj.status)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="dropdown-header single k-widget k-header">
+                        <span class="temp-single">Select Status</span>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label>Location</label>
+                </div>
+                <div class="form-data">
+                  <kendo-multiselect name="location" class="customselect" [data]="listLocation"
+                    [(ngModel)]="invSearchCriteriaObj.location" [textField]="'name'" [valueField]="'name'"
+                    [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                    [tagMapper]="tagMapper"
+                    (valueChange)="onMultiSelectChange(listLocation, invSearchCriteriaObj.location)">
+                    <ng-template kendoComboBoxHeaderTemplate>
+                      <div class="dropdown-header single k-widget k-header">
+                        <span class="temp-single">Select Location</span>
+                      </div>
+                    </ng-template>
+                    <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                      <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                      <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                    </ng-template>
+                  </kendo-multiselect>
+                </div>
+                <div class="form-data">
+                  <label>From - To</label>
+                </div>
+                <kendo-daterange class="d-flex">
+                  <div class="form-data mr-2 w-100">
+                    <kendo-dateinput class="w-100" kendoDateRangeStartInput [(value)]="invSearchCriteriaObj.fromDate!"
+                      (valueChange)="invSearchCriteriaObj.fromDate = $event">
+                    </kendo-dateinput>
+                  </div>
+                  <div class="form-data w-100">
+                    <kendo-dateinput class="w-100" kendoDateRangeEndInput [(value)]="invSearchCriteriaObj.toDate!"
+                      (valueChange)="popup.toggle();invSearchCriteriaObj.toDate = $event">
+                    </kendo-dateinput>
+                  </div>
+                  <kendo-daterange-popup [animate]="false" #popup></kendo-daterange-popup>
+                </kendo-daterange>
+              </div>
+            </div>
+          </div>
+
+          <div class="cps-grid-ui mt-3">
+            <div class="cps-btn">
+              <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '3EX' }"
+                (click)="changeCPSData('3EX')">3EX</button>
+              <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '2EX' }"
+                (click)="changeCPSData('2EX')">2EX</button>
+              <button kendoButton class="pkg-btn" [ngClass]="{'select': selectedCPS === '3VG' }"
+                (click)="changeCPSData('3VG')">3VG+</button>
+              <button kendoButton class="pkg-btn" (click)="changeCPSData('Clear')"><i
+                  class="icon-clear pr-0"></i></button>
+              <button kendoButton class="pkg-btn" [ngClass]="{'select': isBGM }" (click)="changeCPSData('BGM')">NO
+                BGM</button>
+            </div>
+            <!-- Cut -->
+            <div class="search-ul mt-2">
+              <div class="grid-1 d-flex align-items-center">
+                <label class="col-form-label"><strong>Cut</strong></label>
+              </div>
+              <div class="grid-1 d-flex">
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.cut.length === 0 }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.cut, 'All');checkCPS();">
+                  <span>All</span>
+                </button>
+                <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                  [ngClass]="{'select': invSearchCriteriaObj.cut.indexOf(item.name)>-1 }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.cut, item.name);checkCPS();">
+                  {{item.name}}
+                </button>
+              </div>
+            </div>
+
+            <!-- Polish -->
+            <div class="search-ul mt-2">
+              <div class="grid-1 d-flex align-items-center">
+                <label class="col-form-label"><strong>Polish</strong></label>
+              </div>
+              <div class="grid-1 d-flex">
+                <button kendoButton class="pkg-btn" [ngClass]="{'select': invSearchCriteriaObj.polish.length === 0 }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.polish, 'All');checkCPS();">
+                  <span>All</span>
+                </button>
+                <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                  [ngClass]="{'select': invSearchCriteriaObj.polish.indexOf(item.name)>-1 }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.polish, item.name);checkCPS();">
+                  {{item.name}}
+                </button>
+              </div>
+            </div>
+
+            <!-- Symmetry -->
+            <div class="search-ul mt-2">
+              <div class="grid-1 d-flex align-items-center">
+                <label class="col-form-label"><strong>Symm</strong></label>
+              </div>
+              <div class="grid-1 d-flex">
+                <button kendoButton class="pkg-btn"
+                  [ngClass]="{'select': invSearchCriteriaObj.symm.length === 0 && selectedCPS != '2EX' }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.symm, 'All');checkCPS();">
+                  <span>All</span>
+                </button>
+                <button kendoButton *ngFor="let item of allTheCPS" class="pkg-btn"
+                  [ngClass]="{'select': invSearchCriteriaObj.symm.indexOf(item.name)>-1 }"
+                  (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.symm, item.name);checkCPS();">
+                  {{item.name}}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <kendo-panelbar class="body-panelbar custompanelbar mt-3">
+            <kendo-panelbar-item [title]="'Advance Search'">
+              <ng-template kendoPanelBarContent>
+                <div class="panel-item">
+                  <div class="adv-filter mt-2">
+
+                    <!-- Price and Comments -->
+                    <h6 class="title">Price and Comments</h6>
+                    <div class="pc-grid">
+                      <div class="form-data" *ngIf="inclusionConfig.ktoS">
+                        <label>Key To Symbol</label>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.ktoS">
+                        <kendo-multiselect name="ktoS" class="customselect" [data]="listKToS"
+                          [(ngModel)]="invSearchCriteriaObj.kToS" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [tagMapper]="tagMapper"
+                          (valueChange)="onMultiSelectChange(listKToS, invSearchCriteriaObj.kToS)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="dropdown-header single k-widget k-header">
+                              <span class="temp-single">Select Key to Symbol</span>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.culet">
+                        <label>Culet</label>
+                      </div>
+                      <div class="form-data" *ngIf="inclusionConfig.culet">
+                        <kendo-multiselect name="culet" class="customselect" [data]="listCulet"
+                          [(ngModel)]="invSearchCriteriaObj.culet" [textField]="'name'" [valueField]="'name'"
+                          [valuePrimitive]="true" [popupSettings]="{width: 'auto'}" [autoClose]="false"
+                          [tagMapper]="tagMapper"
+                          (valueChange)="onMultiSelectChange(listCulet, invSearchCriteriaObj.culet)">
+                          <ng-template kendoComboBoxHeaderTemplate>
+                            <div class="dropdown-header single k-widget k-header">
+                              <span class="temp-single">Select Culet</span>
+                            </div>
+                          </ng-template>
+                          <ng-template kendoMultiSelectItemTemplate let-dataItem>
+                            <input type="checkbox" class="k-checkbox" [checked]="dataItem.isChecked">
+                            <label class="k-checkbox-label"> {{dataItem.name}} </label>
+                          </ng-template>
+                        </kendo-multiselect>
+                      </div>
+                    </div>
+
+                    <!-- Measurement -->
+                    <h6 class="title mt-2">Measurement</h6>
+                    <div class="measurement-grid">
+                      <div class="form-data" *ngIf="measurementConfig.depth">
+                        <label>Depth%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errTotalDepth.length > 0 }"
+                        *ngIf="measurementConfig.depth">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minDepth"
+                            [(ngModel)]="invSearchCriteriaObj.fromDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTotalDepth = checkMinMaxValidation(invSearchCriteriaObj.fromDepth, invSearchCriteriaObj.toDepth)" />
+                          <input type="text" class="input-sm form-control" name="maxDepth"
+                            [(ngModel)]="invSearchCriteriaObj.toDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTotalDepth = checkMinMaxValidation(invSearchCriteriaObj.fromDepth, invSearchCriteriaObj.toDepth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errTotalDepth.length > 0 ? '(' +
+                          errTotalDepth + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.table">
+                        <label>Table%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errTable.length > 0 }"
+                        *ngIf="measurementConfig.table">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minTable"
+                            [(ngModel)]="invSearchCriteriaObj.fromTable" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTable = checkMinMaxValidation(invSearchCriteriaObj.fromTable, invSearchCriteriaObj.toTable)" />
+                          <input type="text" class="input-sm form-control" name="maxTable"
+                            [(ngModel)]="invSearchCriteriaObj.toTable" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errTable = checkMinMaxValidation(invSearchCriteriaObj.fromTable, invSearchCriteriaObj.toTable)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errTable.length > 0 ? '(' +
+                          errTable + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.girdlePer">
+                        <label>Girdle%</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errGirdle.length > 0 }"
+                        *ngIf="measurementConfig.girdlePer">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minGirdlePer"
+                            [(ngModel)]="invSearchCriteriaObj.fromGirdlePer" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errGirdle = checkMinMaxValidation(invSearchCriteriaObj.fromGirdlePer, invSearchCriteriaObj.toGirdlePer)" />
+                          <input type="text" class="input-sm form-control" name="maxGirdlePer"
+                            [(ngModel)]="invSearchCriteriaObj.toGirdlePer" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errGirdle = checkMinMaxValidation(invSearchCriteriaObj.fromGirdlePer, invSearchCriteriaObj.toGirdlePer)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errGirdle.length > 0 ? '(' +
+                          errGirdle + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.pavillionAngle">
+                        <label>Pav.Ang</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errPavAngle.length > 0 }"
+                        *ngIf="measurementConfig.pavillionAngle">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPavilionAngle"
+                            [(ngModel)]="invSearchCriteriaObj.fromPavilionAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavAngle = checkMinMaxValidation(invSearchCriteriaObj.fromPavilionAngle, invSearchCriteriaObj.toPavilionAngle)" />
+                          <input type="text" class="input-sm form-control" name="maxPavilionAngle"
+                            [(ngModel)]="invSearchCriteriaObj.toPavilionAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavAngle = checkMinMaxValidation(invSearchCriteriaObj.fromPavilionAngle, invSearchCriteriaObj.toPavilionAngle)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errPavAngle.length > 0 ? '(' +
+                          errPavAngle + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.pavillionDepth">
+                        <label>Pav.Dep</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errPavDepth.length > 0 }"
+                        *ngIf="measurementConfig.pavillionDepth">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPavilionDepth"
+                            [(ngModel)]="invSearchCriteriaObj.fromPavilionDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavDepth = checkMinMaxValidation(invSearchCriteriaObj.fromPavilionDepth, invSearchCriteriaObj.toPavilionDepth)" />
+                          <input type="text" class="input-sm form-control" name="maxPavilionDepth"
+                            [(ngModel)]="invSearchCriteriaObj.toPavilionDepth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errPavDepth = checkMinMaxValidation(invSearchCriteriaObj.fromPavilionDepth, invSearchCriteriaObj.toPavilionDepth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errPavDepth.length > 0 ? '(' +
+                          errPavDepth + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.crownAngle">
+                        <label>Crw.Ang</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errCrnAngle.length > 0 }"
+                        *ngIf="measurementConfig.crownAngle">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minCrownAngle"
+                            [(ngModel)]="invSearchCriteriaObj.fromCrownAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnAngle = checkMinMaxValidation(invSearchCriteriaObj.fromCrownAngle, invSearchCriteriaObj.toCrownAngle)" />
+                          <input type="text" class="input-sm form-control" name="maxCrownAngle"
+                            [(ngModel)]="invSearchCriteriaObj.toCrownAngle" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnAngle = checkMinMaxValidation(invSearchCriteriaObj.fromCrownAngle, invSearchCriteriaObj.toCrownAngle)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errCrnAngle.length > 0 ? '(' +
+                          errCrnAngle + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.crownHeight">
+                        <label>Crw.Height</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errCrnHeight.length > 0 }"
+                        *ngIf="measurementConfig.crownHeight">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minCrownHeight"
+                            [(ngModel)]="invSearchCriteriaObj.fromCrownHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnHeight = checkMinMaxValidation(invSearchCriteriaObj.fromCrownHeight, invSearchCriteriaObj.toCrownHeight)" />
+                          <input type="text" class="input-sm form-control" name="maxCrownHeight"
+                            [(ngModel)]="invSearchCriteriaObj.toCrownHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errCrnHeight = checkMinMaxValidation(invSearchCriteriaObj.fromCrownHeight, invSearchCriteriaObj.toCrownHeight)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errCrnHeight.length > 0 ? '(' +
+                          errCrnHeight + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.length">
+                        <label>Length</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errLength.length > 0 }"
+                        *ngIf="measurementConfig.length">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minLength"
+                            [(ngModel)]="invSearchCriteriaObj.fromLength" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errLength = checkMinMaxValidation(invSearchCriteriaObj.fromLength, invSearchCriteriaObj.toLength)" />
+                          <input type="text" class="input-sm form-control" name="maxLength"
+                            [(ngModel)]="invSearchCriteriaObj.toLength" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errLength = checkMinMaxValidation(invSearchCriteriaObj.fromLength, invSearchCriteriaObj.toLength)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errLength.length > 0 ? '(' +
+                          errLength + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.width">
+                        <label>Width</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errWidth.length > 0 }"
+                        *ngIf="measurementConfig.width">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minWidth"
+                            [(ngModel)]="invSearchCriteriaObj.fromWidth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errWidth = checkMinMaxValidation(invSearchCriteriaObj.fromWidth, invSearchCriteriaObj.toWidth)" />
+                          <input type="text" class="input-sm form-control" name="maxWidth"
+                            [(ngModel)]="invSearchCriteriaObj.toWidth" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errWidth = checkMinMaxValidation(invSearchCriteriaObj.fromWidth, invSearchCriteriaObj.toWidth)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errWidth.length > 0 ? '(' +
+                          errWidth + ')' : ''}}</span>
+                      </div>
+                      <div class="form-data" *ngIf="measurementConfig.height">
+                        <label>Height</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errHeight.length > 0 }"
+                        *ngIf="measurementConfig.height">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minHeight"
+                            [(ngModel)]="invSearchCriteriaObj.fromHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errHeight = checkMinMaxValidation(invSearchCriteriaObj.fromHeight, invSearchCriteriaObj.toHeight)" />
+                          <input type="text" class="input-sm form-control" name="maxHeight"
+                            [(ngModel)]="invSearchCriteriaObj.toHeight" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errHeight = checkMinMaxValidation(invSearchCriteriaObj.fromHeight, invSearchCriteriaObj.toHeight)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errHeight.length > 0 ? '(' +
+                          errHeight + ')' : ''}}</span>
+                      </div>
+
+                      <div class="form-data" *ngIf="measurementConfig.ratio">
+                        <label>Ratio</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errRation.length > 0 }"
+                        *ngIf="measurementConfig.ratio">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minRation"
+                            [(ngModel)]="invSearchCriteriaObj.fromRatio" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errRation = checkMinMaxValidation(invSearchCriteriaObj.fromRatio, invSearchCriteriaObj.toRatio)" />
+                          <input type="text" class="input-sm form-control"
+                            (keypress)="utilityService.floatOnly($event);" name="maxRation"
+                            [(ngModel)]="invSearchCriteriaObj.toRatio" PosDecimal="true"
+                            (blur)="errRation = checkMinMaxValidation(invSearchCriteriaObj.fromRatio, invSearchCriteriaObj.toRatio)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errRation.length > 0 ? '(' + errRation + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data">
+                        <label>$/Ct</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errDollarPerCt.length > 0 }">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minPerCarat"
+                            [(ngModel)]="invSearchCriteriaObj.fromPerCarat" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errDollarPerCt = checkMinMaxValidation(invSearchCriteriaObj.fromPerCarat, invSearchCriteriaObj.toPerCarat)" />
+                          <input type="text" class="input-sm form-control" name="maxPerCarat"
+                            [(ngModel)]="invSearchCriteriaObj.toPerCarat" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errDollarPerCt = checkMinMaxValidation(invSearchCriteriaObj.fromPerCarat, invSearchCriteriaObj.toPerCarat)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errDollarPerCt.length > 0 ? '(' +
+                          errDollarPerCt + ')' :
+                          ''}}</span>
+                      </div>
+                      <div class="form-data">
+                        <label>Net Amount</label>
+                      </div>
+                      <div class="form-data" [ngClass]="{'error': errNetAmount.length > 0 }">
+                        <div class="d-flex">
+                          <input type="text" class="input-sm form-control" name="minNetAmt"
+                            [(ngModel)]="invSearchCriteriaObj.fromNetAmt" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errNetAmount = checkMinMaxValidation(invSearchCriteriaObj.fromNetAmt, invSearchCriteriaObj.toNetAmt)" />
+                          <input type="text" class="input-sm form-control" name="maxNetAmt"
+                            [(ngModel)]="invSearchCriteriaObj.toNetAmt" PosDecimal="true"
+                            (keypress)="utilityService.floatOnly($event);"
+                            (blur)="errNetAmount = checkMinMaxValidation(invSearchCriteriaObj.fromNetAmt, invSearchCriteriaObj.toNetAmt)" />
+                        </div>
+                        <span class="font-smaller s-error">{{errNetAmount.length > 0 ? '(' +
+                          errNetAmount + ')' :
+                          ''}}</span>
+                      </div>
+                    </div>
+
+                    <!-- Inclusion -->
+                    <h6 class="title mt-2">Inclusion</h6>
+                    <div class="inclusion-grid">
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.sideBlack">
+                        <label>Blk Table</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.sideBlack.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.sideBlack, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'SideBlack'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.sideBlack.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.sideBlack, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.centerBlack">
+                        <label>Blk Crown</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.centerBlack.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.centerBlack, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'CenterBlack'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.centerBlack.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.centerBlack, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.sideWhite">
+                        <label>White Table</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.sideWhite.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.sideWhite, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'SideWhite'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.sideWhite.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.sideWhite, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.centerWhite">
+                        <label>White Crw</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.centerWhite.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.centerWhite, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'CenterWhite'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.centerWhite.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.centerWhite, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.milky">
+                        <label>Milky</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.milky.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.milky, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Milky'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.milky.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.milky, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.brown">
+                        <label>Brown</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.brown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.brown, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Brown'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.brown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.brown, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.green">
+                        <label>Green</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.green.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.green, 'All');checkCPS('BGM');">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Green'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.green.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.green, item.name);checkCPS('BGM');">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Shade -->
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.shade">
+                        <label>Shade</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.shade.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.shade, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData  | typefilter:'Shade'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.shade.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.shade, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openTable">
+                        <label>Open Tbl</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openTable.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openTable, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenTable'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openTable.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openTable, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openCrown">
+                        <label>Open Crw</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openCrown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openCrown, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenCrown'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openCrown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openCrown, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openPavilion">
+                        <label>Open Pav</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openPavilion.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openPavilion, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenPavilion'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openPavilion.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openPavilion, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.openGirdle">
+                        <label>Open Girdle</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openGirdle.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openGirdle, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'OpenGirdle'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.openGirdle.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.openGirdle, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnPavilion">
+                        <label>NOP</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnPavillion.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnPavillion, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnPavilion'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnPavillion.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnPavillion, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnCrown">
+                        <label>NOC</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnCrown.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnCrown, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnCrown'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnCrown.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnCrown, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnGirdle">
+                        <label>NOG</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnGirdle.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnGirdle, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnGirdle'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnGirdle.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnGirdle, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.naturalOnTable">
+                        <label>NOT</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnTable.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnTable, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'NaturalOnTable'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.naturalOnTable.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.naturalOnTable, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.eyeClean">
+                        <label>Eye Clean</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eyeClean.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eyeClean, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EyeClean'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eyeClean.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eyeClean, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.hna">
+                        <label>HNA</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.hNA.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.hNA, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'HNA'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.hNA.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.hNA, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efoc">
+                        <label>EFOC</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOC.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOC, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOC'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOC.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOC, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efop">
+                        <label>EFOP</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOP.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOP, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOP'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOP.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOP, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efot">
+                        <label>EFOT</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOT.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOT, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOT'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOT.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOT, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.efog">
+                        <label>EFOG</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOG.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOG, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'EFOG'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.eFOG.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.eFOG, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.girdleCondition">
+                        <label>Gdl.Cond</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.girdleCondition.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.girdleCondition, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'GirdleCondition'"
+                            class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.girdleCondition.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.girdleCondition, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.luster">
+                        <label>Luster</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.luster.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.luster, 'All')">
+                            <span>All</span>
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Luster'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.luster.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.luster, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="inclusion-subgrid" *ngIf="inclusionConfig.bowtie">
+                        <label>Bowtie</label>
+                        <div class="d-flex">
+                          <button kendoButton class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.bowtie.length === 0 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.bowtie, 'All')">
+                            All
+                          </button>
+                          <button kendoButton *ngFor="let item of inclusionData | typefilter:'Bowtie'" class="pkg-btn"
+                            [ngClass]="{'select': invSearchCriteriaObj.bowtie.indexOf(item.name)>-1 }"
+                            (click)="addRemoveStringInArrayFilter(invSearchCriteriaObj.bowtie, item.name)">
+                            {{item.name}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+          </kendo-panelbar>
+        </div>
+        <div class="modal-footer">
+          <button kendoButton (click)="filterBySearch()"><i class="icon-search"></i>Search</button>
+          <button kendoButton (click)="clearSearchCriteria(searchINVForm)"><i class="icon-clear"></i>Reset</button>
+          <button kendoButton (click)="openSaveSearchNameModal()"><i class="icon-save"></i>Save Search</button>
+          <!-- <button kendoButton><i class="icon-savesearch"></i>Update Save Search</button> -->
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- #endregion -->
+
+<!-- #region Save Search Name -->
+<div class="modal c-modal dialog-ui" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isSaveSearchNameModal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="icon-savesearch"></i>Save</h5>
+        <button type="button" class="close" (click)="closeSaveSearchNameModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-data">
+              <label>Name</label>
+            </div>
+            <div class="form-data">
+              <input type="text" class="input-sm form-control" name="export" value="saveSearchName"
+                [(ngModel)]="saveSearchName" #saveSearch />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="addSaveSearch()" [disabled]="saveSearchName.length == 0"><i class="icon-save"></i>Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div (document:keydown.esc)="closeSaveSearchNameModal()"></div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Export To Excel -->
+<div class="modal c-modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isExcelModal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="icon-excelnew"></i>Export To Excel</h5>
+        <button type="button" class="close" (click)="closeExcelDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+            <input type="radio" name="export" value="Selected" [(ngModel)]="exportType" #Selected kendoRadioButton />
+            <kendo-label class="k-radio-label mr-2" [for]="Selected" text="Selected"></kendo-label>
+            <input type="radio" name="export" value="Search" [(ngModel)]="exportType" #Search kendoRadioButton />
+            <kendo-label class="k-radio-label" [for]="Search" text="Search">
+            </kendo-label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="exportToExcel()"><i class="icon-excelnew"></i>Export</button>
+      </div>
+    </div>
+  </div>
+
+  <div (document:keydown.esc)="closeExcelDialog()"></div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Diamond Deatils Sidebar -->
+<ng-container *ngIf="showDiamonddetailModal">
+  <app-diamonddetail [diamonddetailFlag]="showDiamonddetailModal" [stoneId]="invItemObj.stoneId"
+    (closeDialog)="showDiamonddetailModal=$event"></app-diamonddetail>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Media Modal -->
+<ng-container *ngIf="isShowMedia">
+  <app-media [mediaSrc]="mediaSrc" [mediaType]="mediaType" (closeDialog)="isShowMedia=$event"></app-media>
+</ng-container>
+<!-- #endregion-->
+
+<!-- #region Compare Start-->
+<ng-container *ngIf="isCompareDialog">
+  <app-diamondcompare [diamondCompareFlag]="isCompareDialog" [stoneIds]="selectedStoneIds"
+    (closeDialog)="isCompareDialog=$event"></app-diamondcompare>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Checkout -->
+<ng-container *ngIf="isCheckout">
+  <app-ordersummary (toggle)="isCheckout=$event" [totalAmount]="selectedAmt" [invIds]="selectedStoneIds"
+    [pageFrom]="pageFrom" (childEvent)="parentMethodCall()">
+  </app-ordersummary>
+</ng-container>
+<!-- #endregion-->
+
+<!-- #region Grid Config Modal -->
+<ng-container *ngIf="isGridConfig">
+  <app-gridconfiguration [fields]="fields" [pageName]="'SearchResultInventory'" [gridName]="'SearchResultInventoryGrid'"
+    [gridConfigId]="gridConfig ? gridConfig.id : undefined" (toggle)="isGridConfig=$event"
+    (ChildEvent)="setNewGridConfig($event)">
+  </app-gridconfiguration>
+</ng-container>
+<!-- #endregion -->
+
+<!-- #region Send Mail -->
+<div class="modal c-modal dialog-ui" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"
+  *ngIf="isSendMail">
+  <form name="sendMailForm" #sendMailForm="ngForm" novalidate>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="icon-icon_email"></i>Send Mail</h5>
+          <button type="button" class="close" (click)="closeSendMailDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="i-form">
+            <div class="mail-grid">
+              <div class="form-data">
+                <label>Subject <span class="require">*</span></label>
+              </div>
+              <div class="form-data">
+                <input type="text" name="subject" class="k-input" [(ngModel)]="exportToExcelMailObj.subject"
+                  #subject="ngModel" id="subject" required>
+              </div>
+              <div class="form-data">
+                <label>Mail To <span class="require">*</span></label>
+              </div>
+              <div class="form-data">
+                <input type="text" name="sendTo" class="k-input" [(ngModel)]="exportToExcelMailObj.toEmail"
+                  #sendTo="ngModel" id="sendTo" required>
+              </div>
+              <div class="form-data">
+                <label>CC</label>
+              </div>
+              <div class="form-data">
+                <textarea name="cc" class="k-textarea w-100 bg-white" [(ngModel)]="exportToExcelMailObj.cC"
+                  #cc="ngModel" id="cc" cols="4" rows="4" resizable="auto" style="height: 60px;"></textarea>
+              </div>
+              <div class="form-data">
+                <label>BCC</label>
+              </div>
+              <div class="form-data">
+                <textarea name="bcc" class="k-textarea w-100 bg-white" [(ngModel)]="exportToExcelMailObj.bcc"
+                  #bcc="ngModel" id="bcc" cols="4" rows="4" resizable="auto" style="height: 60px;"></textarea>
+              </div>
+              <div class="form-data">
+                <label>Type</label>
+              </div>
+              <div>
+                <kendo-label class="k-radio-label" [for]="Selected" text="Selected"></kendo-label>
+                <input type="radio" name="export" value="Selected" [(ngModel)]="exportType" #Selected
+                  kendoRadioButton />
+                <kendo-label class="k-radio-label" [for]="Search" text="Search">
+                </kendo-label>
+                <input type="radio" name="export" value="Search" [(ngModel)]="exportType" #Search kendoRadioButton />
+              </div>
+              <div class="form-data">
+                <label>Attachment</label>
+              </div>
+              <div class="form-data attachment-dialog">
+                <i class="icon-attachament"></i> <a href="javascript:void(0);" (click)="downloadAttachment()">Excel
+                  File</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" (click)="sendMail(sendMailForm)" [disabled]="!sendMailForm.valid"><i
+              class="icon-icon_email"></i>Send</button>
+          <button class="btn" (click)="closeSendMailDialog()"><i class="icon-clear"></i>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div (document:keydown.esc)="closeSendMailDialog()"></div>
+  </form>
+</div>
+<!-- #endregion-->

@@ -1,0 +1,13 @@
+.sr-wrap.rfidsearch-panel {
+    position  : fixed;
+    right     : 0;
+    top       : 36px;
+    z-index   : 10;
+    background: #fff;
+    transform : translateX(240px);
+    width     : 250px;
+}
+
+.sr-wrap.rfidsearch-panel.active {
+    transform: translateX(0);
+}

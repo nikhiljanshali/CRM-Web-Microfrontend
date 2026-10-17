@@ -1,0 +1,51 @@
+import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MemomasterRoutingModule } from './memomaster-routing.module';
+import { MemomasterComponent } from './memomaster.component';
+import { FormsModule } from '@angular/forms';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { DialogModule } from '@progress/kendo-angular-dialog';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LayoutModule } from '@progress/kendo-angular-layout';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { TooltipModule } from '@progress/kendo-angular-tooltip';
+import { AlertdialogService, GridconfigurationModule } from 'shared/views';
+import { SharedDirectiveModule } from 'shared/directives';
+import { GridPropertiesService, MemoService, PrintMemoFormat } from '../../services';
+import { UtilityService } from 'shared/services';
+import { MemoModule } from '../common/modal/memo/memo.module';
+
+@NgModule({
+  declarations: [MemomasterComponent],
+  imports: [
+    CommonModule,
+    MemomasterRoutingModule,
+    DropDownsModule,
+    ButtonsModule,
+    InputsModule,
+    LayoutModule,
+    DateInputsModule,
+    DialogModule,
+    GridModule,
+    PopupModule,
+    FormsModule,
+    IndicatorsModule,
+    SharedDirectiveModule,
+    GridconfigurationModule,
+    TooltipModule,
+    MemoModule
+  ],
+  providers: [
+    GridPropertiesService,
+    UtilityService,
+    AlertdialogService,
+    MemoService,
+    DatePipe,
+    PrintMemoFormat
+  ],
+})
+export class MemomasterModule { }

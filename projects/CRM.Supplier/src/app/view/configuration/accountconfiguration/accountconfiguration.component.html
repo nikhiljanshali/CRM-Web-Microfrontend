@@ -1,0 +1,321 @@
+<title>Account Config</title>
+<div class="ms-config-wrap">
+  <div id="wrapper">
+    <div class="row container-fluid">
+      <div class="middle-content p-0 d-shadow">
+        <div class="breadcrumb">
+          <ul>
+            <li class="breadcrumb-item">
+              <a href="#"></a><i class="icon-home"></i> Home
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Accountconfig</li>
+          </ul>
+        </div>
+        <div class="ms-config">
+          <div class="col-lg-12 col-xs-12 col-12">
+            <div class="row">
+              <!-- <div class="col-xl-2 col-lg-2 col-sm-12 col-md-12 col-xs-12 plr-5">
+                <div class="ac-config-title">
+                  <h6>Hold Reasons</h6>
+                  <form name="form" #holdReasonForm="ngForm">
+                    <div class="d-prop-wrap m-2">
+                      <div class="flex in-block">
+                        <div class="o-title">
+                          <div class="d-flex align-items-center h-reason">
+                            <div class="f-group mr-1"
+                              [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                              <input type="text" [(ngModel)]="holdReason.reasonName" name="name" #name="ngModel" id=""
+                                required>
+                            </div>
+                            <div class="f-group">
+                              <kendo-switch class="k-widget k-switch-off mr-1" name="hold"
+                                [(ngModel)]="holdReason.isHold" #hold="ngModel" id=""></kendo-switch>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="!editReason" (click)="onHoldReasonSubmit(holdReasonForm)"
+                            [disabled]="!holdReasonForm.valid" title="Add Data"><i class="icon-add"></i></button>
+                          <button class="btn" *ngIf="editReason" (click)="onHoldReasonSubmit(holdReasonForm)"
+                            [disabled]="!holdReasonForm.valid" title="Edit Data"><i class="icon-edit"></i></button>
+                        </div>
+                      </div>
+                      <div class="d-prop">
+                        <ul *ngIf="accountConfig && accountConfig?.holdReasons">
+                          <li *ngFor="let item of accountConfig.holdReasons;let index = index">
+                            <div class="flex">
+                              <div class="o-title">
+                                <span class="title">{{item.reasonName}}</span>
+                              </div>
+                              <div class="o-edit">
+                                <button class="btn"><i class="icon-edit" (click)="editHoldReasonDialog(item,index)"
+                                    title="Edit"></i></button>
+                                <button class="btn"><i class="icon-delete" (click)="deleteHoldReasonDialog(item,index)"
+                                    title="Delete"></i></button>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                        <div class="text-center m-2"
+                          *ngIf="!accountConfig?.holdReasons || accountConfig?.holdReasons?.length == 0">
+                          <p>No Data Found</p>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div> -->
+              <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12 plr-5 mt-3">
+                <div class="ac-config-title">
+                  <h6>Volume Discount</h6>
+                  <form name="form" #volDisForm="ngForm">
+                    <div class="vow-input m-2">
+                      <div class="form-data"><label class="col-form-label">Discount</label></div>
+                      <div class="form-data"
+                        [ngClass]="{ 'error': Discount.invalid && (Discount.dirty || Discount.touched) }">
+                        <input type="text" class="form-control" id="" name="Discount" #Discount="ngModel"
+                          (keypress)="utilityService.numberAddMinusOnly($event)" autocomplete="off"
+                          [(ngModel)]="volumeDiscountObj.discount" required />
+                      </div>
+
+                      <div class="form-data">
+                        <label class="col-form-label">From Amt</label>
+                      </div>
+                      <div class="form-data"
+                        [ngClass]="{ 'error': FromAmount.invalid && (FromAmount.dirty || FromAmount.touched) }">
+                        <input type="text" class="form-control" id="" name="FromAmount" #FromAmount="ngModel"
+                          (keypress)="utilityService.floatOnly($event)" autocomplete="off"
+                          [(ngModel)]="volumeDiscountObj.fromAmount" (blur)="validateSizes()" required />
+                      </div>
+
+
+                      <div class="form-data"><label class="col-form-label">To Amt</label></div>
+                      <div class="form-data"
+                        [ngClass]="{ 'error': ToAmount.invalid && (ToAmount.dirty || ToAmount.touched) }">
+                        <input type="text" class="form-control" id="" name="ToAmount" #ToAmount="ngModel"
+                          (keypress)="utilityService.floatOnly($event)" autocomplete="off"
+                          [(ngModel)]="volumeDiscountObj.toAmount" (blur)="validateSizes()" required />
+                      </div>
+                      <div class="f-group">
+                        <label class="col-form-label mr-2">Online</label>
+                        <kendo-switch class="k-widget k-switch-off mr-1" name="Online"
+                          [(ngModel)]="volumeDiscountObj.isOnline" [disabled]="disabledOnline" #Online="ngModel" id=""
+                          name="Online"></kendo-switch>
+                      </div>
+                      <kendo-buttongroup kendoTooltip position="bottom">
+                        <button kendoButton [disabled]="!volDisForm.valid || !(volumeDiscountObj.discount>0)"
+                          (click)="sumbitDiscountCriteria(volDisForm)" title="Add Dis Criteria">
+                          <i *ngIf="!volumeDiscountObj.id" class="icon-add"></i>
+                          <i *ngIf="volumeDiscountObj.id" class="icon-edit"></i>
+
+                        </button>
+                        <button kendoButton *ngIf="volumeDiscountObj.id" (click)="clearForm(volDisForm)"
+                          title="Clear Dis Criteria">
+                          <i class="icon-delete"></i>
+                        </button>
+                      </kendo-buttongroup>
+                    </div>
+                  </form>
+                  <div class="m-2 grid-wrap ac-grid">
+                    <div class="grid-1">
+                      <h6 class="title">Offline Discount</h6>
+                      <kendo-grid [data]="gridDataOffline" [height]="height">
+                        <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title">
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="col.title=='Action'">
+                            <button kendoButton class="mr-2" (click)="editDiscountCriteria(dataItem,rowIndex)"><i
+                                class="icon-edit"></i></button>
+                            <button kendoButton (click)="deleteDiscountCriteria(dataItem,rowIndex)"><i
+                                class="icon-trash"></i></button>
+                          </ng-template>
+                        </kendo-grid-column>
+                      </kendo-grid>
+                    </div>
+                    <div class="grid-1">
+                      <h6 class="title">Online Discount</h6>
+                      <kendo-grid [data]="gridDataOnline" [height]="height">
+                        <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title">
+                          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex"
+                            *ngIf="col.title=='Action'">
+                            <button kendoButton class="mr-2" (click)="editDiscountCriteria(dataItem,rowIndex)"><i
+                                class="icon-edit"></i></button>
+                            <button kendoButton (click)="deleteDiscountCriteria(dataItem,rowIndex)"><i
+                                class="icon-trash"></i></button>
+                          </ng-template>
+                        </kendo-grid-column>
+                      </kendo-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- #region Qc Reasons -->
+              <div class="col-xl-6 col-lg-6 col-sm-12 col-md-12 col-xs-12 plr-5 mt-3">
+                <div class="ac-config-title">
+                  <h6>Qc Reasons</h6>
+                  <form name="form" #QcForm="ngForm">
+                    <div class="d-prop-wrap m-2">
+                      <div class="flex in-block">
+                        <div class="o-title" style="flex-basis: 100%;">
+                          <div class="align-items-center h-reason">
+                            <div class="f-group mr-1"
+                              [ngClass]="{ 'error': qcReason.invalid && (qcReason.dirty || qcReason.touched)}">
+                              <input type="text" [(ngModel)]="qcReasonModel" name="qcReason" #qcReason="ngModel" id=""
+                                required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="!editQcReason" (click)="onReasonNameSubmit(QcForm,'qcreason')"
+                            [disabled]="!QcForm.valid" title="Add Qc Reason"><i class="icon-add"></i></button>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="editQcReason" (click)="onReasonNameSubmit(QcForm,'qcreason')"
+                            [disabled]="!QcForm.valid" title="Update Qc Reason"><i class="icon-edit"></i></button>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="editQcReason" (click)="clearReasonName('qcreason')"><i
+                              class="icon-delete" title="Clear"></i></button>
+                        </div>
+                      </div>
+                      <div class="d-prop">
+                        <ul *ngIf="accountConfig && accountConfig?.qcReasons">
+                          <li *ngFor="let item of accountConfig.qcReasons;let index = index">
+                            <div class="flex">
+                              <div class="o-title" style="flex: 0 96%;">
+                                <span class="title">{{item.reasonName}}</span>
+                              </div>
+                              <div class="o-edit text-right" style="flex: 0 6%;">
+                                <button class="btn" (click)="editReasonNameDialog(item,index,'qcreason')"><i
+                                    class="icon-edit" title="Edit"></i></button>
+                                <button class="btn" (click)="deleteReasonNameDialog(item,index,'qcreason')"><i
+                                    class="icon-trash" title="Delete"></i></button>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                        <div class="text-center m-2"
+                          *ngIf="!accountConfig?.qcReasons || accountConfig?.qcReasons?.length == 0">
+                          <p>No Data Found</p>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- #endregion -->
+
+              <!-- #region Stone Remove reason -->
+              <div class="col-xl-6 col-lg-6 col-sm-12 col-md-12 col-xs-12 pr-0 mt-3">
+                <div class="ac-config-title">
+                  <h6>Remove-Stone Reasons</h6>
+                  <form name="form" #RsForm="ngForm">
+                    <div class="d-prop-wrap m-2">
+                      <div class="flex in-block">
+                        <div class="o-title" style="flex-basis: 100%;">
+                          <div class="align-items-center h-reason">
+                            <div class="f-group mr-1"
+                              [ngClass]="{ 'error': stoneRemoveReason.invalid && (stoneRemoveReason.dirty || stoneRemoveReason.touched)}">
+                              <input type="text" [(ngModel)]="removeStoneReasonModel" name="stoneRemoveReason"
+                                #stoneRemoveReason="ngModel" id="" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="!editRSReason" (click)="onReasonNameSubmit(RsForm,'rsreason')"
+                            [disabled]="!RsForm.valid" title="Add RS Reason"><i class="icon-add"></i></button>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="editRSReason" (click)="onReasonNameSubmit(RsForm,'rsreason')"
+                            [disabled]="!RsForm.valid" title="Update RS Reason"><i class="icon-edit"></i></button>
+                        </div>
+                        <div class="o-edit">
+                          <button class="btn" *ngIf="editRSReason" (click)="clearReasonName('rsreason')"><i
+                              class="icon-delete" title="Clear"></i></button>
+                        </div>
+                    </div>
+                    <div class="d-prop">
+                      <ul *ngIf="accountConfig && accountConfig?.removeStoneReasons">
+                        <li *ngFor="let item of accountConfig.removeStoneReasons;let index = index">
+                          <div class="flex">
+                            <div class="o-title" style="flex: 0 96%;">
+                              <span class="title">{{item.reasonName}}</span>
+                            </div>
+                            <div class="o-edit text-right" style="flex: 0 6%;">
+                              <button class="btn" (click)="editReasonNameDialog(item,index,'rsreason')"><i
+                                  class="icon-edit" title="Edit"></i></button>
+                              <button class="btn" (click)="deleteReasonNameDialog(item,index,'rsreason')"><i
+                                  class="icon-trash" title="Delete"></i></button>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="text-center m-2"
+                        *ngIf="!accountConfig?.removeStoneReasons || accountConfig?.removeStoneReasons?.length == 0">
+                        <p>No Data Found</p>
+                      </div>
+                    </div>
+                </div>
+                </form>
+              </div>
+            </div>
+            <!-- #endregion -->
+
+            <!-- <div class="col-xl-2 col-lg-2 col-sm-12 col-md-12 col-xs-12 plr-5 mt-3"></div> -->
+            <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12 plr-5 mt-3">
+              <div class="ac-config-title">
+                <h6>Invoice Terms</h6>
+                <form name="form" #invoiceTermsForm="ngForm">
+                  <div class="d-prop-wrap m-2">
+                    <div class="flex in-block">
+                      <div class="o-title" style="flex-basis: 100%;">
+                        <div class="align-items-center h-reason">
+                          <div class="f-group mr-1"
+                            [ngClass]="{ 'error': name.invalid && (name.dirty || name.touched)}">
+                            <input type="text" [(ngModel)]="invoiceTerm.termName" name="name" #name="ngModel" id=""
+                              required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="o-edit">
+                        <button class="btn" *ngIf="!editTerm" (click)="onTermNameSubmit(invoiceTermsForm)"
+                          [disabled]="!invoiceTermsForm.valid" title="Add Data"><i class="icon-add"></i></button>
+                        <button class="btn" *ngIf="editTerm" (click)="onTermNameSubmit(invoiceTermsForm)"
+                          [disabled]="!invoiceTermsForm.valid" title="Add Data"><i class="icon-edit"></i></button>
+                      </div>
+                    </div>
+                    <div class="d-prop">
+                      <ul *ngIf="accountConfig && accountConfig?.invoiceTerms">
+                        <li *ngFor="let item of accountConfig.invoiceTerms;let index = index">
+                          <div class="flex">
+                            <div class="o-title" style="flex: 0 96%;">
+                              <span class="title">{{item.termName}}</span>
+                            </div>
+                            <div class="o-edit text-right" style="flex: 0 6%;">
+                              <button class="btn"><i class="icon-edit" (click)="editTermNameDialog(item,index)"
+                                  title="Edit"></i></button>
+                              <button class="btn"><i class="icon-delete" (click)="deleteTermNameDialog(item,index)"
+                                  title="Delete"></i></button>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="text-center m-2"
+                        *ngIf="!accountConfig?.invoiceTerms || accountConfig?.invoiceTerms?.length == 0">
+                        <p>No Data Found</p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div kendoDialogContainer></div>

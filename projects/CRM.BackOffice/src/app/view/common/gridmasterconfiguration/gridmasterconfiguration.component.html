@@ -1,0 +1,42 @@
+<div class="c-modal grid-info a-config">
+    <div class="flex in-block">
+        <div class="o-title">
+            <h6 class="title">Grid Configuration</h6>
+        </div>
+        <div class="o-edit">
+            <kendo-buttongroup kendoTooltip position="bottom">
+                <button kendoButton title="Save Setting" (click)="savePageGridSettings()"><i
+                        class="icon-save"></i></button>
+            </kendo-buttongroup>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12 p-0">
+            <div class="left">
+                <h6>Manage Pages</h6>
+                <div class="company-list">
+                    <ul class="s-company">
+                        <li *ngFor="let item of gridConfigPageList;let i=index" (click)="activePageClick(item,i)"><a
+                                href="javascript:void(0)" [ngClass]="{ 'active': item.isActive}">{{item.pageName}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 p-0">
+            <div class="right" dragula="GridMasterConfiguration" [(dragulaModel)]="gridFields">
+                <div *ngFor="let field of gridFields" class="list-item">
+                    <label for="">
+                        {{field.title}}
+                    </label>
+                    <div class="item-right">
+                        <input type="text" #cWidth="ngModel" name="cWidth" id="cWidth" [(ngModel)]="field.width"
+                            (keypress)="utilityService.numberOnly($event)">
+                        <kendo-switch class="k-widget k-switch-off" #isSelected="ngModel" name="isSelected" id="g-chk"
+                            [(ngModel)]="field.isSelected"></kendo-switch>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
